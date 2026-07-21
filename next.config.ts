@@ -48,6 +48,10 @@ const SECURITY_HEADERS = [
 ];
 
 const nextConfig: NextConfig = {
+  // Build standalone pour Docker (Next.js génère server.js autonome
+  // sans node_modules complet — image finale ~150MB au lieu de ~1GB)
+  output: "standalone",
+
   // Anti-fingerprinting : masque le header X-Powered-By: Next.js
   poweredByHeader: false,
 

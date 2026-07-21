@@ -1,0 +1,98 @@
+# ============================================================
+# Domipack — Docker Compose Production
+# ============================================================
+# Stack complète : Next.js app + PostgreSQL + nginx + certbot
+# Usage: docker compose -f docker-compose.prod.yml up -d
+# ============================================================
+
+services:
+  # ──────────────────────────────────────────────
+  # Application Next.js (standalone)
+  # ──────────────────────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: domipack-app
+    restart: unless-stopped
+    env_file: .env.production
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?schema=public
+      - NODE_ENV=production
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - domipack-internal
+    # Pas de port exposé — nginx est le seul point d'entrée publique
+
+  # ──────────────────────────────────────────────
+  # PostgreSQL 17
+  # ──────────────────────────────────────────────
+  db:
+    image: postgres:17-alpine
+    container_name: domipack-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - domipack_pgdata:/var/lib/postgresql/data
+      - ./backups:/backups
+    healthcheck:
+      test: ["CMD-SHELL", f"pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - domipack-internal
+
+  # ──────────────────────────────────────────────
+  # nginx — Reverse proxy + SSL Let's Encrypt
+  # ──────────────────────────────────────────────
+  nginx:
+    image: nginx:alpine
+    container_name: domipack-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - certbot-etc:/etc/letsencrypt
+      - certbot-web:/var/www/certbot
+    depends_on:
+      - app
+    networks:
+      - domipack-internal
+
+  # ──────────────────────────────────────────────
+  # Certbot — Renouvellement automatique SSL
+  # ──────────────────────────────────────────────
+  certbot:
+    image: certbot/certbot
+    container_name: domipack-certbot
+    restart: unless-stopped
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-web:/var/www/certbot
+    entrypoint: >
+      /bin/sh -c
+      "trap exit TERM;
+      while :; do
+        certbot renew --quiet;
+        sleep 12h & wait $${!};
+      done"
+    networks:
+      - domipack-internal
+
+volumes:
+  domipack_pgdata:
+  certbot-etc:
+  certbot-web:
+
+networks:
+  domipack-internal:
+    driver: bridge
