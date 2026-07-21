@@ -1,0 +1,12 @@
+export { DashboardView } from './DashboardView';
+export { CandidatsView } from './CandidatsView';
+export { MissionsView } from './MissionsView';
+export { RemunerationView } from './RemunerationView';
+export { EmailsView } from './EmailsView';
+export { CmsView } from './CmsView';
+export { SeoView } from './SeoView';
+export { AgentsView } from './AgentsView';
+export { PipelineView } from './PipelineView';
+export { ConfigurationView } from './ConfigurationView';
+export { ProfilView } from './ProfilView';
+export { ParametresView } from './ParametresView';

@@ -1,0 +1,23 @@
+# Domipack — Docker Compose (dev)
+# PostgreSQL pour le développement local
+
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: domipack
+      POSTGRES_PASSWORD: domipack_dev
+      POSTGRES_DB: domipack
+    ports:
+      - "5433:5432"
+    volumes:
+      - domipack_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U domipack"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  domipack_pgdata:

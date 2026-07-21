@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  quality:
+    name: Typecheck + Lint + Test + Build
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: domipack
+          POSTGRES_PASSWORD: domipack
+          POSTGRES_DB: domipack
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd "pg_isready -U domipack"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://domipack:domipack@localhost:5433/domipack?schema=public
+      AUTH_SECRET: ci-test-secret-not-for-production-use-only-32chars
+      CRON_SECRET: ci-cron-secret
+      ADMIN_API_KEY: ci-admin-api-key
+      NOTIFY_EMAIL_TO: noreply@domipack.local
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Test
+        run: pnpm test
+
+      - name: Push schema to DB
+        run: pnpm db:push
+
+      - name: Build
+        run: pnpm build

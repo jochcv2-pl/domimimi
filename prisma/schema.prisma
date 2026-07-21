@@ -1,0 +1,355 @@
+// Domipack — Prisma Schema
+// PostgreSQL exclusif (DEC-D3)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================================
+// ENUMS
+// ============================================================
+
+// Pipeline CRM de prospection (7 statuts ordonnés, conformes à la décision
+// `crm_prospect_status_pipeline`). Remplace l'ancien enum ApplicationStatus
+// (NEW/REVIEWED/CONTACTED/HIRED/REJECTED) qui était un sous-ensemble.
+enum PipeStatus {
+  nouveau     // orange — candidature fraîchement arrivée
+  contacte    // bleu clair — premier contact établi
+  encours     // bleu foncé — qualification en cours
+  offre       // violet — mission/offre envoyée
+  attente     // ambre — en attente (relances en cours, réponse attendue)
+  client      // vert — validé comme emballeur
+  perdu       // rouge — sans réponse / clos / refusé
+}
+
+// Raison pour laquelle la séquence de relance s'est arrêtée
+// (décision `crm.relance.stop_conditions`).
+// null = séquence active ou terminée normalement.
+enum RelanceStop {
+  valide      // validé emballeur par admin
+  stop        // désinscription STOP du candidat
+  bounce      // email invalide
+  exclusion   // exclusion manuelle admin
+  sansreponse // 3 relances atteintes sans réponse
+}
+
+// Mode de paie d'une mission (décision `crm.remuneration.grid`).
+// HOURLY = à l'heure ; PACKAGE = au colis.
+enum PayMode {
+  hourly
+  package
+}
+
+// Type de ligne dans la grille de rémunération.
+// base = taux de base par mode de paie (4 lignes : heure std, heure soir/WE,
+//        colis std, colis fragile).
+// zone = majoration par zone (appliquée sur le taux horaire de base).
+enum PayRateType {
+  base
+  zone
+}
+
+// Statut d'un template email (décision `crm.email.templates`).
+enum EmailTemplateStatus {
+  actif     // utilisé par les agents pour les envois
+  brouillon // editable mais non utilisé
+  archive   // désactivé sans suppression
+}
+
+// Rôle d'accès au CRM admin (sécurité)
+enum UserRole {
+  ADMIN
+  SUPER_ADMIN
+}
+
+// ============================================================
+// MODÈLES
+// ============================================================
+
+model Application {
+  id         String   @id @default(cuid())
+  firstName  String
+  lastName   String
+  email      String
+  phone      String?
+  postalCode String
+  message    String?
+
+  // Pipeline CRM — remplace l'ancien enum ApplicationStatus.
+  // `pipe` est l'état courant dans le pipeline de prospection.
+  pipe       PipeStatus @default(nouveau)
+
+  // Données candidat enrichies (collectées depuis le formulaire de la landing
+  // ou ajoutées par l'admin). `city`/`zone` permettent le filtrage géographique
+  // du CRM. `source` trace l'origine (formulaire site, WhatsApp, import CSV…).
+  city       String?
+  zone       String?
+  source     String    @default("Formulaire site")
+
+  // Relances automatiques (décisions `crm.relance.workflow` + `crm.relance.stop_conditions`).
+  // max 3 relances à J+3 / J+6 / J+9, puis statut "sans réponse / clos".
+  relanceCount Int       @default(0)
+  relanceMax   Int       @default(3)
+  relanceStop  RelanceStop?
+
+  // Traçabilité de la validation emballeur (pipe = client).
+  validatedAt   DateTime?
+  validatedById String?
+  validatedBy   User?    @relation(fields: [validatedById], references: [id])
+
+  // Champs mission — renseignés au moment de la validation emballeur
+  // (décision `crm.flow.validation_path`). La mission est concrètement
+  // définie quand l'admin valide le prospect après son contact WhatsApp/Messenger.
+  product        String  ?   // type de colis (ex : "Cosmétiques", "Papeterie")
+  payMode        PayMode ?   // mode de paie de la mission
+  weeklyPackages Int     ?   // cadence estimée en colis/semaine
+  startDate      DateTime?   // date de première collecte
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  notes ApplicationNote[]
+  emails EmailLog[]
+
+  @@index([pipe])
+  @@index([createdAt])
+  @@index([email])
+  @@index([source])
+  @@index([validatedById])
+}
+
+model ApplicationNote {
+  id            String @id @default(cuid())
+  applicationId String
+  content       String
+  createdAt     DateTime @default(now())
+
+  application Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  @@index([applicationId])
+}
+
+// ============================================================
+// RÉMUNÉRATION — Grille de taux éditable depuis le CRM admin.
+// Alimente : (a) la landing (taux minimum "Dès X €/h"),
+// (b) l'Agent Mission pour le calcul automatique des offres T+4h,
+// (c) la vue Missions pour l'estimation mensuelle.
+// Une seule source de vérité (décision `crm.remuneration.single_source`).
+// ============================================================
+
+model PayRate {
+  id     String      @id @default(cuid())
+  type   PayRateType                  // base | zone
+  mode   PayMode?                     // hourly | package (null pour zones)
+  label  String                       // ex "À l'heure (standard)" ou "Zone urbaine dense"
+  amount Decimal     @db.Decimal(10, 2)  // ex 12.50, 0.80, 0.50
+  unit   String                       // "€/h" ou "€/colis"
+  note   String?                      // "brut", "majoré", etc.
+  sort   Int         @default(0)      // ordre d'affichage dans le CRM
+  active Boolean     @default(true)   // soft-delete / désactivation
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([type, sort])
+  @@index([mode])
+}
+
+// ============================================================
+// EMAIL TEMPLATES — Modèles utilisés par les agents IA pour les
+// envois sortants (décision `crm.email.templates` + `crm.agents.outbound_only`).
+// Les variables {{Prénom}}, {{Zone}}, {{Taux horaire}}… sont remplacées
+// à l'envoi par les données réelles de la candidature (Application).
+// Tous les templates peuvent inclure les boutons WhatsApp/Messenger
+// configurés via le modèle Setting (décision `crm.email.buttons_configurable`).
+// ============================================================
+
+model EmailTemplate {
+  id        String              @id @default(cuid())
+  name      String              @unique  // "Confirmation de candidature"
+  trigger   String                       // "Candidature reçue · Agent Accueil" (label affiché)
+  triggerKey String?                     // "accueil" | "mission" | "relance_1/2/3" (clé machine)
+  agentKey  String?                     // clé agent ("accueil", "mission", "relance"…)
+  subject   String                       // Objet avec {{vars}}
+  body      String              @db.Text // Corps avec {{vars}}
+  status    EmailTemplateStatus @default(actif)
+  sort      Int                 @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([agentKey])
+  @@index([status])
+  @@index([triggerKey])
+}
+
+// ============================================================
+// AGENTS — Configuration des agents IA (prompts + mémoire éditable).
+// Les prompts sont la source de vérité (jamais hardcoded côté code).
+// La mémoire est un JSON libre [{key, val}] editable depuis le CRM.
+// `active=false` désactive l'agent sans le supprimer.
+// ============================================================
+
+model Agent {
+  id      String  @id @default(cuid())
+  key     String  @unique    // "accueil", "mission", "relance", "tri", "seo"…
+  name    String              // "Agent Accueil"
+  desc    String  @db.Text    // "Répond aux nouvelles candidatures…"
+  subrole String              // "Premier contact"
+  avatar  String  @default("AI") // initiales affichées (2 chars)
+  prompt  String  @db.Text    // instruction système (rôle verrouillé)
+  memory  Json                // [{key: string, val: string}]
+  active  Boolean @default(true)
+  custom  Boolean @default(false)  // true si créé par l'admin (non par défaut)
+  sort    Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([active])
+}
+
+// ============================================================
+// SETTINGS — Clé/valeur générique pour les configurations transverses.
+// Utilisé pour :
+//   - contact.whatsapp  : URL wa.me/... (bouton email + CMS)
+//   - contact.messenger : URL m.me/...  (bouton email + CMS)
+//   - email.footer      : JSON du pied de page email (companyName, etc.)
+//   - email.fromAddress : adresse From (recrutement@domipack.fr)
+// Une seule source de vérité (décision `crm.email.buttons_configurable`).
+// ============================================================
+
+model Setting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String @db.Text
+  updatedAt DateTime @updatedAt
+}
+
+// ============================================================
+// SEO AUDITS — Historique des audits générés par l'Agent SEO.
+// Chaque audit stocke un snapshot immuable : score global, items
+// (lignes de vérification label/detail/ok) et suggestions consolidées.
+// La vue SEO affiche toujours le plus récent ; l'historique permet
+// de suivre l'évolution du score dans le temps.
+// L'Agent SEO (outbound) écrit ici ; l'admin lit uniquement.
+// ============================================================
+
+model SeoAudit {
+  id          String   @id @default(cuid())
+  score       Int                            // 0–100 (score global)
+  items       Json                           // [{label, detail, ok}]
+  suggestions String   @db.Text               // texte libre consolidé
+  createdAt   DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+// ============================================================
+// EMAIL PIPELINE — File d'envoi + logs.
+//
+// EmailLog stocke chaque tentative d'envoi (succès ou échec) pour
+// un candidat donné. Le pipeline est stateless : à chaque cycle,
+// le moteur calcule qui doit recevoir quoi en croisant createdAt
+// de l'Application et les EmailLog déjà existants pour ce trigger.
+//
+// Un trigger = un couple (agentKey, étape du flow). Les triggers
+// standards sont : "accueil" (T+5min), "mission" (T+4h),
+// "relance_1" (J+3), "relance_2" (J+6), "relance_3" (J+9).
+// L'unicité (applicationId, trigger) garantit qu'un email n'est
+// jamais envoyé deux fois au même candidat.
+// ============================================================
+
+enum EmailStatus {
+  sent        // envoyé avec succès (provider a renvoyé un messageId)
+  failed      // provider a renvoyé une erreur définitive
+  bounced     // échec soft/hard remonté par le provider (webhook)
+  skipped     // stop condition remplie (STOP, validé, etc.)
+}
+
+model EmailLog {
+  id              String       @id @default(cuid())
+  applicationId   String                         // candidat concerné
+  trigger         String                         // "accueil" | "mission" | "relance_1/2/3"
+  templateName    String                         // nom du template utilisé (snapshot)
+  toEmail         String                         // adresse destinataire (snapshot)
+  provider        String                         // "resend" | "brevo" | "smtp"
+  status          EmailStatus
+  providerMessageId String?                      // ID renvoyé par le provider (pour webhook)
+  error           String?      @db.Text          // message d'erreur si failed/bounced
+  createdAt       DateTime     @default(now())
+  sentAt          DateTime?
+
+  application Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  @@unique([applicationId, trigger])             // un trigger = un envoi max par candidat
+  @@index([applicationId])
+  @@index([createdAt])
+  @@index([status])
+}
+
+// ============================================================
+// AUTH — Auth.js v5 (NextAuth) + Prisma Adapter
+// Modèles standards requis par @auth/prisma-adapter
+// ============================================================
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  passwordHash  String?
+  role          UserRole  @default(ADMIN)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts Account[]
+  sessions Session[]
+
+  // Candidatures validées par cet admin (relation inverse de Application.validatedBy).
+  validatedApplications Application[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+}

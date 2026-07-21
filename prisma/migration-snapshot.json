@@ -1,0 +1,198 @@
+[
+  {
+    "id": "cmrnzqrzx0001osuff6ec4q3a",
+    "legacyStatus": "REJECTED",
+    "firstName": "Nestor",
+    "lastName": "Roche",
+    "createdAt": "2026-06-18T07:26:41.501Z"
+  },
+  {
+    "id": "cmrnzqs180006osuftafroady",
+    "legacyStatus": "REVIEWED",
+    "firstName": "Judicaël",
+    "lastName": "Martinez",
+    "createdAt": "2026-06-19T14:56:38.817Z"
+  },
+  {
+    "id": "cmrnzqs2j000cosufle56327b",
+    "legacyStatus": "REJECTED",
+    "firstName": "Charline",
+    "lastName": "Remy",
+    "createdAt": "2026-06-21T00:16:13.328Z"
+  },
+  {
+    "id": "cmrnzqs4v000nosufwc24p1ue",
+    "legacyStatus": "NEW",
+    "firstName": "Ludivine",
+    "lastName": "Roux",
+    "createdAt": "2026-06-22T02:07:56.885Z"
+  },
+  {
+    "id": "cmrnzqs32000fosufghz22du5",
+    "legacyStatus": "REVIEWED",
+    "firstName": "Nadège",
+    "lastName": "Lefevre",
+    "createdAt": "2026-06-22T14:07:32.485Z"
+  },
+  {
+    "id": "cmrnzqs0f0003osufwvj6c15i",
+    "legacyStatus": "REVIEWED",
+    "firstName": "Doriane",
+    "lastName": "Adam",
+    "createdAt": "2026-06-29T06:43:21.150Z"
+  },
+  {
+    "id": "cmrnzqs3h000hosuf3bi034kl",
+    "legacyStatus": "REJECTED",
+    "firstName": "Aquiline",
+    "lastName": "Petit",
+    "createdAt": "2026-07-01T06:26:59.489Z"
+  },
+  {
+    "id": "cmrnzqs3q000iosufhldchk9k",
+    "legacyStatus": "REVIEWED",
+    "firstName": "Mireille",
+    "lastName": "Morin",
+    "createdAt": "2026-07-01T21:05:25.233Z"
+  },
+  {
+    "id": "cmrnzqs2v000eosufv7otxxv4",
+    "legacyStatus": "REVIEWED",
+    "firstName": "Delphin",
+    "lastName": "Roy",
+    "createdAt": "2026-07-03T05:13:12.856Z"
+  },
+  {
+    "id": "cmrnzqs050002osufz26c6qyg",
+    "legacyStatus": "CONTACTED",
+    "firstName": "Agnès",
+    "lastName": "Bertrand",
+    "createdAt": "2026-07-03T08:03:34.481Z"
+  },
+  {
+    "id": "cmrnzqs39000gosuf5eetcm0z",
+    "legacyStatus": "NEW",
+    "firstName": "Lucille",
+    "lastName": "Leclercq",
+    "createdAt": "2026-07-04T20:50:04.226Z"
+  },
+  {
+    "id": "cmrnzqrzh0000osufjvvhcale",
+    "legacyStatus": "CONTACTED",
+    "firstName": "Agneflète",
+    "lastName": "Muller",
+    "createdAt": "2026-07-05T20:53:02.426Z"
+  },
+  {
+    "id": "cmrnzqs0z0005osufg1s1tqfs",
+    "legacyStatus": "REJECTED",
+    "firstName": "Adonise",
+    "lastName": "Clement",
+    "createdAt": "2026-07-07T00:56:13.302Z"
+  },
+  {
+    "id": "cmrnzqs52000oosuf8yqmzinc",
+    "legacyStatus": "REJECTED",
+    "firstName": "Didier",
+    "lastName": "Charpentier",
+    "createdAt": "2026-07-07T01:12:32.125Z"
+  },
+  {
+    "id": "cmrnzqs2c000bosufqf3h6133",
+    "legacyStatus": "REJECTED",
+    "firstName": "Francette",
+    "lastName": "Renault",
+    "createdAt": "2026-07-08T02:38:24.554Z"
+  },
+  {
+    "id": "cmrnzqs22000aosufmric67cf",
+    "legacyStatus": "CONTACTED",
+    "firstName": "Camélien",
+    "lastName": "Lacroix",
+    "createdAt": "2026-07-08T23:33:01.837Z"
+  },
+  {
+    "id": "cmrnzqs4n000mosuf06bsdchq",
+    "legacyStatus": "CONTACTED",
+    "firstName": "Dominique",
+    "lastName": "Blanc",
+    "createdAt": "2026-07-09T18:33:15.174Z"
+  },
+  {
+    "id": "cmrnzqs1g0007osufb2nkm1i9",
+    "legacyStatus": "NEW",
+    "firstName": "Matthieu",
+    "lastName": "Marie",
+    "createdAt": "2026-07-11T12:48:10.693Z"
+  },
+  {
+    "id": "cmrnzqs0p0004osuft88cf8xq",
+    "legacyStatus": "NEW",
+    "firstName": "Léopoldine",
+    "lastName": "Lefebvre",
+    "createdAt": "2026-07-11T17:37:29.378Z"
+  },
+  {
+    "id": "cmrnzqs3z000josufktkvxpih",
+    "legacyStatus": "REVIEWED",
+    "firstName": "Aimée",
+    "lastName": "Lopez",
+    "createdAt": "2026-07-12T07:47:44.096Z"
+  },
+  {
+    "id": "cmrnzqs2p000dosufd03lp7ob",
+    "legacyStatus": "HIRED",
+    "firstName": "Marcelin",
+    "lastName": "Gaillard",
+    "createdAt": "2026-07-12T18:18:50.061Z"
+  },
+  {
+    "id": "cmrnzqs4f000losufz19hmfq5",
+    "legacyStatus": "CONTACTED",
+    "firstName": "Agnan",
+    "lastName": "Morin",
+    "createdAt": "2026-07-12T20:43:59.920Z"
+  },
+  {
+    "id": "cmrnzqs1v0009osufz2u8mw4s",
+    "legacyStatus": "CONTACTED",
+    "firstName": "Marceline",
+    "lastName": "Philippe",
+    "createdAt": "2026-07-14T12:01:48.406Z"
+  },
+  {
+    "id": "cmrnzqs48000kosufx3zbd6ue",
+    "legacyStatus": "CONTACTED",
+    "firstName": "Audouin",
+    "lastName": "Girard",
+    "createdAt": "2026-07-16T05:27:05.505Z"
+  },
+  {
+    "id": "cmrnzqs1o0008osuf9jsem38x",
+    "legacyStatus": "CONTACTED",
+    "firstName": "Diane",
+    "lastName": "Garcia",
+    "createdAt": "2026-07-16T17:03:00.386Z"
+  },
+  {
+    "id": "cmrnzsbpg0000lcufdex85wqh",
+    "legacyStatus": "NEW",
+    "firstName": "Jean",
+    "lastName": "Dupont",
+    "createdAt": "2026-07-16T20:59:23.332Z"
+  },
+  {
+    "id": "cmrqc1z8i0000nsufdtbohasy",
+    "legacyStatus": "NEW",
+    "firstName": "Max",
+    "lastName": "Test",
+    "createdAt": "2026-07-18T12:18:21.474Z"
+  },
+  {
+    "id": "cmrqc3cvg0001nsuffdc7erxv",
+    "legacyStatus": "NEW",
+    "firstName": "Max2",
+    "lastName": "Test2",
+    "createdAt": "2026-07-18T12:19:25.805Z"
+  }
+]
