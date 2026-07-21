@@ -27,11 +27,13 @@ const SECURITY_HEADERS = [
     key: "Strict-Transport-Security",
     value: "max-age=63072000; includeSubDomains; preload",
   },
-  // CSP en mode REPORT-ONLY pour démarrer (audit des violations avant blocage).
-  // 'unsafe-inline' sur script-src/style-src car Next.js injecte du CSS inline
-  // et des styles runtime. Quand on aura nonce-based, on durcira.
+  // CSP enforcement (était Report-Only pendant la phase d'observation).
+  // 'unsafe-inline' sur script-src/style-src reste nécessaire car Next.js
+  // injecte du CSS inline runtime. Pour durcir à nonce-based, il faudrait
+  // un middleware qui génère un nonce par requête — reporté.
+  // Le endpoint /api/csp-report reste actif pour capturer les violations.
   {
-    key: "Content-Security-Policy-Report-Only",
+    key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
       "script-src 'self' 'unsafe-inline' 'unsafe-eval'",

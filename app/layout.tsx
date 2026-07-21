@@ -35,6 +35,15 @@ export default function RootLayout({
       <body>
         <RevealObserver />
         <Providers>{children}</Providers>
+        {/* Umami analytics — self-hosted, privacy-first, pas de cookies */}
+        {process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
+          <script
+            async
+            defer
+            src="/analytics/script.js"
+            data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
+          />
+        )}
       </body>
     </html>
   );

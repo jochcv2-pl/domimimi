@@ -69,6 +69,24 @@ services:
       - domipack-internal
 
   # ──────────────────────────────────────────────
+  # Umami — Analytics self-hosted (privacy-first, pas de cookies)
+  # ──────────────────────────────────────────────
+  umami:
+    image: ghcr.io/umami-software/umami:postgresql-latest
+    container_name: domipack-umami
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${UMAMI_DB_USER:-umami}:${UMAMI_DB_PASSWORD:-umami}@db:5432/${UMAMI_DB_NAME:-umami}?schema=public
+      DATABASE_TYPE: postgresql
+      APP_SECRET: ${UMAMI_APP_SECRET:-CHANGE_ME_UMAMI_SECRET}
+      PORT: "3001"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - domipack-internal
+
+  # ──────────────────────────────────────────────
   # Certbot — Renouvellement automatique SSL
   # ──────────────────────────────────────────────
   certbot:

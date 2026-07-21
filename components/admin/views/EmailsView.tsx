@@ -1,8 +1,13 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import dynamic from 'next/dynamic';
 import Modal from '../Modal';
 import { sanitizeHtml } from '@/lib/sanitize';
+
+// CodeMirror est chargé dynamiquement (client-only, pas de SSR)
+const CodeMirror = dynamic(() => import('@uiw/react-codemirror'), { ssr: false });
+import { html as htmlLang } from '@codemirror/lang-html';
 
 const VARS = [
   '{{Prénom}}',
@@ -448,11 +453,20 @@ Nous avons bien reçu votre candidature pour l'emballage à domicile dans la zon
                 </div>
                 <div className="sub-panel">
                   <h4>Corps du message</h4>
-                  <textarea
-                    className="body-editor"
-                    value={body}
-                    onChange={(e) => setBody(e.target.value)}
-                  />
+                  <div className="body-editor">
+                    <CodeMirror
+                      value={body}
+                      onChange={setBody}
+                      extensions={[htmlLang()]}
+                      height="320px"
+                      theme="dark"
+                      basicSetup={{
+                        lineNumbers: true,
+                        highlightActiveLine: true,
+                        autocompletion: true,
+                      }}
+                    />
+                  </div>
                 </div>
                 <div className="sub-panel">
                   <h4>Insérer une variable</h4>
@@ -552,12 +566,16 @@ Nous avons bien reçu votre candidature pour l'emballage à domicile dans la zon
                   <div className="or-line">
                     <span>ou collez le code HTML</span>
                   </div>
-                  <textarea
-                    className="html-area"
-                    placeholder="<html><body>Bonjour {{Prénom}}…</body></html>"
-                    value={htmlArea}
-                    onChange={(e) => setHtmlArea(e.target.value)}
-                  />
+                  <div className="html-area">
+                    <CodeMirror
+                      value={htmlArea}
+                      onChange={setHtmlArea}
+                      extensions={[htmlLang()]}
+                      height="200px"
+                      theme="dark"
+                      placeholder="<html><body>Bonjour {{Prénom}}…</body></html>"
+                    />
+                  </div>
                   {detectedVars.length > 0 && (
                     <div className="detected">
                       <h4>Variables détectées</h4>
