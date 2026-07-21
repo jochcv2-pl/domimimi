@@ -246,7 +246,17 @@ export function CandidatsView() {
       <div className="panel">
         <div className="panel-head">
           <h3>Tous les contacts</h3>
-          <span className="link">Filtrer</span>
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            <a
+              className="btn btn-secondary btn-sm"
+              href={`/api/admin/applications/export${pipeFilter !== 'tous' ? `?pipe=${pipeFilter}` : ''}`}
+              download
+              style={{ textDecoration: 'none' }}
+            >
+              Exporter CSV
+            </a>
+            <span className="link">Filtrer</span>
+          </div>
         </div>
         <div className="panel-body">
           {fetchState === 'loading' && <ContactsSkeleton />}

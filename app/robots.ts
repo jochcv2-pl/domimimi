@@ -1,0 +1,21 @@
+import type { MetadataRoute } from "next";
+
+/**
+ * robots.txt — autorise le crawl des pages publiques, bloque /admin et /api.
+ * Le sitemap est déclaré pour aider les moteurs à découvrir toutes les pages.
+ */
+export default function robots(): MetadataRoute.Robots {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://domipack.fr";
+
+  return {
+    rules: [
+      {
+        userAgent: "*",
+        allow: "/",
+        disallow: ["/admin", "/api", "/login"],
+      },
+    ],
+    sitemap: `${baseUrl}/sitemap.xml`,
+    host: baseUrl,
+  };
+}

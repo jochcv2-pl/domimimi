@@ -48,6 +48,9 @@ const SECURITY_HEADERS = [
 ];
 
 const nextConfig: NextConfig = {
+  // Anti-fingerprinting : masque le header X-Powered-By: Next.js
+  poweredByHeader: false,
+
   // `nodemailer` n'est installé que si le provider SMTP est utilisé.
   // On le déclare en external server pour que webpack ne tente pas de
   // le bundler au build : l'import dynamique dans lib/email/providers.ts
