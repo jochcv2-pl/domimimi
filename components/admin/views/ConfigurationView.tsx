@@ -411,10 +411,11 @@ export function ConfigurationView() {
           </div>
           <div className="panel-body" style={{ paddingTop: 14 }}>
             <p className="field-hint">
-              Sélectionnez le fournisseur <b>Actif</b> utilisé pour les envois. Les clés API et identifiants
-              SMTP sont stockés <b>uniquement en <code>.env</code></b> — jamais en base de données.
+              Sélectionnez le fournisseur <b>Actif</b> et renseignez ses identifiants ci-dessous.
+              Les valeurs saisies ici sont <b>stockées en base</b> et priment sur le <code>.env</code>.
             </p>
 
+            {/* Provider selection */}
             {PROVIDERS.map((p) => {
               const isActive = activeProv === p.key;
               const isConfigured = !!secrets[p.secretKey];
@@ -436,33 +437,112 @@ export function ConfigurationView() {
                       <span className="prov-badge-off">Inactif</span>
                     )}
                   </div>
-                  <div className="frow" style={{ marginBottom: 0, marginTop: 12 }}>
-                    <div className="fg">
-                      <label>Statut configuration .env</label>
-                      <div style={{ padding: '8px 0', fontSize: 12 }}>
-                        {isConfigured ? (
-                          <span className="pill-on">✓ Configuré</span>
-                        ) : (
-                          <span className="pill-off">✕ Non configuré</span>
-                        )}{' '}
-                        <small style={{ color: '#95A198' }}>
-                          Variable <code>{p.secretKey}</code> dans <code>.env</code>
-                        </small>
+
+                  {/* Credential inputs per provider */}
+                  {p.key === 'smtp' && (
+                    <div className="frow" style={{ marginBottom: 0, marginTop: 12 }}>
+                      <div className="fg">
+                        <label>Hôte SMTP</label>
+                        <input
+                          value={settings['email.smtp_host'] ?? ''}
+                          onChange={(e) => update('email.smtp_host', e.target.value)}
+                          placeholder="smtp.hostinger.com"
+                        />
+                      </div>
+                      <div className="fg" style={{ maxWidth: 100 }}>
+                        <label>Port</label>
+                        <input
+                          value={settings['email.smtp_port'] ?? '587'}
+                          onChange={(e) => update('email.smtp_port', e.target.value)}
+                          placeholder="587"
+                        />
+                      </div>
+                      <div className="fg">
+                        <label>Utilisateur</label>
+                        <input
+                          value={settings['email.smtp_user'] ?? ''}
+                          onChange={(e) => update('email.smtp_user', e.target.value)}
+                          placeholder="contact@domaine.fr"
+                        />
+                      </div>
+                      <div className="fg">
+                        <label>Mot de passe</label>
+                        <input
+                          type="password"
+                          value={settings['email.smtp_pass'] ?? ''}
+                          onChange={(e) => update('email.smtp_pass', e.target.value)}
+                          placeholder="••••••••"
+                        />
                       </div>
                     </div>
+                  )}
+                  {p.key === 'resend' && (
+                    <div className="frow" style={{ marginBottom: 0, marginTop: 12 }}>
+                      <div className="fg">
+                        <label>Clé API Resend</label>
+                        <input
+                          type="password"
+                          value={settings['email.resend_api_key'] ?? ''}
+                          onChange={(e) => update('email.resend_api_key', e.target.value)}
+                          placeholder="re_••••••••"
+                        />
+                      </div>
+                    </div>
+                  )}
+                  {p.key === 'brevo' && (
+                    <div className="frow" style={{ marginBottom: 0, marginTop: 12 }}>
+                      <div className="fg">
+                        <label>Clé API Brevo</label>
+                        <input
+                          type="password"
+                          value={settings['email.brevo_api_key'] ?? ''}
+                          onChange={(e) => update('email.brevo_api_key', e.target.value)}
+                          placeholder="xkeysib-••••••••"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* .env fallback indicator */}
+                  <div style={{ marginTop: 8, fontSize: 11, color: '#95A198' }}>
+                    {isConfigured ? (
+                      <>Fallback <code>.env</code> : <span className="pill-on" style={{ fontSize: 10 }}>✓ {p.secretKey}</span></>
+                    ) : (
+                      <>Pas de fallback <code>.env</code> pour <code>{p.secretKey}</code></>
+                    )}
                   </div>
                 </div>
               );
             })}
 
-            <div className="set-row" style={{ marginTop: 8 }}>
+            {/* Email de notification */}
+            <div className="fg" style={{ marginTop: 16, marginBottom: 0 }}>
+              <label>Email de notification interne</label>
+              <input
+                value={settings['email.notify_to'] ?? ''}
+                onChange={(e) => update('email.notify_to', e.target.value)}
+                placeholder="recrutement@domaine.fr"
+                style={{ fontFamily: 'monospace' }}
+              />
+              <small style={{ fontSize: 10, color: '#95A198' }}>
+                Adresse qui reçoit les notifications de nouvelles candidatures.
+                Remplace la variable <code>NOTIFY_EMAIL_TO</code> du <code>.env</code>.
+              </small>
+            </div>
+
+            <div className="set-row" style={{ marginTop: 12 }}>
               <div className="set-label">
                 <b>SPF / DKIM / DMARC</b>
                 <small>Authentification du domaine actif</small>
               </div>
               <span className="pill-on">Vérifié</span>
             </div>
-            <SaveButton label="provider" savingKey={savingKey} savedKeys={savedKeys} loadError={loadError} onSave={() => saveKeys(['email.provider_active'], 'provider')} />
+            <SaveButton label="provider" savingKey={savingKey} savedKeys={savedKeys} loadError={loadError} onSave={() => saveKeys([
+              'email.provider_active',
+              'email.smtp_host', 'email.smtp_port', 'email.smtp_user', 'email.smtp_pass',
+              'email.resend_api_key', 'email.brevo_api_key',
+              'email.notify_to',
+            ], 'provider')} />
           </div>
         </div>
 

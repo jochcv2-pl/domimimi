@@ -106,6 +106,15 @@ async function main() {
     { key: "pipeline.send_interval_min", value: "30" },   // secondes
     { key: "pipeline.send_interval_max", value: "90" },   // secondes
     { key: "pipeline.warmup_enabled",  value: "true" },
+    // Email — Provider & credentials (configurables depuis l'admin)
+    { key: "email.provider_active",   value: "none" },     // none / resend / brevo / smtp
+    { key: "email.smtp_host",         value: "" },
+    { key: "email.smtp_port",         value: "587" },
+    { key: "email.smtp_user",         value: "" },
+    { key: "email.smtp_pass",         value: "" },
+    { key: "email.resend_api_key",    value: "" },
+    { key: "email.brevo_api_key",     value: "" },
+    { key: "email.notify_to",         value: "" },         // remplace NOTIFY_EMAIL_TO
     // CMS — Identité de marque
     { key: "cms.brand_name", value: "Domipack" },
     { key: "cms.logo_url", value: "" },
