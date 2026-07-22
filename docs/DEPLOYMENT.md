@@ -33,6 +33,9 @@ openssl rand -base64 32  # CRON_SECRET
 
 Définir un mot de passe PostgreSQL fort (`POSTGRES_PASSWORD`).
 
+**Important** : `DATABASE_URL` doit utiliser le **même mot de passe** que `POSTGRES_PASSWORD`.
+Remplacez `CHANGER_MOT_DE_PASSE_FORT_ICI` dans les deux lignes.
+
 ## 3. Build et démarrage
 
 ```bash
@@ -68,13 +71,26 @@ docker compose -f docker-compose.prod.yml restart nginx
 
 ## 5. Initialiser la base de données
 
-```bash
-# Schéma Prisma
-docker compose -f docker-compose.prod.yml exec app npx prisma db push
+Le conteneur app est un build standalone (pas de pnpm/prisma dedans).
+Les commandes CLI se lancent depuis le host, via le port DB exposé en localhost.
 
-# Créer l'admin
-docker compose -f docker-compose.prod.yml exec app node prisma/seed-admin.mjs
+```bash
+# Démarrer uniquement la DB d'abord
+docker compose -f docker-compose.prod.yml up -d db
+
+# Patienter 5s que PostgreSQL soit prêt, puis :
+pnpm install              # si pas déjà fait
+pnpm db:generate          # génère le client Prisma
+pnpm db:push              # crée les tables
+pnpm db:seed              # insère settings, agents, candidatures démo
+pnpm db:seed-admin        # crée le compte admin (admin@domipack.fr / Domipack2026!)
+
+# Puis démarrer toute la stack
+docker compose -f docker-compose.prod.yml up -d --build
 ```
+
+> ⚠️ Vérifier que `DATABASE_URL` dans `.env` pointe bien vers `localhost:5433`
+> (pas `db:5432` qui ne marche que depuis l'intérieur de Docker).
 
 ## 6. Cron pipeline email
 
