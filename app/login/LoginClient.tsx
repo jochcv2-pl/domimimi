@@ -49,8 +49,8 @@ export default function LoginClient({ brandName = 'domipackung', logoUrl }: { br
             ) : (
               <svg viewBox="0 0 30 24" fill="none" width="34" height="28">
                 <path d="M2 7 15 1l13 6-13 6z" fill="#C08A5A" />
-                <path d="M2 7v10l13 6V13z" fill="#0F2942" />
-                <path d="M28 7v10l-13 6V13z" fill="#1E6FB8" />
+                <path d="M2 7v10l13 6V13z" fill="#0F2019" />
+                <path d="M28 7v10l-13 6V13z" fill="#2C5344" />
                 <path d="M9 4l13 6" stroke="#E8A93C" strokeWidth="1.6" />
               </svg>
             )}

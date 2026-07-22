@@ -1127,10 +1127,9 @@ footer a:hover {
   font-weight: 800;
   padding: 0 22px 20px;
   letter-spacing: -0.02em;
-}
-
-.sb-logo span {
-  color: #E8A93C;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .sb-group {
@@ -2961,10 +2960,10 @@ tr:last-child td {
   .sb-logo {
     font-size: 0;
     padding: 0 0 20px;
-    text-align: center;
+    justify-content: center;
   }
-  .sb-logo::first-letter {
-    font-size: 22px;
+  .sb-logo img {
+    height: 24px !important;
   }
   .sb-group-label,
   .sb-item span,
@@ -3401,7 +3400,7 @@ tr:last-child td {
 
 /* Panneau marque */
 .login-brand {
-  background: linear-gradient(160deg, #0F2942 0%, #1E6FB8 100%);
+  background: linear-gradient(160deg, #0F2019 0%, #1E3A2F 100%);
   color: #fff;
   display: flex;
   align-items: center;
@@ -3445,7 +3444,7 @@ tr:last-child td {
 }
 .login-brand-copy p {
   font-size: 1.05rem;
-  color: #C6D5CC;
+  color: #a9beb4;
   line-height: 1.6;
 }
 .login-brand-foot {
