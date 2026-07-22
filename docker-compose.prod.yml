@@ -63,8 +63,8 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
-      - certbot-etc:/etc/letsencrypt
-      - certbot-web:/var/www/certbot
+      - ./certbot-etc:/etc/letsencrypt
+      - ./certbot-web:/var/www/certbot
     depends_on:
       - app
     networks:
@@ -96,8 +96,8 @@ services:
     container_name: domipack-certbot
     restart: unless-stopped
     volumes:
-      - certbot-etc:/etc/letsencrypt
-      - certbot-web:/var/www/certbot
+      - ./certbot-etc:/etc/letsencrypt
+      - ./certbot-web:/var/www/certbot
     entrypoint: >
       /bin/sh -c
       "trap exit TERM;
