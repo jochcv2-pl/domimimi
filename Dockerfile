@@ -39,10 +39,10 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
-RUN pnpm build
-
-# Générer le client Prisma (nécessaire au runtime)
+# Générer le client Prisma AVANT le build (types requis par TypeScript)
 RUN npx prisma generate
+
+RUN pnpm build
 
 # ──────────────────────────────────────────────
 # Stage 3 — Runtime minimaliste
