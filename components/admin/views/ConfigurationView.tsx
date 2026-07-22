@@ -65,6 +65,8 @@ export function ConfigurationView() {
   const [loadError, setLoadError] = useState<string>('');
   const [savingKey, setSavingKey] = useState<string | null>(null);
   const [savedKeys, setSavedKeys] = useState<Record<string, 'ok' | 'error'>>({});
+  const [aiStatus, setAiStatus] = useState<'idle' | 'testing' | 'ok' | 'error'>('idle');
+  const [aiInfo, setAiInfo] = useState<{ model?: string; latencyMs?: number; error?: string }>({});
 
   // ============================================================
   // Fetch
@@ -131,6 +133,25 @@ export function ConfigurationView() {
     setSettings((prev) => ({ ...prev, [key]: value }));
   };
 
+  const testAi = useCallback(async () => {
+    setAiStatus('testing');
+    setAiInfo({});
+    try {
+      const res = await fetch('/api/admin/ai/test', { method: 'POST' });
+      const json = await res.json();
+      if (json?.ok) {
+        setAiStatus('ok');
+        setAiInfo({ model: json.model, latencyMs: json.latencyMs });
+      } else {
+        setAiStatus('error');
+        setAiInfo({ error: json?.error || 'Échec de connexion' });
+      }
+    } catch (err) {
+      setAiStatus('error');
+      setAiInfo({ error: err instanceof Error ? err.message : 'Erreur réseau' });
+    }
+  }, []);
+
   if (loading) {
     return <div style={{ padding: 24, color: '#5E6B62' }}>Chargement de la configuration…</div>;
   }
@@ -152,7 +173,14 @@ export function ConfigurationView() {
         <div className="panel">
           <div className="panel-head">
             <h3>Modèle d&apos;IA</h3>
-            <span className="link">Tester la connexion</span>
+            <button
+              className="link"
+              onClick={testAi}
+              disabled={aiStatus === 'testing'}
+              style={{ background: 'none', border: 'none', cursor: aiStatus === 'testing' ? 'wait' : 'pointer', padding: 0, font: 'inherit' }}
+            >
+              {aiStatus === 'testing' ? 'Test en cours…' : 'Tester la connexion'}
+            </button>
           </div>
           <div className="panel-body" style={{ paddingTop: 16 }}>
             <p className="field-hint">
@@ -216,9 +244,17 @@ export function ConfigurationView() {
             <div className="set-row">
               <div className="set-label">
                 <b>État</b>
-                <small>Connexion au modèle</small>
+                <small>
+                  {aiStatus === 'idle' && 'Non testé'}
+                  {aiStatus === 'testing' && 'Connexion en cours…'}
+                  {aiStatus === 'ok' && aiInfo.model ? `${aiInfo.model} · ${aiInfo.latencyMs ?? '?'}ms` : ''}
+                  {aiStatus === 'error' && (aiInfo.error ?? 'Erreur')}
+                </small>
               </div>
-              <span className="pill-on">En ligne</span>
+              {aiStatus === 'ok' && <span className="pill-on">En ligne</span>}
+              {aiStatus === 'error' && <span className="pill-off">Hors ligne</span>}
+              {aiStatus === 'testing' && <span className="pill-wait">Test…</span>}
+              {aiStatus === 'idle' && <span className="pill-neutral">Non testé</span>}
             </div>
             <SaveButton label="ia" savingKey={savingKey} savedKeys={savedKeys} loadError={loadError} onSave={() => saveKeys(['ai.model', 'ai.provider', 'ai.endpoint', 'ai.api_key', 'ai.temperature', 'ai.max_tokens'], 'ia')} />
           </div>
