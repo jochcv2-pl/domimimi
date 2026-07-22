@@ -80,9 +80,10 @@ cp .env.example .env
 ### 2.5. Initialiser la base de données
 
 ```bash
-pnpm prisma:generate   # génère le client Prisma
+pnpm db:generate       # génère le client Prisma (obligatoire avant db:push)
 pnpm db:push           # crée les tables depuis schema.prisma
 pnpm db:seed           # insère données de démonstration (paramètres, agents, candidatures)
+pnpm db:seed-admin     # crée le compte admin (admin@domipack.fr / Domipack2026!)
 ```
 
 ---
