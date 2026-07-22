@@ -152,13 +152,19 @@ export async function chatCompletion(
 
   const url = `${settings.endpoint.replace(/\/+$/, "")}/v1/chat/completions`;
 
-  const body = {
+  const body: Record<string, unknown> = {
     model: settings.model,
     messages,
     temperature: opts?.temperature ?? settings.temperature,
     max_tokens: opts?.maxTokens ?? settings.maxTokens,
     stream: false,
   };
+
+  // Ollama : désactiver le mode "thinking" de Qwen3 (génère des centaines
+  // de tokens invisibles qui rendent l'inférence CPU inutilisable).
+  if (settings.provider === "ollama") {
+    body.think = false;
+  }
 
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
@@ -280,7 +286,7 @@ export async function testConnection(): Promise<{
           content: "Réponds uniquement: OK /no_think",
         },
       ],
-      { maxTokens: 300, temperature: 0 },
+      { maxTokens: 50, temperature: 0 },
     );
 
     return {
