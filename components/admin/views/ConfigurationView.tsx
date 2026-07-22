@@ -18,7 +18,7 @@ const PROVIDERS: {
   { key: 'smtp',   name: 'SMTP Hostinger',  secretKey: 'EMAIL_SMTP_HOST' },
 ];
 
-const AI_MODELS = ['qwen3-8b', 'qwen3-4b', 'gemma-4-12b', 'mistral-small-4', 'phi-4-mini'];
+const AI_MODELS = ['llama3.2', 'llama3.1', 'qwen3:8b', 'qwen3:4b', 'gemma3:12b', 'mistral-small', 'phi4-mini'];
 const AI_ENGINES = ['ollama', 'vllm', 'lmstudio'];
 
 /**
