@@ -27,7 +27,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
-import { getProvider, type EmailProviderName } from "@/lib/email/providers";
+import { getProvider, setDbCredentials, type EmailProviderName } from "@/lib/email/providers";
 import { renderEmail } from "@/lib/email/render";
 import type { Application, PipeStatus, RelanceStop } from "@prisma/client";
 
@@ -100,6 +100,9 @@ export async function loadPipelineSettings(): Promise<PipelineSettings> {
   const rows = await prisma.setting.findMany();
   const map: Record<string, string> = {};
   for (const s of rows) map[s.key] = s.value;
+
+  // Injecter les credentials DB dans les providers (CMS > .env)
+  setDbCredentials(map);
 
   const providerName = (map["email.provider_active"] ?? "resend") as EmailProviderName;
   const dailyCap = parseIntOr(map["email.cadence.daily_cap"], 200);

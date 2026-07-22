@@ -17,6 +17,25 @@
 
 export type EmailProviderName = "resend" | "brevo" | "smtp";
 
+// ============================================================
+// Credentials DB (prioritaire sur .env)
+// ============================================================
+
+/**
+ * Credentials chargés depuis la DB par loadPipelineSettings().
+ * Priment sur process.env. Permet à l'admin de configurer les providers
+ * depuis le CMS sans toucher au .env.
+ */
+let dbCreds: Record<string, string> = {};
+
+export function setDbCredentials(creds: Record<string, string>) {
+  dbCreds = creds;
+}
+
+function getCred(dbKey: string, ...envKeys: string[]): string {
+  return dbCreds[dbKey] || envKeys.map((k) => process.env[k]).find(Boolean) || "";
+}
+
 export interface SendEmailInput {
   to: string;
   from: string;
@@ -58,16 +77,16 @@ const resendProvider: EmailProvider = {
   name: "resend",
 
   isConfigured() {
-    return Boolean(process.env.EMAIL_RESEND_API_KEY);
+    return Boolean(getCred("email.resend_api_key", "EMAIL_RESEND_API_KEY"));
   },
 
   async send(input) {
-    const apiKey = process.env.EMAIL_RESEND_API_KEY;
+    const apiKey = getCred("email.resend_api_key", "EMAIL_RESEND_API_KEY");
     if (!apiKey) {
       return {
         ok: false,
         provider: "resend",
-        error: "EMAIL_RESEND_API_KEY manquant dans .env",
+        error: "Clé Resend manquante (CMS → Configuration ou .env EMAIL_RESEND_API_KEY)",
         retryable: false,
       };
     }
@@ -124,16 +143,16 @@ const brevoProvider: EmailProvider = {
   name: "brevo",
 
   isConfigured() {
-    return Boolean(process.env.EMAIL_BREVO_API_KEY);
+    return Boolean(getCred("email.brevo_api_key", "EMAIL_BREVO_API_KEY"));
   },
 
   async send(input) {
-    const apiKey = process.env.EMAIL_BREVO_API_KEY;
+    const apiKey = getCred("email.brevo_api_key", "EMAIL_BREVO_API_KEY");
     if (!apiKey) {
       return {
         ok: false,
         provider: "brevo",
-        error: "EMAIL_BREVO_API_KEY manquant dans .env",
+        error: "Clé Brevo manquante (CMS → Configuration ou .env EMAIL_BREVO_API_KEY)",
         retryable: false,
       };
     }
@@ -189,22 +208,21 @@ const smtpProvider: EmailProvider = {
   name: "smtp",
 
   isConfigured() {
-    return Boolean(
-      process.env.EMAIL_SMTP_HOST &&
-        process.env.EMAIL_SMTP_USER &&
-        (process.env.EMAIL_SMTP_PASSWORD || process.env.EMAIL_SMTP_PASS),
-    );
+    const host = getCred("email.smtp_host", "EMAIL_SMTP_HOST");
+    const user = getCred("email.smtp_user", "EMAIL_SMTP_USER");
+    const pass = getCred("email.smtp_pass", "EMAIL_SMTP_PASSWORD", "EMAIL_SMTP_PASS");
+    return Boolean(host && user && pass);
   },
 
   async send(input) {
-    const host = process.env.EMAIL_SMTP_HOST;
-    const user = process.env.EMAIL_SMTP_USER;
-    const pass = process.env.EMAIL_SMTP_PASSWORD || process.env.EMAIL_SMTP_PASS;
+    const host = getCred("email.smtp_host", "EMAIL_SMTP_HOST");
+    const user = getCred("email.smtp_user", "EMAIL_SMTP_USER");
+    const pass = getCred("email.smtp_pass", "EMAIL_SMTP_PASSWORD", "EMAIL_SMTP_PASS");
     if (!host || !user || !pass) {
       return {
         ok: false,
         provider: "smtp",
-        error: "EMAIL_SMTP_HOST/USER/PASSWORD manquants dans .env",
+        error: "SMTP host/user/password manquants (CMS → Configuration ou .env)",
         retryable: false,
       };
     }
