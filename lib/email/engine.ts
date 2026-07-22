@@ -333,13 +333,19 @@ export async function runEmailCycle(opts: CycleOptions = {}): Promise<CycleResul
         // est inactif ; si le template n'existe pas, on skip sans log
         // (sinon on remplirait la DB de logs pour un trigger non implémenté).
         if (rendered.reason === "template_inactive") {
-          await prisma.emailLog.create({
-            data: {
+          await prisma.emailLog.upsert({
+            where: { applicationId_trigger: { applicationId: app.id, trigger: step.triggerKey } },
+            create: {
               applicationId: app.id,
               trigger: step.triggerKey,
               templateName: `(${step.triggerKey} inactif)`,
               toEmail: app.email,
               provider: settings.providerName,
+              status: "skipped",
+              error: "Template inactif",
+            },
+            update: {
+              templateName: `(${step.triggerKey} inactif)`,
               status: "skipped",
               error: "Template inactif",
             },
@@ -365,8 +371,9 @@ export async function runEmailCycle(opts: CycleOptions = {}): Promise<CycleResul
       });
 
       if (sendResult.ok) {
-        await prisma.emailLog.create({
-          data: {
+        await prisma.emailLog.upsert({
+          where: { applicationId_trigger: { applicationId: app.id, trigger: step.triggerKey } },
+          create: {
             applicationId: app.id,
             trigger: step.triggerKey,
             templateName: rendered.template.name,
@@ -374,6 +381,13 @@ export async function runEmailCycle(opts: CycleOptions = {}): Promise<CycleResul
             provider: settings.providerName,
             status: "sent",
             providerMessageId: sendResult.messageId ?? null,
+            sentAt: new Date(),
+          },
+          update: {
+            templateName: rendered.template.name,
+            status: "sent",
+            providerMessageId: sendResult.messageId ?? null,
+            error: null,
             sentAt: new Date(),
           },
         });
@@ -387,13 +401,19 @@ export async function runEmailCycle(opts: CycleOptions = {}): Promise<CycleResul
         result.sent++;
         remainingQuota--;
       } else {
-        await prisma.emailLog.create({
-          data: {
+        await prisma.emailLog.upsert({
+          where: { applicationId_trigger: { applicationId: app.id, trigger: step.triggerKey } },
+          create: {
             applicationId: app.id,
             trigger: step.triggerKey,
             templateName: rendered.template.name,
             toEmail: app.email,
             provider: settings.providerName,
+            status: "failed",
+            error: sendResult.error,
+          },
+          update: {
+            templateName: rendered.template.name,
             status: "failed",
             error: sendResult.error,
           },
