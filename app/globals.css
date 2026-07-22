@@ -1016,6 +1016,14 @@ footer a:hover {
   .burger {
     display: block;
   }
+  /* Language switcher compact on mobile */
+  .nav-actions {
+    gap: 8px;
+  }
+  .lang-btn {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+  }
 }
 
 @media (max-width: 560px) {
