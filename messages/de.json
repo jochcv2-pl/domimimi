@@ -1,0 +1,195 @@
+{
+  "metadata": {
+    "title": "{brandName} — Verpackung von zu Hause, mit Vertrauen",
+    "description": "{brandName} sucht sorgfältige Personen für die Vorbereitung und Verpackung von Paketen — ganz entspannt vom eigenen Küchentisch."
+  },
+  "nav": {
+    "avantages": "Vorteile",
+    "howItWorks": "So funktioniert's",
+    "profile": "Gesuchtes Profil",
+    "questions": "Fragen",
+    "apply": "Bewerben",
+    "menu": "Menü",
+    "languageLabel": "Sprache"
+  },
+  "hero": {
+    "badge": "Rekrutierung · Verpackung von zu Hause",
+    "titleLine1": "Verpacken Sie zu Hause,",
+    "titleEm": "in Ihrem Tempo",
+    "lead": "{brandName} sucht sorgfältige Personen, die Pakete zu Hause vorbereiten und verpacken — ganz entspannt am eigenen Küchentisch.",
+    "ctaPrimary": "Bewerbung senden",
+    "ctaSecondary": "So funktioniert's",
+    "note": "Keine Anmeldegebühren. Nie. Echter Vertrag, gemeldetes Gehalt."
+  },
+  "trust": {
+    "fees": { "num": "0 €", "label": "Einstiegsgebühren", "small": "Material wird kostenlos bereitgestellt" },
+    "contract": { "num": "Befr./Unbefr.", "label": "Gemeldeter Vertrag", "small": "Lohnabrechnung jeden Monat" },
+    "home": { "num": "100%", "label": "von zu Hause", "small": "In ganz Frankreich" },
+    "reply": { "num": "48 Std.", "label": "Antwort", "small": "Wir melden uns innerhalb von 2 Tagen" }
+  },
+  "benefits": {
+    "eyebrow": "Warum {brandName}",
+    "title": "Ein echter Job von zu Hause, ohne böse Überraschungen.",
+    "intro": "Wir wissen, dass diese Art von Angebot oft Misstrauen weckt. Genau deshalb machen wir alles nach den Regeln, von A bis Z.",
+    "card1": { "title": "Ihre Zeiten", "body": "Sie verpacken, wann Sie wollen in der Woche, solange die Pakete zum Abholtermin fertig sind." },
+    "card2": { "title": "Kein Vorschuss", "body": "Sie zahlen nie etwas. Kartons, Klebeband und Etiketten werden kostenlos zu Ihnen nach Hause geliefert." },
+    "card3": { "title": "Bezahlt, regelmäßig", "body": "Gehalt wird jeden Monat mit Lohnabrechnung überwiesen, wie bei jedem gemeldeten Arbeitsplatz." },
+    "card4": { "title": "Ohne Erfahrung", "body": "Wir schulen Sie in einem kurzen Video. Wenn Sie einen Karton falten und einer Anleitung folgen können, ist das perfekt." }
+  },
+  "steps": {
+    "eyebrow": "Der Weg eines Pakets",
+    "title": "Vier Schritte, und alles ist erledigt.",
+    "intro": "Vom Material, das zu Ihnen nach Hause geliefert wird, bis zur Gehaltsüberweisung — so läuft eine Mission ab.",
+    "step1": { "title": "Sie erhalten das Kit", "body": "Ein Spediteur liefert Kartons, Polstermaterial und Etiketten an Ihre Adresse — inklusive Anweisungsblatt." },
+    "step2": { "title": "Sie verpacken", "body": "Sie bereiten die Pakete nach dem bereitgestellten Modell vor, an Ihrem Tisch, zu der Zeit, die Ihnen passt." },
+    "step3": { "title": "Wir holen ab", "body": "Der Spediteur kommt zurück, um die fertigen Pakete abzuholen. Kein Wegstrecke Ihrerseits nötig." },
+    "step4": { "title": "Sie werden bezahlt", "body": "Nach Kontrolle wird Ihre Vergütung auf die Lohnabrechnung des Monats gebucht. Einfach und nachvollziehbar." }
+  },
+  "profilePay": {
+    "pricePrefix": "Ab",
+    "priceFallback": "Ab 12,50",
+    "eyebrow": "Gesuchtes Profil",
+    "titleLine1": "Wir suchen Zuverlässigkeit,",
+    "titleLine2": "kein perfekten Lebenslauf.",
+    "check1": "Ein kleiner sauberer und trockener Raum bei Ihnen zu Hause (ein Tisch reicht)",
+    "check2": "Sorgfalt: Die Pakete müssen sauber und ordentlich sein",
+    "check3": "Zuverlässigkeit, um die Abholtermine einzuhalten",
+    "check4": "Volljährig und wohnhaft in Frankreich",
+    "panelTitle": "Vergütung",
+    "panelIntro": "Transparent, in Ihrem Vertrag festgelegt.",
+    "priceUnit": "/ Stunde brutto*",
+    "bullet1": "Modell: pro Stunde oder pro Paket, je nach Mission",
+    "bullet2": "Regelmäßigkeitsprämie pro Quartal",
+    "bullet3": "Material und Transport vollständig übernommen",
+    "bullet4": "Lohnabrechnung und Sozialabgaben wie jeder Arbeitnehmer",
+    "finePrefix": "*Richtwert",
+    "fineLive": " — Tarif live aus dem Admin-CRM",
+    "fineMock": " für diese Demo",
+    "fineSuffix": "Der tatsächliche Tarif steht im Vertrag, der vor jeder Mission unterzeichnet wird."
+  },
+  "testimonials": {
+    "eyebrow": "Sie verpacken mit uns",
+    "title": "Sehr unterschiedliche Profile, dieselbe Freiheit.",
+    "quote1": "„Ich organisiere mich um meine Kinder herum. Morgens sind sie in der Schule, ich bereite meine Pakete vor, und der Rest des Tages gehört mir.“",
+    "name1": "Sophie L.",
+    "role1": "Hausfrau · Nantes*",
+    "quote2": "„Was mich beruhigt hat, ist, dass man mich nie um einen Cent gebeten hat. Ich habe einen echten Vertrag unterschrieben, das Material erhalten und im folgenden Monat mein Gehalt bekommen.“",
+    "name2": "Karim M.",
+    "role2": "Neuorientierung · Lyon*",
+    "quote3": "„Im Ruhestand ist das eine schöne Ergänzung und beschäftigt meine Hände. Die Handgriffe sind einfach, die Abholung erfolgt bei mir zu Hause. Nichts zu beanstanden.“",
+    "name3": "Danielle F.",
+    "role3": "Rentnerin · Toulouse*",
+    "disclaimer": "*Fiktive Testimonials — Demonstrationsinhalte für die Vorlage."
+  },
+  "faq": {
+    "eyebrow": "Häufige Fragen",
+    "title": "Wir antworten ehrlich.",
+    "q1": "Gibt es Kosten für den Einstieg?",
+    "flag1": "Wichtig",
+    "a1": "Nein, nie. Keine Anmeldegebühr, keine Kaution, kein Kit-Kauf. Jede Anzeige für Heimarbeit beim Verpacken, die Geld von Ihnen verlangt, um zu beginnen, ist zu meiden. Bei {brandName} wird Ihnen das Material kostenlos geliefert.",
+    "q2": "Welche Art von Vertrag wird angeboten?",
+    "a2": "Ein gemeldeter Arbeitsvertrag, befristet oder unbefristet je nach Mission und Ihrer Verfügbarkeit. Sie erhalten jeden Monat eine Lohnabrechnung und profitieren von den üblichen Sozialabgaben.",
+    "q3": "Wie und wann werde ich bezahlt?",
+    "a3": "Das Gehalt wird monatlich per Überweisung nach Kontrolle der vorbereiteten Pakete ausgezahlt. Die Vergütung kann pro Stunde oder pro Paket erfolgen: Modus und Tarif stehen schwarz auf weiß in Ihrem Vertrag vor jeder Mission.",
+    "q4": "Brauche ich Erfahrung oder eigenes Material?",
+    "a4": "Keine Erfahrung erforderlich: Eine kurze Videoschulung genügt. Sie benötigen lediglich einen sauberen und trockenen Raum bei sich zu Hause. Kartons, Polstermaterial, Klebeband und Etiketten werden gestellt.",
+    "q5": "Wie funktionieren Lieferung und Abholung?",
+    "a5": "Ein Spediteur liefert das Material bei Ihnen zu Hause ab und kommt zurück, um die fertigen Pakete an den vereinbarten Daten abzuholen. Sie haben keine Wegstrecke und keine Transportkosten zu tragen."
+  },
+  "apply": {
+    "eyebrow": "Bewerbung",
+    "title": "Bereit, von zu Hause aus zu verpacken?",
+    "intro": "Hinterlassen Sie Ihre Kontaktdaten, wir rufen Sie innerhalb von 48 Std. zurück und stellen Ihnen die Mission vor, die Ihnen am nächsten ist.",
+    "success": {
+      "thanksPrefix": "Vielen Dank",
+      "fallbackName": "an Sie",
+      "message": "Ihre Bewerbung wurde erfolgreich gespeichert. Wir melden uns innerhalb von 48 Std. bei Ihnen."
+    },
+    "placeholder": {
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "email": "E-Mail-Adresse",
+      "phone": "Telefon",
+      "postalCode": "Postleitzahl",
+      "message": "Ein Wort über Sie (optional)"
+    },
+    "ariaLabel": {
+      "email": "E-Mail",
+      "message": "Nachricht"
+    },
+    "button": {
+      "submit": "Bewerbung senden",
+      "submitting": "Wird gesendet…"
+    },
+    "error": {
+      "invalidData": "Ungültige Daten",
+      "generic": "Ein Fehler ist aufgetreten",
+      "network": "Verbindung nicht möglich. Versuchen Sie es in einem Moment erneut."
+    }
+  },
+  "footer": {
+    "tagline": "Verpackung von zu Hause, nach den Regeln. Echter Vertrag, keine Gebühren.",
+    "col1": { "title": "{brandName}", "link1": "Vorteile", "link2": "So funktioniert's", "link3": "Gesuchtes Profil" },
+    "col2": { "title": "Bewerber", "link1": "Bewerben", "link2": "Häufige Fragen", "link3": "Bewerberbereich" },
+    "col3": { "title": "Info", "link1": "Impressum", "link2": "Datenschutz", "link3": "Kontakt" },
+    "copyright": "© 2026 {brandName} · Demo-Vorlage. Marke und Inhalte fiktiv.",
+    "madeWith": "Mit Sorgfalt erstellt"
+  },
+  "contact": {
+    "meta": {
+      "title": "Kontakt · {brandName}",
+      "description": "Kontaktieren Sie das {brandName}-Team bei Fragen zur Rekrutierung."
+    },
+    "eyebrow": "Wir sind da",
+    "title": "Kontakt",
+    "intro": "Eine Frage zur Rekrutierung, zu Missionen oder zum Ablauf? Schreiben Sie uns, wir antworten innerhalb von 48 Std.",
+    "item1": { "title": "E-Mail", "value": "kontakt@domipack.fr" },
+    "item2": { "title": "Telefon", "value": "Auf Anfrage verfügbar" },
+    "item3": { "title": "Einsatzgebiet", "value": "Frankreich" },
+    "item4": { "title": "Antwortzeit", "value": "Innerhalb von 48 Stunden" }
+  },
+  "legal": {
+    "meta": {
+      "title": "Impressum · {brandName}",
+      "description": "Impressum der Website {brandName}."
+    },
+    "eyebrow": "Rechtliche Informationen",
+    "title": "Impressum",
+    "updated": "Letzte Aktualisierung: Juli 2026",
+    "s1": { "title": "1. Herausgeber der Website", "body": "Diese Website wird von {brandName} herausgegeben, einer fiktiven Marke im Rahmen einer Demonstrationsvorlage. Die hier präsentierten Informationen dienen nur als Orientierungshilfe und entsprechen keiner realen Geschäftstätigkeit." },
+    "s2": { "title": "2. Verantwortlich für den Inhalt", "body": "Der Verantwortliche für die Veröffentlichung ist der Administrator der Demonstrations-Website." },
+    "s3": { "title": "3. Hosting", "body": "Die Website wird von einem Webhosting-Anbieter gehostet. Die genauen Kontaktdaten des Hosters werden bei Aktivierung der Produktionsversion mitgeteilt." },
+    "s4": { "title": "4. Geistiges Eigentum", "body": "Alle auf dieser Website vorhandenen Inhalte (Texte, Bilder, Logos, grafische Elemente) sind durch das Urheberrecht geschützt. Jede Vervielfältigung, Darstellung, Änderung oder Verbreitung, ganz oder teilweise, ist ohne vorherige Genehmigung untersagt." },
+    "s5": { "title": "5. Haftung", "body": "Da diese Website eine Demonstrationsvorlage ist, sind die verbreiteten Informationen (Stellenangebote, Tarife, Testimonials) fiktiv. Der Herausgeber kann nicht für eine Entscheidung haftbar gemacht werden, die auf Basis dieser Inhalte getroffen wurde." },
+    "s6": { "title": "6. Hyperlinks", "body": "Die Website kann Links zu anderen Websites enthalten. Der Herausgeber hat keine Kontrolle über diese Seiten und lehnt jede Verantwortung für deren Inhalt ab." },
+    "s7": { "title": "7. Anwendbares Recht", "body": "Dieses Impressum unterliegt dem französischen Recht. Im Streitfall sind ausschließlich die französischen Gerichte zuständig." }
+  },
+  "page": {
+    "tape1a": "Vorsichtig behandeln",
+    "tape1b": "Zerbrechlich",
+    "tape1c": "Von Hand verpackt",
+    "tape1d": "Hausgemacht",
+    "tape2a": "Nicht falten",
+    "tape2b": "Diese Seite nach oben",
+    "tape2c": "Paket bereit",
+    "tape2d": "{brandName}"
+  },
+  "privacy": {
+    "meta": {
+      "title": "Datenschutzerklärung — {brandName}",
+      "description": "Datenschutzerklärung und Schutz personenbezogener Daten von {brandName} (DSGVO)."
+    },
+    "eyebrow": "Datenschutz",
+    "title": "Datenschutzerklärung",
+    "updated": "Letzte Aktualisierung: Juli 2026",
+    "intro": "{brandName} verpflichtet sich, Ihre personenbezogenen Daten gemäß der Datenschutz-Grundverordnung (DSGVO) und dem Gesetz über Informatik und Freiheiten zu schützen.",
+    "s1": { "title": "1. Erhobene Daten", "body1": "Im Rahmen einer Bewerbung erheben wir folgende Daten: Vorname, Nachname, E-Mail-Adresse, Telefonnummer und Postleitzahl.", "body2": "Über das Kontaktformular: Name, E-Mail und den Inhalt Ihrer Nachricht." },
+    "s2": { "title": "2. Zweck der Verarbeitung", "li1": "Prüfung und Beantwortung Ihrer Bewerbung für eine Position als Heimbasis-Verpacker.", "li2": "Kontaktaufnahme im Rahmen des Rekrutierungsprozesses.", "li3": "Beantwortung Ihrer Anfragen über das Kontaktformular." },
+    "s3": { "title": "3. Rechtsgrundlage", "body": "Die Verarbeitung Ihrer Daten basiert auf Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) und auf der Durchführung vorvertraglicher Maßnahmen auf Ihre Anfrage (Art. 6 Abs. 1 lit. b DSGVO)." },
+    "s4": { "title": "4. Aufbewahrungsdauer", "body": "Ihre Daten werden maximal 2 Jahre nach Ihrem letzten Kontakt aufbewahrt, sofern Sie keine Löschung beantragen." },
+    "s5": { "title": "5. Empfänger", "body": "Ihre Daten sind ausschließlich für das Rekrutierungsteam von {brandName} bestimmt. Sie werden niemals verkauft oder zu kommerziellen Zwecken an Dritte weitergegeben." },
+    "s6": { "title": "6. Ihre Rechte", "body": "Gemäß DSGVO haben Sie folgende Rechte an Ihren Daten:", "li1": "Recht auf Zugang zu Ihren personenbezogenen Daten.", "li2": "Recht auf Berichtigung unrichtiger Daten.", "li3": "Recht auf Löschung („Recht auf Vergessenwerden“).", "li4": "Recht auf Einschränkung oder Widerspruch gegen die Verarbeitung.", "li5": "Recht auf Datenübertragbarkeit.", "contactPrefix": "Um diese Rechte auszuüben, kontaktieren Sie uns über die Seite ", "contactLink": "Kontakt" },
+    "s7": { "title": "7. Cookies", "body": "Diese Demonstrations-Website verwendet keine Werbe-Cookies. Es können nur technisch notwendige Cookies verwendet werden." },
+    "s8": { "title": "8. Beschwerde", "body": "Wenn Sie der Meinung sind, dass Ihre Rechte nicht respektiert werden, können Sie eine Beschwerde bei der CNIL einreichen (www.cnil.fr)." }
+  }
+}

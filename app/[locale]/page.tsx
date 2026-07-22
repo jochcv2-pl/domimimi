@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import Navbar from "@/components/sections/Navbar";
 import Hero from "@/components/sections/Hero";
 import TrustBar from "@/components/sections/TrustBar";
@@ -12,6 +13,7 @@ import { getBrandSettings } from "@/lib/brand";
 
 export default async function Home() {
   const { brandName, logoUrl } = await getBrandSettings();
+  const t = await getTranslations("page");
 
   return (
     <>
@@ -20,21 +22,21 @@ export default async function Home() {
       <TrustBar />
       <div className="tape">
         <div className="tape-track">
-          <span>Manipuler avec soin</span>
+          <span>{t("tape1a")}</span>
           <span>·</span>
-          <span>Fragile</span>
+          <span>{t("tape1b")}</span>
           <span>·</span>
-          <span>Emballé à la main</span>
+          <span>{t("tape1c")}</span>
           <span>·</span>
-          <span>Made in maison</span>
+          <span>{t("tape1d")}</span>
           <span>·</span>
-          <span>Manipuler avec soin</span>
+          <span>{t("tape1a")}</span>
           <span>·</span>
-          <span>Fragile</span>
+          <span>{t("tape1b")}</span>
           <span>·</span>
-          <span>Emballé à la main</span>
+          <span>{t("tape1c")}</span>
           <span>·</span>
-          <span>Made in maison</span>
+          <span>{t("tape1d")}</span>
           <span>·</span>
         </div>
       </div>
@@ -42,21 +44,21 @@ export default async function Home() {
       <Steps />
       <div className="tape">
         <div className="tape-track">
-          <span>Ne pas plier</span>
+          <span>{t("tape2a")}</span>
           <span>·</span>
-          <span>Ce côté vers le haut</span>
+          <span>{t("tape2b")}</span>
           <span>·</span>
-          <span>Colis prêt</span>
+          <span>{t("tape2c")}</span>
           <span>·</span>
-          <span>Domipack</span>
+          <span>{t("tape2d", { brandName })}</span>
           <span>·</span>
-          <span>Ne pas plier</span>
+          <span>{t("tape2a")}</span>
           <span>·</span>
-          <span>Ce côté vers le haut</span>
+          <span>{t("tape2b")}</span>
           <span>·</span>
-          <span>Colis prêt</span>
+          <span>{t("tape2c")}</span>
           <span>·</span>
-          <span>Domipack</span>
+          <span>{t("tape2d", { brandName })}</span>
           <span>·</span>
         </div>
       </div>

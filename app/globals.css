@@ -202,6 +202,66 @@ header {
   padding: 10px 20px;
 }
 
+/* Language switcher */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lang-switch {
+  position: relative;
+}
+
+.lang-btn {
+  background: none;
+  border: 1.5px solid rgba(46, 58, 47, 0.2);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--pine);
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.lang-btn:hover {
+  border-color: var(--honey-deep);
+}
+
+.lang-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 6px;
+  background: #fff;
+  border: 1px solid #e5e3dd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  z-index: 100;
+  min-width: 60px;
+}
+
+.lang-menu button {
+  display: block;
+  width: 100%;
+  padding: 8px 14px;
+  background: none;
+  border: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--pine);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.lang-menu button:hover,
+.lang-menu button.active {
+  background: #f5f4ef;
+  color: var(--honey-deep);
+}
+
 .burger {
   display: none;
   background: none;

@@ -1,14 +1,25 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
+import { useRouter, usePathname } from "@/i18n/navigation";
+import { useParams } from "next/navigation";
 
-/**
- * Navbar · barre de navigation Domipack.
- * Composant client pour la gestion de l'état du menu burger mobile.
- * Reproduit fidèlement le HTML de référence de la landing page.
- */
 export default function Navbar({ brandName = "Domipack", logoUrl }: { brandName?: string; logoUrl?: string | null }) {
+  const t = useTranslations("nav");
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
+  const params = useParams();
   const [open, setOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
+
+  const switchLocale = (newLocale: string) => {
+    router.replace(pathname, { locale: newLocale as "de" | "fr" });
+    setLangOpen(false);
+    setOpen(false);
+  };
 
   return (
     <header>
@@ -29,29 +40,43 @@ export default function Navbar({ brandName = "Domipack", logoUrl }: { brandName?
           )}
         </a>
         <nav className={`nav-links${open ? " open" : ""}`}>
-          <a href="#avantages" onClick={() => setOpen(false)}>
-            Avantages
-          </a>
-          <a href="#etapes" onClick={() => setOpen(false)}>
-            Comment ça marche
-          </a>
-          <a href="#profil" onClick={() => setOpen(false)}>
-            Profil recherch…
-          </a>
-          <a href="#faq" onClick={() => setOpen(false)}>
-            Questions
-          </a>
+          <a href="#avantages" onClick={() => setOpen(false)}>{t("avantages")}</a>
+          <a href="#etapes" onClick={() => setOpen(false)}>{t("howItWorks")}</a>
+          <a href="#profil" onClick={() => setOpen(false)}>{t("profile")}</a>
+          <a href="#faq" onClick={() => setOpen(false)}>{t("questions")}</a>
         </nav>
-        <a href="#postuler" className="btn btn-primary">
-          Postuler
-        </a>
+        <div className="nav-actions">
+          {/* Language switcher */}
+          <div className="lang-switch">
+            <button
+              className="lang-btn"
+              onClick={() => setLangOpen((v) => !v)}
+              aria-label={t("languageLabel")}
+            >
+              {locale.toUpperCase()}
+            </button>
+            {langOpen && (
+              <div className="lang-menu">
+                <button
+                  className={locale === "de" ? "active" : ""}
+                  onClick={() => switchLocale("de")}
+                >DE</button>
+                <button
+                  className={locale === "fr" ? "active" : ""}
+                  onClick={() => switchLocale("fr")}
+                >FR</button>
+              </div>
+            )}
+          </div>
+          <a href="#postuler" className="btn btn-primary">{t("apply")}</a>
+        </div>
         <button
           className="burger"
-          aria-label="Menu"
+          aria-label={t("menu")}
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
         >
-          {open ? "?" : "?"}
+          {open ? "✕" : "☰"}
         </button>
       </div>
     </header>

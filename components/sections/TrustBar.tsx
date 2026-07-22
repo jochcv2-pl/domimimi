@@ -1,33 +1,36 @@
-export default function TrustBar() {
+import { getTranslations } from "next-intl/server";
+
+export default async function TrustBar() {
+  const t = await getTranslations("trust");
   return (
     <div className="trust">
       <div className="domipack-wrap">
         <div className="chip">
-          <span className="num">0 €</span>
+          <span className="num">{t("fees.num")}</span>
           <div>
-            Frais à l&apos;entrée
-            <small>Le matériel est fourni gratuitement</small>
+            {t("fees.label")}
+            <small>{t("fees.small")}</small>
           </div>
         </div>
         <div className="chip">
-          <span className="num">CDD/CDI</span>
+          <span className="num">{t("contract.num")}</span>
           <div>
-            Contrat déclaré
-            <small>Bulletin de paie chaque mois</small>
+            {t("contract.label")}
+            <small>{t("contract.small")}</small>
           </div>
         </div>
         <div className="chip">
-          <span className="num">100%</span>
+          <span className="num">{t("home.num")}</span>
           <div>
-            à domicile
-            <small>Partout en France métropolitaine</small>
+            {t("home.label")}
+            <small>{t("home.small")}</small>
           </div>
         </div>
         <div className="chip">
-          <span className="num">48h</span>
+          <span className="num">{t("reply.num")}</span>
           <div>
-            Réponse
-            <small>On revient vers toi sous 2 jours</small>
+            {t("reply.label")}
+            <small>{t("reply.small")}</small>
           </div>
         </div>
       </div>

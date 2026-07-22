@@ -3,7 +3,11 @@
  * Composant serveur (pas de 'use client').
  * Reproduit fidèlement le HTML de référence de la landing page.
  */
-export default function Footer({ brandName = "Domipack", logoUrl }: { brandName?: string; logoUrl?: string | null }) {
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
+
+export default async function Footer({ brandName = "Domipack", logoUrl }: { brandName?: string; logoUrl?: string | null }) {
+  const t = await getTranslations("footer");
   return (
     <footer>
       <div className="domipack-wrap">
@@ -23,36 +27,32 @@ export default function Footer({ brandName = "Domipack", logoUrl }: { brandName?
                 </>
               )}
             </div>
-            <p>
-              Le conditionnement à domicile, fait dans les règles. Vrai contrat,
-              zéro frais.
-            </p>
+            <p>{t("tagline")}</p>
           </div>
           <div>
-            <h4>{brandName}</h4>
-            <a href="#avantages">Avantages</a>
-            <a href="#etapes">Comment ça marche</a>
-            <a href="#profil">Profil recherché</a>
+            <h4>{t("col1.title", { brandName })}</h4>
+            <a href="#avantages">{t("col1.link1")}</a>
+            <a href="#etapes">{t("col1.link2")}</a>
+            <a href="#profil">{t("col1.link3")}</a>
           </div>
           <div>
-            <h4>Candidats</h4>
-            <a href="#postuler">Postuler</a>
-            <a href="#faq">Questions fréquentes</a>
-            <a href="#">Espace candidat</a>
+            <h4>{t("col2.title")}</h4>
+            <a href="#postuler">{t("col2.link1")}</a>
+            <a href="#faq">{t("col2.link2")}</a>
+            <a href="#">{t("col2.link3")}</a>
           </div>
           <div>
-            <h4>Infos</h4>
-            <a href="/mentions-legales">Mentions làgales</a>
-            <a href="/confidentialite">Confidentialité</a>
-            <a href="/contact">Nous contacter</a>
+            <h4>{t("col3.title")}</h4>
+            <Link href="/mentions-legales">{t("col3.link1")}</Link>
+            <Link href="/confidentialite">{t("col3.link2")}</Link>
+            <Link href="/contact">{t("col3.link3")}</Link>
           </div>
         </div>
         <div className="foot-bottom">
           <span>
-            ≈ 2026 {brandName} · Maquette de démonstration. Marque et contenus
-            fictifs.
+            {t("copyright", { brandName })}
           </span>
-          <span>Fait avec soin ??</span>
+          <span>{t("madeWith")}</span>
         </div>
       </div>
     </footer>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { useTranslations } from "next-intl";
 import Reveal from "@/components/ui/Reveal";
 
 type FormState = {
@@ -24,6 +25,7 @@ const INITIAL_STATE: FormState = {
 };
 
 export default function ApplyForm() {
+  const t = useTranslations("apply");
   const [form, setForm] = useState<FormState>(INITIAL_STATE);
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -52,9 +54,9 @@ export default function ApplyForm() {
           const messages = data.details
             .map((d: { message?: string }) => d.message)
             .filter(Boolean);
-          setErrorMessage(messages.join(" ") || "Données invalides");
+          setErrorMessage(messages.join(" ") || t("error.invalidData"));
         } else {
-          setErrorMessage(data.error || "Une erreur est survenue");
+          setErrorMessage(data.error || t("error.generic"));
         }
         setStatus("error");
         return;
@@ -62,7 +64,7 @@ export default function ApplyForm() {
 
       setStatus("success");
     } catch {
-      setErrorMessage("Connexion impossible. Réessayez dans un instant.");
+      setErrorMessage(t("error.network"));
       setStatus("error");
     }
   }
@@ -80,21 +82,17 @@ export default function ApplyForm() {
       >
         <Reveal>
           <span className="eyebrow" style={{ color: "var(--honey)" }}>
-            Candidature
+            {t("eyebrow")}
           </span>
-          <h2>Prête à emballer depuis chez vous ?</h2>
-          <p>
-            Laissez vos coordonnées, on vous rappelle sous 48 h pour vous
-            présenter la mission la plus proche de chez vous.
-          </p>
+          <h2>{t("title")}</h2>
+          <p>{t("intro")}</p>
         </Reveal>
 
         {isSuccess ? (
           <div className="form reveal in">
             <div style={{ gridColumn: "1/-1", padding: "24px 0" }}>
               <p style={{ fontSize: "1.1rem", color: "var(--honey)" }}>
-                ✅ Merci {form.firstName || "à vous"} ! Votre candidature a bien été
-                enregistrée. On vous recontacte sous 48 h.
+                ✅ {t("success.thanksPrefix")} {form.firstName || t("success.fallbackName")} ! {t("success.message")}
               </p>
             </div>
           </div>
@@ -102,8 +100,8 @@ export default function ApplyForm() {
           <form className="form reveal" onSubmit={handleSubmit}>
               <input
                 type="text"
-                placeholder="Prénom"
-                aria-label="Prénom"
+                placeholder={t("placeholder.firstName")}
+                aria-label={t("placeholder.firstName")}
                 value={form.firstName}
                 onChange={(e) => handleChange("firstName", e.target.value)}
                 required
@@ -111,8 +109,8 @@ export default function ApplyForm() {
               />
               <input
                 type="text"
-                placeholder="Nom"
-                aria-label="Nom"
+                placeholder={t("placeholder.lastName")}
+                aria-label={t("placeholder.lastName")}
                 value={form.lastName}
                 onChange={(e) => handleChange("lastName", e.target.value)}
                 required
@@ -121,8 +119,8 @@ export default function ApplyForm() {
               <input
                 type="email"
                 className="full"
-                placeholder="Adresse e-mail"
-                aria-label="E-mail"
+                placeholder={t("placeholder.email")}
+                aria-label={t("ariaLabel.email")}
                 value={form.email}
                 onChange={(e) => handleChange("email", e.target.value)}
                 required
@@ -130,16 +128,16 @@ export default function ApplyForm() {
               />
               <input
                 type="tel"
-                placeholder="Téléphone"
-                aria-label="Téléphone"
+                placeholder={t("placeholder.phone")}
+                aria-label={t("placeholder.phone")}
                 value={form.phone}
                 onChange={(e) => handleChange("phone", e.target.value)}
                 disabled={isSubmitting}
               />
               <input
                 type="text"
-                placeholder="Code postal"
-                aria-label="Code postal"
+                placeholder={t("placeholder.postalCode")}
+                aria-label={t("placeholder.postalCode")}
                 value={form.postalCode}
                 onChange={(e) => handleChange("postalCode", e.target.value)}
                 required
@@ -147,8 +145,8 @@ export default function ApplyForm() {
               />
               <textarea
                 className="full"
-                placeholder="Un mot sur vous (optionnel)"
-                aria-label="Message"
+                placeholder={t("placeholder.message")}
+                aria-label={t("ariaLabel.message")}
                 value={form.message}
                 onChange={(e) => handleChange("message", e.target.value)}
                 rows={3}
@@ -173,7 +171,7 @@ export default function ApplyForm() {
                 className="btn btn-primary full"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Envoi en cours…" : "Envoyer ma candidature"}
+                {isSubmitting ? t("button.submitting") : t("button.submit")}
               </button>
             </form>
         )}

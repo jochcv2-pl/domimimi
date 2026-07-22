@@ -1,29 +1,43 @@
 import type { MetadataRoute } from "next";
+import { routing } from "@/i18n/routing";
 
 /**
- * Sitemap dynamique — liste les pages publiques indexables.
- * Les pages admin/API/login sont exclues (cf. robots.ts).
+ * Sitemap multi-locale — génère les URLs pour chaque langue (de, fr)
+ * avec alternates hreflang pour le SEO international.
  *
- * En l'absence de pages dynamiques produit (pas de fiches candidatures
- * publiques), le sitemap est statique. Si des pages dynamiques sont
- * ajoutées (blog, offres d'emploi…), enrichir ce fichier avec un fetch
- * Prisma pour générer les URLs dynamiques.
+ * Les pages admin/API/login sont exclues (cf. robots.ts).
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://domipack.fr";
   const now = new Date();
 
-  const staticPages = [
+  const staticPaths = [
     "",
     "/contact",
     "/mentions-legales",
     "/confidentialite",
   ];
 
-  return staticPages.map((path) => ({
-    url: `${baseUrl}${path}`,
-    lastModified: now,
-    changeFrequency: path === "" ? "weekly" : "yearly",
-    priority: path === "" ? 1.0 : 0.3,
-  }));
+  const entries: MetadataRoute.Sitemap = [];
+
+  for (const path of staticPaths) {
+    // Alternate links for each locale
+    const languages: Record<string, string> = {};
+    for (const locale of routing.locales) {
+      languages[locale] = `${baseUrl}/${locale}${path}`;
+    }
+
+    // One entry per locale
+    for (const locale of routing.locales) {
+      entries.push({
+        url: `${baseUrl}/${locale}${path}`,
+        lastModified: now,
+        changeFrequency: path === "" ? "weekly" : "yearly",
+        priority: path === "" ? (locale === routing.defaultLocale ? 1.0 : 0.8) : 0.3,
+        alternates: { languages },
+      });
+    }
+  }
+
+  return entries;
 }

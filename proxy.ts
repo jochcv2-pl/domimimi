@@ -1,33 +1,48 @@
+import createIntlMiddleware from 'next-intl/middleware';
 import NextAuth from 'next-auth';
 import { authConfig } from '@/auth.config';
+import { routing } from '@/i18n/routing';
+import { NextRequest, NextResponse } from 'next/server';
 
 /**
- * Proxy (anciennement middleware) Auth.js v5 — protège /admin/* ET /api/admin/*.
- * Redirige /admin vers /login si non authentifié (HTML response).
- * Renvoie 401 sur /api/admin/* si non authentifié ou non-admin (JSON-friendly).
+ * Proxy combiné (Next.js 16 middleware) :
  *
- * ⚠️ Ce fichier s'exécute sur l'Edge Runtime : il importe authConfig
- * (Edge-safe, SANS Prisma/bcrypt). La config complète (avec DB) reste
- * dans auth.ts, côté serveur.
+ * 1. next-intl → détection de langue + préfixe de locale (/de/, /fr/)
+ *    sur toutes les pages publiques.
  *
- * Defense-in-depth (audit Kyle fix #2, 2026-07-21) :
- * Le callback `authorized` d'authConfig vérifie session + rôle ADMIN/SUPER_ADMIN.
- * En plus du requireAdmin() serveur présent sur chaque route /api/admin/*,
- * ce middleware garantit qu'aucune route ne peut être atteinte par un non-admin.
+ * 2. NextAuth → protection /admin/*, /api/admin/*, /login
+ *    (ces routes n'ont PAS de préfixe de locale).
+ *
+ * Le proxy inspecte le pathname et route vers le bon middleware.
  */
-const { auth: proxy } = NextAuth(authConfig);
 
-export default proxy;
+const intlMiddleware = createIntlMiddleware(routing);
+const { auth: authProxy } = NextAuth(authConfig);
+
+export default async function proxy(req: NextRequest): Promise<NextResponse | undefined> {
+  const { pathname } = req.nextUrl;
+
+  // Routes auth-protected (sans préfixe de locale) → NextAuth
+  if (
+    pathname.startsWith('/admin') ||
+    pathname.startsWith('/api/admin') ||
+    pathname === '/login'
+  ) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (authProxy as any)(req) as NextResponse | undefined;
+  }
+
+  // Pages publiques → next-intl (détection + rewrite de locale)
+  return intlMiddleware(req);
+}
 
 export const config = {
-  // Protège :
-  //  - /admin (pages HTML — redirect /login si non authentifié)
-  //  - /api/admin (endpoints JSON — NextAuth renvoie 401 JSON)
-  //  - /login (redirection si déjà connecté)
   matcher: [
+    // Pages publiques — tout sauf api, _next, admin, login, fichiers statiques
+    '/((?!api|_next|_vercel|admin|login|.*\\..*).*)',
+    // Routes auth
     '/admin/:path*',
     '/api/admin/:path*',
     '/login',
   ],
 };
-

@@ -1,0 +1,195 @@
+{
+  "metadata": {
+    "title": "{brandName} — L'emballage à domicile, en confiance",
+    "description": "{brandName} recrute des personnes soigneuses pour préparer et conditionner des colis, tranquillement, depuis leur table de cuisine."
+  },
+  "nav": {
+    "avantages": "Avantages",
+    "howItWorks": "Comment ça marche",
+    "profile": "Profil recherché",
+    "questions": "Questions",
+    "apply": "Postuler",
+    "menu": "Menu",
+    "languageLabel": "Langue"
+  },
+  "hero": {
+    "badge": "Recrutement · Emballage à domicile",
+    "titleLine1": "Emballez chez vous,",
+    "titleEm": "à votre rythme",
+    "lead": "{brandName} recrute des personnes soigneuses pour préparer et conditionner des colis, tranquillement, depuis leur table de cuisine.",
+    "ctaPrimary": "Envoyer ma candidature",
+    "ctaSecondary": "Voir comment ça marche",
+    "note": "Aucun frais d'inscription. Jamais. Vrai contrat, salaire déclaré."
+  },
+  "trust": {
+    "fees": { "num": "0 €", "label": "Frais à l'entrée", "small": "Le matériel est fourni gratuitement" },
+    "contract": { "num": "CDD/CDI", "label": "Contrat déclaré", "small": "Bulletin de paie chaque mois" },
+    "home": { "num": "100%", "label": "à domicile", "small": "Partout en France métropolitaine" },
+    "reply": { "num": "48h", "label": "Réponse", "small": "On revient vers toi sous 2 jours" }
+  },
+  "benefits": {
+    "eyebrow": "Pourquoi {brandName}",
+    "title": "Un vrai travail, chez soi, sans mauvaise surprise.",
+    "intro": "On sait que ce type d'annonce inspire souvent la méfiance. C'est justement pour ça qu'on fait les choses dans les règles, de A à Z.",
+    "card1": { "title": "Tes horaires", "body": "Tu emballes quand tu veux dans la semaine, du moment que les colis sont prêts à la date de collecte." },
+    "card2": { "title": "Zéro avance", "body": "Tu ne paies rien, à aucun moment. Cartons, ruban et étiquettes sont livrés chez toi gratuitement." },
+    "card3": { "title": "Payé, régulier", "body": "Salaire versé chaque mois avec bulletin de paie, comme n'importe quel emploi déclaré." },
+    "card4": { "title": "Sans expérience", "body": "On te forme en une courte vidéo. Si tu sais plier un carton et suivre une consigne, c'est parfait." }
+  },
+  "steps": {
+    "eyebrow": "Le parcours d'un colis",
+    "title": "Quatre étapes, et c'est réglé.",
+    "intro": "Du matériel livré chez toi jusqu'au versement du salaire, voici exactement comment se déroule une mission.",
+    "step1": { "title": "Tu reçois le kit", "body": "Un transporteur dépose cartons, calage et étiquettes à ton domicile, avec la fiche de consignes." },
+    "step2": { "title": "Tu emballes", "body": "Tu prépares les colis selon le modèle fourni, sur ta table, au moment qui t'arrange." },
+    "step3": { "title": "On collecte", "body": "Le transporteur repasse récupérer les colis prêts. Aucun déplacement de ta part." },
+    "step4": { "title": "Tu es payé", "body": "Après contrôle, ta rémunération part sur le bulletin du mois. Simple et traçable." }
+  },
+  "profilePay": {
+    "pricePrefix": "Dès",
+    "priceFallback": "Dès 12,50",
+    "eyebrow": "Profil recherché",
+    "titleLine1": "On cherche du sérieux,",
+    "titleLine2": "pas un CV parfait.",
+    "check1": "Un petit espace propre et sec chez toi (une table suffit)",
+    "check2": "De la rigueur : les colis doivent être soignés et propres",
+    "check3": "De la fiabilité pour respecter les dates de collecte",
+    "check4": "Majeure et résidant en France métropolitaine",
+    "panelTitle": "Rémunération",
+    "panelIntro": "Transparente, définie dans ton contrat.",
+    "priceUnit": "/ heure brut*",
+    "bullet1": "Modèle à l'heure ou au colis, selon la mission",
+    "bullet2": "Prime de régularité au trimestre",
+    "bullet3": "Matériel et transport intégralement pris en charge",
+    "bullet4": "Bulletin de paie et cotisations comme tout salarié",
+    "finePrefix": "*Montant indicatif",
+    "fineLive": " — taux live depuis le CRM admin",
+    "fineMock": " pour cette maquette",
+    "fineSuffix": "Le taux réel figure au contrat signé avant toute mission."
+  },
+  "testimonials": {
+    "eyebrow": "Ils emballent avec nous",
+    "title": "Des profils très différents, une même liberté.",
+    "quote1": "« Je m'organise autour de mes enfants. Le matin, ils sont à l'école, je prépare mes colis, et le reste de la journée m'appartient. »",
+    "name1": "Sophie L.",
+    "role1": "Parent au foyer · Nantes*",
+    "quote2": "« Ce qui m'a rassuré, c'est qu'on ne m'a jamais demandé un centime. J'ai signé un vrai contrat, reçu le matériel, et j'ai été payé le mois suivant. »",
+    "name2": "Karim M.",
+    "role2": "En reconversion · Lyon*",
+    "quote3": "« À la retraite, ça me fait un complément et ça m'occupe les mains. Le geste est simple, la collecte se fait chez moi. Rien à redire. »",
+    "name3": "Danielle F.",
+    "role3": "Retraitée · Toulouse*",
+    "disclaimer": "*Témoignages fictifs — contenu de démonstration pour la maquette."
+  },
+  "faq": {
+    "eyebrow": "Questions fréquentes",
+    "title": "On répond franchement.",
+    "q1": "Y a-t-il des frais pour commencer ?",
+    "flag1": "Important",
+    "a1": "Non, jamais. Aucun frais d'inscription, aucune caution, aucun achat de kit. Toute annonce d'emballage à domicile qui vous réclame de l'argent pour démarrer est à fuir. Chez {brandName}, le matériel vous est livré gratuitement.",
+    "q2": "Quel type de contrat propose-t-on ?",
+    "a2": "Un contrat de travail déclaré, en CDD ou en CDI selon la mission et votre disponibilité. Vous recevez un bulletin de paie chaque mois et bénéficiez des cotisations sociales habituelles.",
+    "q3": "Comment et quand suis-je payé ?",
+    "a3": "Le salaire est versé mensuellement par virement, après contrôle des colis préparés. La rémunération peut être à l'heure ou au colis : le mode et le taux sont indiqués noir sur blanc dans votre contrat avant toute mission.",
+    "q4": "Faut-il de l'expérience ou du matériel personnel ?",
+    "a4": "Aucune expérience n'est requise : une courte formation vidéo suffit. Vous avez seulement besoin d'un espace propre et sec chez vous. Cartons, calage, ruban et étiquettes sont fournis.",
+    "q5": "Comment se passent la livraison et la collecte ?",
+    "a5": "Un transporteur dépose le matériel à votre domicile, puis repasse récupérer les colis terminés aux dates convenues. Vous n'avez aucun déplacement ni frais de transport à votre charge."
+  },
+  "apply": {
+    "eyebrow": "Candidature",
+    "title": "Prête à emballer depuis chez vous ?",
+    "intro": "Laissez vos coordonnées, on vous rappelle sous 48 h pour vous présenter la mission la plus proche de chez vous.",
+    "success": {
+      "thanksPrefix": "Merci",
+      "fallbackName": "à vous",
+      "message": "Votre candidature a bien été enregistrée. On vous recontacte sous 48 h."
+    },
+    "placeholder": {
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "Adresse e-mail",
+      "phone": "Téléphone",
+      "postalCode": "Code postal",
+      "message": "Un mot sur vous (optionnel)"
+    },
+    "ariaLabel": {
+      "email": "E-mail",
+      "message": "Message"
+    },
+    "button": {
+      "submit": "Envoyer ma candidature",
+      "submitting": "Envoi en cours…"
+    },
+    "error": {
+      "invalidData": "Données invalides",
+      "generic": "Une erreur est survenue",
+      "network": "Connexion impossible. Réessayez dans un instant."
+    }
+  },
+  "footer": {
+    "tagline": "Le conditionnement à domicile, fait dans les règles. Vrai contrat, zéro frais.",
+    "col1": { "title": "{brandName}", "link1": "Avantages", "link2": "Comment ça marche", "link3": "Profil recherché" },
+    "col2": { "title": "Candidats", "link1": "Postuler", "link2": "Questions fréquentes", "link3": "Espace candidat" },
+    "col3": { "title": "Infos", "link1": "Mentions légales", "link2": "Confidentialité", "link3": "Nous contacter" },
+    "copyright": "© 2026 {brandName} · Maquette de démonstration. Marque et contenus fictifs.",
+    "madeWith": "Fait avec soin"
+  },
+  "contact": {
+    "meta": {
+      "title": "Nous contacter · {brandName}",
+      "description": "Contactez l'équipe {brandName} pour toute question sur le recrutement."
+    },
+    "eyebrow": "On est là",
+    "title": "Nous contacter",
+    "intro": "Une question sur le recrutement, les missions ou le fonctionnement ? Écrivez-nous, on répond sous 48 h.",
+    "item1": { "title": "E-mail", "value": "contact@domipack.fr" },
+    "item2": { "title": "Téléphone", "value": "Disponible sur demande" },
+    "item3": { "title": "Zone d'intervention", "value": "France métropolitaine" },
+    "item4": { "title": "Délai de réponse", "value": "Sous 48 heures ouvrées" }
+  },
+  "legal": {
+    "meta": {
+      "title": "Mentions légales · {brandName}",
+      "description": "Mentions légales du site {brandName}."
+    },
+    "eyebrow": "Informations légales",
+    "title": "Mentions légales",
+    "updated": "Dernière mise à jour : juillet 2026",
+    "s1": { "title": "1. Éditeur du site", "body": "Le présent site est édité par {brandName}, marque fictive utilisée dans le cadre d'une maquette de démonstration. Les informations présentées ici sont fournies à titre indicatif et ne correspondent pas à une activité commerciale réelle." },
+    "s2": { "title": "2. Responsable de la publication", "body": "Le responsable de la publication est l'administrateur du site de démonstration." },
+    "s3": { "title": "3. Hébergement", "body": "Le site est hébergé par un prestataire d'hébergement web. Les coordonnées exactes de l'hébergeur seront communiquées à l'activation de la version de production." },
+    "s4": { "title": "4. Propriété intellectuelle", "body": "L'ensemble des contenus présents sur ce site (textes, images, logos, éléments graphiques) est protégé par le droit de la propriété intellectuelle. Toute reproduction, représentation, modification ou diffusion, totale ou partielle, est interdite sans autorisation préalable." },
+    "s5": { "title": "5. Responsabilité", "body": "Ce site étant une maquette de démonstration, les informations diffusées (offres d'emploi, tarifs, témoignages) sont fictives. L'éditeur ne saurait être tenu responsable d'une décision prise sur la base de ces contenus." },
+    "s6": { "title": "6. Liens hypertextes", "body": "Le site peut contenir des liens vers d'autres sites. L'éditeur n'exerce aucun contrôle sur ces sites et décline toute responsabilité quant à leur contenu." },
+    "s7": { "title": "7. Droit applicable", "body": "Les présentes mentions légales sont régies par le droit français. En cas de litige, les tribunaux français seront seuls compétents." }
+  },
+  "page": {
+    "tape1a": "Manipuler avec soin",
+    "tape1b": "Fragile",
+    "tape1c": "Emballé à la main",
+    "tape1d": "Made in maison",
+    "tape2a": "Ne pas plier",
+    "tape2b": "Ce côté vers le haut",
+    "tape2c": "Colis prêt",
+    "tape2d": "{brandName}"
+  },
+  "privacy": {
+    "meta": {
+      "title": "Politique de confidentialité — {brandName}",
+      "description": "Politique de confidentialité et de protection des données personnelles {brandName} (RGPD)."
+    },
+    "eyebrow": "Protection des données",
+    "title": "Politique de confidentialité",
+    "updated": "Dernière mise à jour : juillet 2026",
+    "intro": "{brandName} s'engage à protéger vos données personnelles conformément au Règlement Général sur la Protection des Données (RGPD) et à la loi Informatique et Libertés.",
+    "s1": { "title": "1. Données collectées", "body1": "Dans le cadre d'une candidature, nous collectons les données suivantes : prénom, nom, adresse e-mail, numéro de téléphone et code postal.", "body2": "Via le formulaire de contact : nom, e-mail et le contenu de votre message." },
+    "s2": { "title": "2. Finalités du traitement", "li1": "Examiner et répondre à votre candidature pour un poste d'emballeur à domicile.", "li2": "Vous recontacter dans le cadre du processus de recrutement.", "li3": "Répondre à vos demandes d'information via le formulaire de contact." },
+    "s3": { "title": "3. Base légale", "body": "Le traitement de vos données repose sur votre consentement (article 6.1.a du RGPD) et sur l'exécution de démarches précontractuelles à votre demande (article 6.1.b)." },
+    "s4": { "title": "4. Durée de conservation", "body": "Vos données sont conservées pour une durée maximale de 2 ans après votre dernier échange, sauf demande de suppression de votre part." },
+    "s5": { "title": "5. Destinataires", "body": "Vos données sont destinées exclusivement à l'équipe de recrutement de {brandName}. Elles ne sont jamais vendues ni cédées à des tiers à des fins commerciales." },
+    "s6": { "title": "6. Vos droits", "body": "Conformément au RGPD, vous disposez des droits suivants sur vos données :", "li1": "Droit d'accès à vos données personnelles.", "li2": "Droit de rectification des données inexactes.", "li3": "Droit à l'effacement (« droit à l'oubli »).", "li4": "Droit à la limitation ou à l'opposition au traitement.", "li5": "Droit à la portabilité de vos données.", "contactPrefix": "Pour exercer ces droits, contactez-nous via la page ", "contactLink": "Nous contacter" },
+    "s7": { "title": "7. Cookies", "body": "Ce site de démonstration n'utilise pas de cookies de suivi publicitaire. Seuls les cookies strictement nécessaires au fonctionnement technique du site peuvent être utilisés." },
+    "s8": { "title": "8. Réclamation", "body": "Si vous estimez que vos droits ne sont pas respectés, vous pouvez introduire une réclamation auprès de la CNIL (www.cnil.fr)." }
+  }
+}

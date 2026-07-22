@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import Reveal from "@/components/ui/Reveal";
 
 // ============================================================
@@ -25,6 +26,7 @@ function formatHourly(n: number): string {
 }
 
 export default function ProfilePay() {
+  const t = useTranslations("profilePay");
   const [minRate, setMinRate] = useState<number | null>(null);
   const [loaded, setLoaded] = useState(false);
 
@@ -52,23 +54,23 @@ export default function ProfilePay() {
     };
   }, []);
 
-  const display = minRate !== null ? `Dès ${formatHourly(minRate)}` : "Dès 12,50";
+  const display = minRate !== null ? `${t("pricePrefix")} ${formatHourly(minRate)}` : t("priceFallback");
   const isLive = loaded && minRate !== null;
 
   return (
     <section className="domipack-pad" id="profil">
       <div className="domipack-wrap split">
         <Reveal>
-          <span className="eyebrow">Profil recherché</span>
+          <span className="eyebrow">{t("eyebrow")}</span>
           <h2
             style={{
               fontSize: "clamp(1.9rem,3.4vw,2.6rem)",
               margin: "14px 0 26px",
             }}
           >
-            On cherche du sérieux,
+            {t("titleLine1")}
             <br />
-            pas un CV parfait.
+            {t("titleLine2")}
           </h2>
           <ul className="checklist">
             <li>
@@ -88,9 +90,7 @@ export default function ProfilePay() {
                   />
                 </svg>
               </span>
-              <div>
-                Un petit espace propre et sec chez toi (une table suffit)
-              </div>
+              <div>{t("check1")}</div>
             </li>
             <li>
               <span className="tick">
@@ -109,9 +109,7 @@ export default function ProfilePay() {
                   />
                 </svg>
               </span>
-              <div>
-                De la rigueur : les colis doivent être soignés et propres
-              </div>
+              <div>{t("check2")}</div>
             </li>
             <li>
               <span className="tick">
@@ -130,9 +128,7 @@ export default function ProfilePay() {
                   />
                 </svg>
               </span>
-              <div>
-                De la fiabilité pour respecter les dates de collecte
-              </div>
+              <div>{t("check3")}</div>
             </li>
             <li>
               <span className="tick">
@@ -151,28 +147,27 @@ export default function ProfilePay() {
                   />
                 </svg>
               </span>
-              <div>Majeure et résidant en France métropolitaine</div>
+              <div>{t("check4")}</div>
             </li>
           </ul>
         </Reveal>
 
         <Reveal className="panel">
-          <h3>R · mun · ration</h3>
+          <h3>{t("panelTitle")}</h3>
           <p style={{ color: "#C6D5CC" }}>
-            Transparente, définie dans ton contrat.
+            {t("panelIntro")}
           </p>
           <div className="price">
-            {display} €<small> / heure brut*</small>
+            {display} €<small> {t("priceUnit")}</small>
           </div>
           <ul>
-            <li>Modèle · l&apos;heure ou au colis, selon la mission</li>
-            <li>Prime de régularité au trimestre</li>
-            <li>Matériel et transport integralement pris en charge</li>
-            <li>Bulletin de paie et cotisations comme tout salarié</li>
+            <li>{t("bullet1")}</li>
+            <li>{t("bullet2")}</li>
+            <li>{t("bullet3")}</li>
+            <li>{t("bullet4")}</li>
           </ul>
           <p className="fine">
-            *Montant indicatif{isLive ? " — taux live depuis le CRM admin" : " pour cette maquette"}.
-            Le taux réel figure au contrat signé avant toute mission.
+            {t("finePrefix")}{isLive ? t("fineLive") : t("fineMock")}. {t("fineSuffix")}
           </p>
         </Reveal>
       </div>

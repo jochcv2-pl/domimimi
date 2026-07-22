@@ -2,25 +2,30 @@ import type { Metadata } from 'next';
 import Navbar from '@/components/sections/Navbar';
 import Footer from '@/components/sections/Footer';
 import ContactForm from '@/components/sections/ContactForm';
+import { getTranslations } from 'next-intl/server';
+import { getBrandSettings } from '@/lib/brand';
 
-export const metadata: Metadata = {
-  title: 'Nous contacter · Domipack',
-  description: 'Contactez l\'équipe Domipack pour toute question sur le recrutement.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('contact');
+  const { brandName } = await getBrandSettings();
+  return {
+    title: t('meta.title', { brandName }),
+    description: t('meta.description', { brandName }),
+  };
+}
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const t = await getTranslations('contact');
+  const { brandName, logoUrl } = await getBrandSettings();
   return (
     <>
-      <Navbar />
+      <Navbar brandName={brandName} logoUrl={logoUrl} />
       <main className="legal-page">
         <div className="domipack-wrap">
           <header className="legal-head">
-            <span className="eyebrow">On est là</span>
-            <h1>Nous contacter</h1>
-            <p className="legal-intro">
-              Une question sur le recrutement, les missions ou le fonctionnement ?
-              écrivez-nous, on répond sous 48 h.
-            </p>
+            <span className="eyebrow">{t("eyebrow")}</span>
+            <h1>{t("title")}</h1>
+            <p className="legal-intro">{t("intro")}</p>
           </header>
 
           <div className="contact-layout">
@@ -44,8 +49,8 @@ export default function ContactPage() {
                   </svg>
                 </div>
                 <div>
-                  <h3>E-mail</h3>
-                  <p>contact@domipack.fr</p>
+                  <h3>{t("item1.title")}</h3>
+                  <p>{t("item1.value")}</p>
                 </div>
               </div>
 
@@ -61,8 +66,8 @@ export default function ContactPage() {
                   </svg>
                 </div>
                 <div>
-                  <h3>Téléphone</h3>
-                  <p>Disponible sur demande</p>
+                  <h3>{t("item2.title")}</h3>
+                  <p>{t("item2.value")}</p>
                 </div>
               </div>
 
@@ -79,8 +84,8 @@ export default function ContactPage() {
                   </svg>
                 </div>
                 <div>
-                  <h3>Zone d&apos;intervention</h3>
-                  <p>France métropolitaine</p>
+                  <h3>{t("item3.title")}</h3>
+                  <p>{t("item3.value")}</p>
                 </div>
               </div>
 
@@ -92,8 +97,8 @@ export default function ContactPage() {
                   </svg>
                 </div>
                 <div>
-                  <h3>Délai de réponse</h3>
-                  <p>Sous 48 heures ouvrées</p>
+                  <h3>{t("item4.title")}</h3>
+                  <p>{t("item4.value")}</p>
                 </div>
               </div>
             </div>
@@ -104,7 +109,7 @@ export default function ContactPage() {
           </div>
         </div>
       </main>
-      <Footer />
+      <Footer brandName={brandName} logoUrl={logoUrl} />
     </>
   );
 }
