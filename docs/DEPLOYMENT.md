@@ -21,18 +21,17 @@ cd /opt/domipack
 ## 2. Configurer l'environnement
 
 ```bash
-cp .env.production.example .env.production
-nano .env.production
+cp .env.production.example .env
+nano .env
 ```
 
 Générer les secrets :
 ```bash
 openssl rand -base64 32  # AUTH_SECRET
 openssl rand -base64 32  # CRON_SECRET
-openssl rand -base64 32  # ADMIN_API_KEY
 ```
 
-Définir un mot de passe PostgreSQL fort.
+Définir un mot de passe PostgreSQL fort (`POSTGRES_PASSWORD`).
 
 ## 3. Build et démarrage
 
