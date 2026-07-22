@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Bricolage_Grotesque, Instrument_Sans } from "next/font/google";
 import RevealObserver from "@/components/ui/RevealObserver";
 import Providers from "@/components/providers/Providers";
+import { getBrandSettings } from "@/lib/brand";
 import "./globals.css";
 
 const bricolage = Bricolage_Grotesque({
@@ -16,11 +17,13 @@ const instrument = Instrument_Sans({
   weight: ["400", "500", "600"],
 });
 
-export const metadata: Metadata = {
-  title: "Domipack — L'emballage à domicile, en confiance",
-  description:
-    "Domipack recrute des personnes soigneuses pour préparer et conditionner des colis, tranquillement, depuis leur table de cuisine.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { brandName } = await getBrandSettings();
+  return {
+    title: `${brandName} — L'emballage à domicile, en confiance`,
+    description: `${brandName} recrute des personnes soigneuses pour préparer et conditionner des colis, tranquillement, depuis leur table de cuisine.`,
+  };
+}
 
 export default function RootLayout({
   children,

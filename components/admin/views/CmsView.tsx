@@ -61,6 +61,10 @@ function SaveButton({
 }
 
 export function CmsView() {
+  // Identité de marque
+  const [brandName, setBrandName] = useState('');
+  const [logoUrl, setLogoUrl] = useState('');
+  const [logoUploading, setLogoUploading] = useState(false);
   // Boutons de contact (WhatsApp/Messenger)
   const [whatsapp, setWhatsapp] = useState('');
   const [messenger, setMessenger] = useState('');
@@ -96,6 +100,8 @@ export function CmsView() {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       const map: Record<string, string> = json?.data ?? {};
+      setBrandName(map['cms.brand_name'] ?? 'Domipack');
+      setLogoUrl(map['cms.logo_url'] ?? '');
       setWhatsapp(map['contact.whatsapp'] ?? '');
       setMessenger(map['contact.messenger'] ?? '');
       setHeroTitle(map['cms.hero.title'] ?? '');
@@ -160,6 +166,26 @@ export function CmsView() {
   }, []);
 
   // ============================================================
+  // Upload logo
+  // ============================================================
+
+  const handleLogoUpload = useCallback(async (file: File) => {
+    setLogoUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await fetch('/api/admin/upload-logo', { method: 'POST', body: fd });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      setLogoUrl(json.logoUrl ?? '');
+    } catch (err) {
+      setLoadError(err instanceof Error ? err.message : 'Erreur upload logo');
+    } finally {
+      setLogoUploading(false);
+    }
+  }, []);
+
+  // ============================================================
   // Render
   // ============================================================
 
@@ -189,6 +215,82 @@ export function CmsView() {
           {loadError} <button className="btn btn-ghost" onClick={load}>Réessayer</button>
         </div>
       )}
+
+      {/* ============================================================ */}
+      {/* IDENTITÉ DE MARQUE                                            */}
+      {/* ============================================================ */}
+      <div className="panel" style={{ marginBottom: 16 }}>
+        <div className="panel-head">
+          <h3>Identité de marque</h3>
+        </div>
+        <div className="panel-body" style={{ paddingTop: 16 }}>
+          <div className="fg" style={{ marginBottom: 16 }}>
+            <label>Nom de la marque</label>
+            <input
+              value={brandName}
+              onChange={(e) => setBrandName(e.target.value)}
+              placeholder="Domipack"
+            />
+            <p className="field-hint">
+              Affiché dans la navbar, le footer, le titre de l&apos;onglet et les emails.
+            </p>
+          </div>
+          <div className="fg" style={{ marginBottom: 12 }}>
+            <label>Logo</label>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+              {logoUrl ? (
+                <img
+                  src={logoUrl}
+                  alt="Logo actuel"
+                  style={{ maxHeight: 48, maxWidth: 200, objectFit: 'contain', border: '1px solid #ddd', borderRadius: 6, padding: 4 }}
+                />
+              ) : (
+                <div style={{ height: 48, width: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px dashed #ccc', borderRadius: 6, color: '#999', fontSize: 12 }}>
+                  Pas de logo — SVG par défaut
+                </div>
+              )}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <label className="btn btn-ghost" style={{ cursor: 'pointer', fontSize: 13 }}>
+                  {logoUploading ? 'Upload…' : 'Changer le logo'}
+                  <input
+                    type="file"
+                    accept="image/png,image/jpeg,image/svg+xml,image/webp"
+                    style={{ display: 'none' }}
+                    disabled={logoUploading}
+                    onChange={(e) => {
+                      const f = e.target.files?.[0];
+                      if (f) handleLogoUpload(f);
+                      e.target.value = '';
+                    }}
+                  />
+                </label>
+                {logoUrl && (
+                  <button
+                    className="btn btn-ghost"
+                    style={{ fontSize: 13, color: '#B33A3A' }}
+                    onClick={() => setLogoUrl('')}
+                  >
+                    Retirer
+                  </button>
+                )}
+              </div>
+            </div>
+            <p className="field-hint">
+              PNG, JPG, SVG ou WebP · 2MB max · Affiché dans la navbar et le footer à la place du SVG par défaut.
+            </p>
+          </div>
+          <SaveButton
+            savingGroup={savingGroup}
+            savedGroups={savedGroups}
+            loadError={loadError}
+            group="brand"
+            onSave={() => saveGroup('brand', [
+              { key: 'cms.brand_name', value: brandName.trim() || 'Domipack' },
+              { key: 'cms.logo_url', value: logoUrl },
+            ])}
+          />
+        </div>
+      </div>
 
       {/* ============================================================ */}
       {/* BOUTONS DE CONTACT                                            */}

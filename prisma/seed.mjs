@@ -106,6 +106,9 @@ async function main() {
     { key: "pipeline.send_interval_min", value: "30" },   // secondes
     { key: "pipeline.send_interval_max", value: "90" },   // secondes
     { key: "pipeline.warmup_enabled",  value: "true" },
+    // CMS — Identité de marque
+    { key: "cms.brand_name", value: "Domipack" },
+    { key: "cms.logo_url", value: "" },
     // CMS — Section Hero
     { key: "cms.hero.title", value: "Emballez chez vous, à votre rythme." },
     { key: "cms.hero.subtitle", value: "Domipack recrute des personnes soigneuses pour préparer des colis à domicile." },

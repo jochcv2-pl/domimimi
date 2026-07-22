@@ -1,10 +1,13 @@
 import { Suspense } from 'react';
 import LoginClient from './LoginClient';
+import { getBrandSettings } from '@/lib/brand';
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const { brandName, logoUrl } = await getBrandSettings();
+
   return (
     <Suspense fallback={<div className="login-loading">Chargement…</div>}>
-      <LoginClient />
+      <LoginClient brandName={brandName} logoUrl={logoUrl} />
     </Suspense>
   );
 }

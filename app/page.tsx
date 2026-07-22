@@ -8,11 +8,14 @@ import Testimonials from "@/components/sections/Testimonials";
 import Faq from "@/components/sections/Faq";
 import ApplyForm from "@/components/sections/ApplyForm";
 import Footer from "@/components/sections/Footer";
+import { getBrandSettings } from "@/lib/brand";
 
-export default function Home() {
+export default async function Home() {
+  const { brandName, logoUrl } = await getBrandSettings();
+
   return (
     <>
-      <Navbar />
+      <Navbar brandName={brandName} logoUrl={logoUrl} />
       <Hero />
       <TrustBar />
       <div className="tape">
@@ -61,7 +64,7 @@ export default function Home() {
       <Testimonials />
       <Faq />
       <ApplyForm />
-      <Footer />
+      <Footer brandName={brandName} logoUrl={logoUrl} />
     </>
   );
 }

@@ -50,3 +50,7 @@ next-env.d.ts
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# uploads (user-uploaded logos at runtime, persisted via Docker volume in prod)
+/public/uploads/*
+!/public/uploads/.gitkeep

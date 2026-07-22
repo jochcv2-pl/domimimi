@@ -44,6 +44,7 @@ export interface KnownVars {
   "Prénom du référent": string;
   "WhatsApp URL": string;
   "Messenger URL": string;
+  "Nom de la marque": string;
 }
 
 /**
@@ -66,6 +67,7 @@ export function buildVars(ctx: RenderContext): Record<string, string> {
     "Prénom du référent": s["cms.referent_prenom"] ?? "Camille",
     "WhatsApp URL": s["contact.whatsapp"] ?? "",
     "Messenger URL": s["contact.messenger"] ?? "",
+    "Nom de la marque": s["cms.brand_name"] ?? "Domipack",
   };
 }
 
