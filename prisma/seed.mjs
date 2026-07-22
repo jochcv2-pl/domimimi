@@ -86,12 +86,13 @@ async function main() {
     { key: "email.provider_active", value: "resend" },
     { key: "email.cadence.daily_cap", value: "200" },
     { key: "email.cadence.ip_type", value: "shared" }, // shared | dedicated | vps
-    // Modèle d'IA (le SECRET AI_API_KEY reste en .env)
-    { key: "ai.provider", value: "ollama" }, // ollama | vllm | lmstudio
-    { key: "ai.model", value: "qwen3-8b" },
-    { key: "ai.endpoint", value: "http://localhost:11434/v1" },
+    // Modèle d'IA (configurable depuis l'admin, y compris la clé API)
+    { key: "ai.model",       value: "qwen3-8b" },
+    { key: "ai.provider",    value: "ollama" },
+    { key: "ai.endpoint",    value: "http://localhost:11434" },
+    { key: "ai.api_key",     value: "" },      // fallback .env AI_API_KEY si vide
     { key: "ai.temperature", value: "0.3" },
-    { key: "ai.max_tokens", value: "2048" },
+    { key: "ai.max_tokens",  value: "2048" },
     // Règles d'arrêt des relances
     { key: "relance.max_count", value: "3" },
     { key: "relance.validation_window_days", value: "10" },

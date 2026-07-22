@@ -185,16 +185,16 @@ export function ConfigurationView() {
                 />
               </div>
               <div className="fg">
-                <label>Clé API (en .env)</label>
+                <label>Clé API</label>
                 <input
                   type="password"
-                  placeholder={secrets['AI_API_KEY'] ? '•••• configurée en .env' : 'non configurée'}
-                  disabled
-                  style={{ opacity: 0.6 }}
+                  value={settings['ai.api_key'] ?? ''}
+                  onChange={(e) => update('ai.api_key', e.target.value)}
+                  placeholder={secrets['AI_API_KEY'] ? '•••• fallback .env actif' : 'saisir la clé ici'}
                 />
                 <small style={{ fontSize: 10, color: '#95A198' }}>
-                  La clé API est stockée dans <code>.env</code> (variable <code>AI_API_KEY</code>).
-                  Optionnelle pour Ollama local.
+                  Stockée en base. Optionnelle pour Ollama local.
+                  {secrets['AI_API_KEY'] && ' Fallback .env (AI_API_KEY) actif si vide.'}
                 </small>
               </div>
               <div className="fg">
@@ -219,7 +219,7 @@ export function ConfigurationView() {
               </div>
               <span className="pill-on">En ligne</span>
             </div>
-            <SaveButton label="ia" savingKey={savingKey} savedKeys={savedKeys} loadError={loadError} onSave={() => saveKeys(['ai.model', 'ai.provider', 'ai.endpoint', 'ai.temperature', 'ai.max_tokens'], 'ia')} />
+            <SaveButton label="ia" savingKey={savingKey} savedKeys={savedKeys} loadError={loadError} onSave={() => saveKeys(['ai.model', 'ai.provider', 'ai.endpoint', 'ai.api_key', 'ai.temperature', 'ai.max_tokens'], 'ia')} />
           </div>
         </div>
 
