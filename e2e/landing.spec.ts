@@ -25,9 +25,10 @@ test.describe("Landing page", () => {
     expect(bodyText).toMatch(/Emballez|candidature|Avantages/);
   });
 
-  test("redirige / vers /de/", async ({ page }) => {
+  test("redirige / vers la locale détectée", async ({ page }) => {
     const response = await page.goto("/");
-    expect(response?.url()).toMatch(/\/de\/?$/);
+    // next-intl détecte la langue du navigateur (Playwright = fr-FR → /fr/)
+    expect(response?.url()).toMatch(/\/(de|fr)\/?$/);
   });
 
   test("page de contact est accessible", async ({ page }) => {
