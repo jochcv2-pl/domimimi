@@ -39,7 +39,7 @@ test.describe("Landing page", () => {
     const response = await page.goto("/robots.txt");
     expect(response?.status()).toBe(200);
     const content = await response?.text();
-    expect(content).toContain("User-agent");
+    expect(content).toContain("User-Agent");
     expect(content).toContain("Disallow: /admin");
   });
 
@@ -55,6 +55,6 @@ test.describe("Landing page", () => {
     const response = await request.get("/api/health");
     expect(response.ok()).toBeTruthy();
     const body = await response.json();
-    expect(body.data.status).toBe("ok");
+    expect(body.status).toBe("ok");
   });
 });
