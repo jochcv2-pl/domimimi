@@ -130,7 +130,7 @@ export function invalidateAiCache(): void {
 // Client HTTP — OpenAI-compatible /v1/chat/completions
 // ──────────────────────────────────────────────
 
-const REQUEST_TIMEOUT_MS = 30_000;
+const REQUEST_TIMEOUT_MS = 60_000;
 
 /**
  * Appelle l'API chat/completions du moteur IA configuré.
@@ -280,7 +280,7 @@ export async function testConnection(): Promise<{
           content: "Réponds uniquement: OK /no_think",
         },
       ],
-      { maxTokens: 200, temperature: 0 },
+      { maxTokens: 50, temperature: 0 },
     );
 
     return {
