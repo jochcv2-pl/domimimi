@@ -280,7 +280,7 @@ export async function testConnection(): Promise<{
           content: "Réponds uniquement: OK /no_think",
         },
       ],
-      { maxTokens: 200, temperature: 0 },
+      { maxTokens: 500, temperature: 0 },
     );
 
     return {
