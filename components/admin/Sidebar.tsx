@@ -3,7 +3,7 @@
 import React from 'react';
 import { useAdminStore, AdminView, VIEW_CONFIG } from '@/lib/store';
 
-export function Sidebar() {
+export function Sidebar({ brandName = 'domipackung', logoUrl }: { brandName?: string; logoUrl?: string | null }) {
   const { currentView, setCurrentView, sidebarCollapsed } = useAdminStore();
 
   const menuItems = [
@@ -103,7 +103,13 @@ export function Sidebar() {
 
   return (
     <aside className="sidebar">
-      <div className="sb-logo">Domi<span>pack</span></div>
+      <div className="sb-logo">
+        {logoUrl ? (
+          <img src={logoUrl} alt={brandName} style={{ height: 28, width: 'auto' }} />
+        ) : (
+          brandName
+        )}
+      </div>
       
       {menuItems.map((group) => (
         <div key={group.group} className="sb-group">

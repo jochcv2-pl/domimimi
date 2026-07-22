@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { Icon } from '@/components/ui/Icon';
 
-export default function LoginClient({ brandName = 'Domipack', logoUrl }: { brandName?: string; logoUrl?: string | null }) {
+export default function LoginClient({ brandName = 'domipackung', logoUrl }: { brandName?: string; logoUrl?: string | null }) {
   const router = useRouter();
   const params = useSearchParams();
   const callbackUrl = params.get('callbackUrl') || '/admin';

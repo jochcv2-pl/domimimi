@@ -101,7 +101,7 @@ export function CmsView() {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       const map: Record<string, string> = json?.data ?? {};
-      setBrandName(map['cms.brand_name'] ?? 'Domipack');
+      setBrandName(map['cms.brand_name'] ?? 'domipackung');
       setLogoUrl(map['cms.logo_url'] ?? '');
       setWhatsapp(map['contact.whatsapp'] ?? '');
       setMessenger(map['contact.messenger'] ?? '');
@@ -230,7 +230,7 @@ export function CmsView() {
             <input
               value={brandName}
               onChange={(e) => setBrandName(e.target.value)}
-              placeholder="Domipack"
+              placeholder="domipackung"
             />
             <p className="field-hint">
               Affiché dans la navbar, le footer, le titre de l&apos;onglet et les emails.
@@ -286,7 +286,7 @@ export function CmsView() {
             loadError={loadError}
             group="brand"
             onSave={() => saveGroup('brand', [
-              { key: 'cms.brand_name', value: brandName.trim() || 'Domipack' },
+              { key: 'cms.brand_name', value: brandName.trim() || 'domipackung' },
               { key: 'cms.logo_url', value: logoUrl },
             ])}
           />

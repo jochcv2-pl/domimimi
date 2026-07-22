@@ -63,7 +63,7 @@ const LANG_TAGS = ['FR', 'EN', 'DE', 'ES', 'PT', 'IT'];
 
 /** Pied de page email par défaut — utilisé tant que la DB n'a pas chargé. */
 const DEFAULT_FOOTER = {
-  companyName: 'Domipack',
+  companyName: 'domipackung',
   tagline: 'Recrutement d\'emballeurs à domicile',
   addressLine: '12 rue des Ateliers, 69007 Lyon, France',
   email: 'recrutement@domipack.fr',
@@ -111,7 +111,7 @@ export function EmailsView() {
 Nous avons bien reçu votre candidature pour l'emballage à domicile dans la zone {{Zone}}. Votre référent {{Prénom du référent}} étudie votre profil et vous rappelle sous 48 heures. Aucun frais ne vous sera jamais demandé.
 
 À très bientôt,
-{{Prénom du référent}} — Référent recrutement, Domipack`
+{{Prénom du référent}} — Référent recrutement, domipackung`
   );
 
   // Mode import

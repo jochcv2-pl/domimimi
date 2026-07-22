@@ -6,7 +6,7 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 
-export default async function Footer({ brandName = "Domipack", logoUrl }: { brandName?: string; logoUrl?: string | null }) {
+export default async function Footer({ brandName = "domipackung", logoUrl }: { brandName?: string; logoUrl?: string | null }) {
   const t = await getTranslations("footer");
   return (
     <footer>

@@ -10,7 +10,7 @@ export interface BrandSettings {
 }
 
 const DEFAULT_BRAND: BrandSettings = {
-  brandName: "Domipack",
+  brandName: "domipackung",
   logoUrl: null,
 };
 

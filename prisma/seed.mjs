@@ -44,7 +44,7 @@ const GEOS = [
 ];
 
 async function main() {
-  console.log("Seed Domipack — generation des candidatures...");
+  console.log("Seed domipackung — generation des candidatures...");
 
   // --- PayRate initiaux (idempotent : on remplace à chaque seed) ---
   await prisma.payRate.deleteMany();
@@ -74,7 +74,7 @@ async function main() {
     {
       key: "email.footer",
       value: JSON.stringify({
-        companyName: "Domipack",
+        companyName: "domipackung",
         tagline: "Recrutement d'emballeurs à domicile",
         addressLine: "12 rue des Ateliers, 69007 Lyon, France",
         email: "recrutement@domipack.fr",
@@ -116,7 +116,7 @@ async function main() {
     { key: "email.brevo_api_key",     value: "" },
     { key: "email.notify_to",         value: "" },         // remplace NOTIFY_EMAIL_TO
     // CMS — Identité de marque
-    { key: "cms.brand_name", value: "Domipack" },
+    { key: "cms.brand_name", value: "domipackung" },
     { key: "cms.logo_url", value: "" },
     // CMS — Section Hero
     { key: "cms.hero.title", value: "Emballez chez vous, à votre rythme." },

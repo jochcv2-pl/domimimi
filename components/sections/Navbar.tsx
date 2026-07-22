@@ -7,7 +7,7 @@ import { useRouter, usePathname } from "@/i18n/navigation";
 import { useParams } from "next/navigation";
 import { Icon } from "@/components/ui/Icon";
 
-export default function Navbar({ brandName = "Domipack", logoUrl }: { brandName?: string; logoUrl?: string | null }) {
+export default function Navbar({ brandName = "domipackung", logoUrl }: { brandName?: string; logoUrl?: string | null }) {
   const t = useTranslations("nav");
   const locale = useLocale();
   const router = useRouter();
