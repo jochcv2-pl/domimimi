@@ -203,8 +203,11 @@ export async function selectEligible(
           status: "sent",
         },
       },
-      // Exclure les stops permanents
-      relanceStop: { notIn: PERMANENT_STOPS },
+      // Exclure les stops permanents (NULL doit passer — piège SQL NOT IN)
+      OR: [
+        { relanceStop: { notIn: PERMANENT_STOPS } },
+        { relanceStop: null },
+      ],
       pipe: { notIn: ["client", "perdu"] as PipeStatus[] },
     },
     orderBy: { createdAt: "asc" },
