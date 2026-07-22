@@ -41,3 +41,11 @@ prisma/migrate-to-pipe.mjs
 Thumbs.db
 .vscode
 .idea
+
+# Certbot (créé par root, permissions bloquent le build)
+certbot-etc
+certbot-web
+
+# Backups & uploads
+backups
+public/uploads
