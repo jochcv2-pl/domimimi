@@ -66,6 +66,13 @@ export async function PATCH(
     }
   }
 
+  // Si on passe à "perdu" (rejet), arrêter les relances
+  if (update.pipe === "perdu" && existing.pipe !== "perdu") {
+    if (update.relanceStop === undefined || update.relanceStop === null) {
+      update.relanceStop = "exclusion";
+    }
+  }
+
   // Si on quitte "client", on nettoie les champs de validation
   // (mais on garde l'historique validatedAt si jamais — pas d'effacement).
   if (existing.pipe === "client" && update.pipe && update.pipe !== "client") {
@@ -85,6 +92,42 @@ export async function PATCH(
     return apiSuccess({ data: updated });
   } catch (err) {
     console.error("[api/admin/applications/[id]] PATCH error:", err);
+    return apiError("Erreur serveur", "INTERNAL_ERROR", 500);
+  }
+}
+
+/**
+ * DELETE /api/admin/applications/[id]
+ *
+ * Supprime définitivement une candidature + tous ses logs (cascade).
+ * Action irréversible.
+ *
+ * Protégé : session NextAuth + rôle ADMIN/SUPER_ADMIN.
+ */
+export async function DELETE(
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const session = await requireAdmin();
+  if (!session) {
+    return apiError("Non autorisé", "UNAUTHORIZED", 401);
+  }
+
+  const { id } = await params;
+  if (!id) {
+    return apiError("ID manquant", "INVALID_ID", 400);
+  }
+
+  const existing = await prisma.application.findUnique({ where: { id } });
+  if (!existing) {
+    return apiError("Candidature introuvable", "NOT_FOUND", 404);
+  }
+
+  try {
+    await prisma.application.delete({ where: { id } });
+    return apiSuccess({ deleted: true });
+  } catch (err) {
+    console.error("[api/admin/applications/[id]] DELETE error:", err);
     return apiError("Erreur serveur", "INTERNAL_ERROR", 500);
   }
 }

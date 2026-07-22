@@ -67,6 +67,8 @@ export function ConfigurationView() {
   const [savedKeys, setSavedKeys] = useState<Record<string, 'ok' | 'error'>>({});
   const [aiStatus, setAiStatus] = useState<'idle' | 'testing' | 'ok' | 'error'>('idle');
   const [aiInfo, setAiInfo] = useState<{ model?: string; latencyMs?: number; error?: string }>({});
+  const [pipelineRun, setPipelineRun] = useState<'idle' | 'running' | 'done' | 'error'>('idle');
+  const [pipelineResult, setPipelineResult] = useState<{ sent?: number; failed?: number; skipped?: number; reason?: string } | null>(null);
 
   // ============================================================
   // Fetch
@@ -149,6 +151,31 @@ export function ConfigurationView() {
     } catch (err) {
       setAiStatus('error');
       setAiInfo({ error: err instanceof Error ? err.message : 'Erreur réseau' });
+    }
+  }, []);
+
+  const runPipeline = useCallback(async () => {
+    setPipelineRun('running');
+    setPipelineResult(null);
+    try {
+      const res = await fetch('/api/admin/pipeline/run', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ dryRun: false, perStepLimit: 5 }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json?.error ?? `HTTP ${res.status}`);
+      const d = json?.data;
+      setPipelineResult({
+        sent: d?.sent,
+        failed: d?.failed,
+        skipped: d?.skipped,
+        reason: d?.stoppedReason,
+      });
+      setPipelineRun('done');
+    } catch (err) {
+      setPipelineResult({ reason: err instanceof Error ? err.message : 'Erreur' });
+      setPipelineRun('error');
     }
   }, []);
 
@@ -580,6 +607,36 @@ export function ConfigurationView() {
               'email.resend_api_key', 'email.brevo_api_key',
               'email.notify_to',
             ], 'provider')} />
+
+            {/* Test d'envoi immédiat */}
+            <div style={{ marginTop: 14, paddingTop: 14, borderTop: '1px solid #E8E8E5' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+                <button
+                  className="btn btn-primary btn-sm"
+                  onClick={runPipeline}
+                  disabled={pipelineRun === 'running'}
+                >
+                  {pipelineRun === 'running' ? 'Envoi en cours…' : 'Tester l\'envoi maintenant'}
+                </button>
+                {pipelineRun === 'done' && pipelineResult && (
+                  <span style={{ fontSize: 12 }}>
+                    {pipelineResult.reason ? (
+                      <span style={{ color: '#9A6B1E' }}>Arrêté : {pipelineResult.reason}</span>
+                    ) : (
+                      <span style={{ color: '#2E7D46' }}>
+                        {pipelineResult.sent ?? 0} envoyé(s) · {pipelineResult.failed ?? 0} échec(s) · {pipelineResult.skipped ?? 0} ignoré(s)
+                      </span>
+                    )}
+                  </span>
+                )}
+                {pipelineRun === 'error' && pipelineResult?.reason && (
+                  <span style={{ fontSize: 12, color: '#B33A3A' }}>{pipelineResult.reason}</span>
+                )}
+              </div>
+              <small style={{ fontSize: 10, color: '#95A198', display: 'block', marginTop: 6 }}>
+                Déclenche un cycle d&apos;envoi immédiat (max 5 par étape) pour vérifier que le SMTP fonctionne.
+              </small>
+            </div>
           </div>
         </div>
 

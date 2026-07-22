@@ -119,6 +119,46 @@ export function CandidatsView() {
     }
   }
 
+  async function reject(id: string) {
+    setActionError('');
+    setPendingId(id);
+    try {
+      const res = await fetch(`/api/admin/applications/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pipe: 'perdu', relanceStop: 'exclusion' }),
+      });
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        throw new Error(json?.error ?? `HTTP ${res.status}`);
+      }
+      const json = await res.json();
+      const updated = applicationToUiContact(json.data);
+      setContacts((prev) => prev.map((c) => (c.id === id ? updated : c)));
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : 'Erreur');
+    } finally {
+      setPendingId(null);
+    }
+  }
+
+  async function remove(id: string) {
+    setActionError('');
+    setPendingId(id);
+    try {
+      const res = await fetch(`/api/admin/applications/${id}`, { method: 'DELETE' });
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        throw new Error(json?.error ?? `HTTP ${res.status}`);
+      }
+      setContacts((prev) => prev.filter((c) => c.id !== id));
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : 'Erreur');
+    } finally {
+      setPendingId(null);
+    }
+  }
+
   // ============================================================
   // UI handlers
   // ============================================================
@@ -307,19 +347,47 @@ export function CandidatsView() {
                         </span>
                       </td>
                       <td style={{ textAlign: 'right' }}>
-                        {c.pipe === 'client' ? (
-                          <span style={{ fontSize: 11, color: '#95A198' }}>
-                            {c.validatedBy?.name ? `Validé par ${c.validatedBy.name}` : 'Validé'}
-                          </span>
-                        ) : (
+                        <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end', alignItems: 'center' }}>
+                          {c.pipe === 'client' ? (
+                            <span style={{ fontSize: 11, color: '#95A198' }}>
+                              {c.validatedBy?.name ? `Validé par ${c.validatedBy.name}` : 'Validé'}
+                            </span>
+                          ) : c.pipe === 'perdu' ? (
+                            <span style={{ fontSize: 11, color: '#9B2C2C' }}>Rejeté</span>
+                          ) : (
+                            <>
+                              <button
+                                className="btn btn-primary btn-sm"
+                                onClick={() => validate(c.id)}
+                                disabled={pendingId === c.id}
+                              >
+                                {pendingId === c.id ? '…' : 'Valider'}
+                              </button>
+                              <button
+                                className="btn btn-ghost btn-sm"
+                                onClick={() => reject(c.id)}
+                                disabled={pendingId === c.id}
+                                style={{ color: '#9A6B1E' }}
+                                title="Rejeter la candidature"
+                              >
+                                Rejeter
+                              </button>
+                            </>
+                          )}
                           <button
-                            className="btn btn-primary btn-sm"
-                            onClick={() => validate(c.id)}
+                            className="btn btn-ghost btn-sm"
+                            onClick={() => {
+                              if (window.confirm(`Supprimer définitivement ${c.name} ? Cette action est irréversible.`)) {
+                                remove(c.id);
+                              }
+                            }}
                             disabled={pendingId === c.id}
+                            style={{ color: '#C53030', fontSize: 11 }}
+                            title="Supprimer définitivement"
                           >
-                            {pendingId === c.id ? '…' : 'Valider comme emballeur'}
+                            <Icon name="x" size={14} />
                           </button>
-                        )}
+                        </div>
                       </td>
                     </tr>
                   ))}

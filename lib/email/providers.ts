@@ -192,14 +192,14 @@ const smtpProvider: EmailProvider = {
     return Boolean(
       process.env.EMAIL_SMTP_HOST &&
         process.env.EMAIL_SMTP_USER &&
-        process.env.EMAIL_SMTP_PASSWORD,
+        (process.env.EMAIL_SMTP_PASSWORD || process.env.EMAIL_SMTP_PASS),
     );
   },
 
   async send(input) {
     const host = process.env.EMAIL_SMTP_HOST;
     const user = process.env.EMAIL_SMTP_USER;
-    const pass = process.env.EMAIL_SMTP_PASSWORD;
+    const pass = process.env.EMAIL_SMTP_PASSWORD || process.env.EMAIL_SMTP_PASS;
     if (!host || !user || !pass) {
       return {
         ok: false,

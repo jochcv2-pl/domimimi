@@ -138,7 +138,7 @@ async function main() {
   }
   console.log(`→ ${SETTINGS.length} Settings initialisés`);
 
-  // --- Email Templates (6 initiaux) ---
+  // --- Email Templates (6 initiaux, en allemand — langue par défaut) ---
   await prisma.emailTemplate.deleteMany();
   const TEMPLATES = [
     {
@@ -146,13 +146,13 @@ async function main() {
       trigger: "Candidature reçue · Agent Accueil",
       triggerKey: "accueil",
       agentKey: "accueil",
-      subject: "Votre candidature a bien été reçue, {{Prénom}}",
-      body: `Bonjour {{Prénom}},
+      subject: "Ihre Bewerbung ist bei uns eingegangen, {{Prénom}}",
+      body: `Hallo {{Prénom}},
 
-Nous avons bien reçu votre candidature pour l'emballage à domicile dans la zone {{Zone}}. Votre référent {{Prénom du référent}} étudie votre profil et vous rappelle sous 48 heures. Aucun frais ne vous sera jamais demandé.
+wir haben Ihre Bewerbung für die Heimbverpackung im Gebiet {{Zone}} erhalten. Ihr Betreuer {{Prénom du référent}} prüft Ihr Profil und meldet sich innerhalb von 48 Stunden bei Ihnen. Es werden Ihnen niemals Kosten entstehen.
 
-À très bientôt,
-{{Prénom du référent}} — Référent recrutement, Domipack`,
+Bis bald,
+{{Prénom du référent}} — Recrutierung-Betreuer, {{Nom de la marque}}`,
       status: "actif",
       sort: 1,
     },
@@ -161,17 +161,17 @@ Nous avons bien reçu votre candidature pour l'emballage à domicile dans la zon
       trigger: "Mission validée · Agent Mission",
       triggerKey: "mission",
       agentKey: "mission",
-      subject: "Une mission d'emballage vous attend, {{Prénom}}",
-      body: `Bonne nouvelle {{Prénom}} !
+      subject: "Ein Verpackungsauftrag wartet auf Sie, {{Prénom}}",
+      body: `Gute Nachrichten, {{Prénom}}!
 
-Votre mission : zone {{Zone}}, payée {{Taux horaire}} de l'heure, collecte le {{Date de collecte}}. Cadence estimée : {{Cadence}}.
+Ihr Auftrag: Gebiet {{Zone}}, Bezahlung {{Taux horaire}} pro Stunde. 
 
-Si cette offre vous convient, contactez un agent pour finaliser votre recrutement :
-→ WhatsApp (bouton vert ci-dessous)
-→ Messenger (bouton bleu ci-dessous)
+Wenn dieses Angebot Sie interessiert, kontaktieren Sie einen Betreuer, um Ihre Anmeldung abzuschließen:
+→ WhatsApp (grüner Button unten)
+→ Messenger (blauer Button unten)
 
-À très vite,
-{{Prénom du référent}} — Référent recrutement, Domipack`,
+Bis bald,
+{{Prénom du référent}} — Recrutierung-Betreuer, {{Nom de la marque}}`,
       status: "actif",
       sort: 2,
     },
@@ -180,14 +180,14 @@ Si cette offre vous convient, contactez un agent pour finaliser votre recrutemen
       trigger: "J+3 sans réponse · Agent Relance",
       triggerKey: "relance_1",
       agentKey: "relance",
-      subject: "{{Prénom}}, avez-vous consulté notre proposition ?",
+      subject: "{{Prénom}}, haben Sie unser Angebot gesehen?",
       body: `{{Prénom}},
 
-Avez-vous pu consulter notre proposition pour la zone {{Zone}} ? Aucun engagement — un simple mot suffit pour en discuter.
+konnten Sie unser Angebot für das Gebiet {{Zone}} schon ansehen? Keine Verpflichtung — ein kurzes Wort genügt, um darüber zu sprechen.
 
-→ Répondez via WhatsApp ou Messenger (boutons ci-dessous).
+→ Antworten Sie per WhatsApp oder Messenger (Buttons unten).
 
-{{Prénom du référent}} — Référent recrutement, Domipack`,
+{{Prénom du référent}} — Recrutierung-Betreuer, {{Nom de la marque}}`,
       status: "actif",
       sort: 3,
     },
@@ -196,14 +196,14 @@ Avez-vous pu consulter notre proposition pour la zone {{Zone}} ? Aucun engagemen
       trigger: "J+6 sans réponse · Agent Relance",
       triggerKey: "relance_2",
       agentKey: "relance",
-      subject: "{{Prénom}}, une hésitation ?",
+      subject: "{{Prénom}}, noch Fragen?",
       body: `{{Prénom}},
 
-Petit rappel : vrai contrat, zéro frais, matériel livré chez vous et paie chaque mois. Si vous avez la moindre question, nous sommes à votre écoute.
+kurze Erinnerung: echter Vertrag, keine Kosten, Material wird Ihnen nach Hause geliefert und monatliche Bezahlung. Wenn Sie Fragen haben, hören wir Ihnen gerne zu.
 
-→ WhatsApp ou Messenger ci-dessous.
+→ WhatsApp oder Messenger (Buttons unten).
 
-{{Prénom du référent}} — Référent recrutement, Domipack`,
+{{Prénom du référent}} — Recrutierung-Betreuer, {{Nom de la marque}}`,
       status: "actif",
       sort: 4,
     },
@@ -212,14 +212,14 @@ Petit rappel : vrai contrat, zéro frais, matériel livré chez vous et paie cha
       trigger: "J+9 · dernière relance · Agent Relance",
       triggerKey: "relance_3",
       agentKey: "relance",
-      subject: "{{Prénom}}, dernier rappel",
+      subject: "{{Prénom}}, letzte Erinnerung",
       body: `{{Prénom}},
 
-C'est notre dernier message : sans réponse, votre candidature pour la zone {{Zone}} sera clôturée sous 24 h.
+das ist unsere letzte Nachricht: ohne Antwort wird Ihre Bewerbung für das Gebiet {{Zone}} innerhalb von 24 Stunden geschlossen.
 
-→ WhatsApp ou Messenger ci-dessous si vous souhaitez poursuivre.
+→ WhatsApp oder Messenger (Buttons unten), wenn Sie fortfahren möchten.
 
-{{Prénom du référent}} — Référent recrutement, Domipack`,
+{{Prénom du référent}} — Recrutierung-Betreuer, {{Nom de la marque}}`,
       status: "actif",
       sort: 5,
     },
@@ -227,13 +227,13 @@ C'est notre dernier message : sans réponse, votre candidature pour la zone {{Zo
       name: "Changement de référent",
       trigger: "Envoi manuel · —",
       agentKey: null,
-      subject: "Votre nouveau référent Domipack",
-      body: `Bonjour {{Prénom}},
+      subject: "Ihr neuer Betreuer bei {{Nom de la marque}}",
+      body: `Hallo {{Prénom}},
 
-Votre référent a changé. Voici les nouvelles coordonnées : {{Nouveau numéro}}.
+Ihr Betreuer hat sich geändert. Hier sind die neuen Kontaktdaten: {{Nouveau numéro}}.
 
-À très bientôt,
-L'équipe Domipack`,
+Bis bald,
+Das Team von {{Nom de la marque}}`,
       status: "brouillon",
       sort: 6,
     },
