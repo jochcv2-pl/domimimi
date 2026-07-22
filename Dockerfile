@@ -8,7 +8,7 @@
 # ──────────────────────────────────────────────
 # Stage 1 — Installation des dépendances
 # ──────────────────────────────────────────────
-FROM node:20-slim AS deps
+FROM node:22-slim AS deps
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
@@ -25,7 +25,7 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
 # ──────────────────────────────────────────────
 # Stage 2 — Build Next.js
 # ──────────────────────────────────────────────
-FROM node:20-slim AS builder
+FROM node:22-slim AS builder
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
@@ -47,7 +47,7 @@ RUN npx prisma generate
 # ──────────────────────────────────────────────
 # Stage 3 — Runtime minimaliste
 # ──────────────────────────────────────────────
-FROM node:20-slim AS runner
+FROM node:22-slim AS runner
 
 WORKDIR /app
 
