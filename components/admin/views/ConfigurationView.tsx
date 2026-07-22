@@ -579,8 +579,22 @@ export function ConfigurationView() {
               );
             })}
 
-            {/* Email de notification */}
+            {/* Adresse d'expédition (from) */}
             <div className="fg" style={{ marginTop: 16, marginBottom: 0 }}>
+              <label>Adresse d&apos;expédition (expéditeur)</label>
+              <input
+                value={settings['email.fromAddress'] ?? ''}
+                onChange={(e) => update('email.fromAddress', e.target.value)}
+                placeholder="recrutement@domipackung.de"
+                style={{ fontFamily: 'monospace' }}
+              />
+              <small style={{ fontSize: 10, color: '#95A198' }}>
+                Adresse qui envoie les emails aux candidats. Doit correspondre au compte SMTP configuré ci-dessus.
+              </small>
+            </div>
+
+            {/* Email de notification */}
+            <div className="fg" style={{ marginTop: 12, marginBottom: 0 }}>
               <label>Email de notification interne</label>
               <input
                 value={settings['email.notify_to'] ?? ''}
@@ -603,6 +617,7 @@ export function ConfigurationView() {
             </div>
             <SaveButton label="provider" savingKey={savingKey} savedKeys={savedKeys} loadError={loadError} onSave={() => saveKeys([
               'email.provider_active',
+              'email.fromAddress',
               'email.smtp_host', 'email.smtp_port', 'email.smtp_user', 'email.smtp_pass',
               'email.resend_api_key', 'email.brevo_api_key',
               'email.notify_to',
