@@ -82,8 +82,7 @@ async function main() {
         legal: "Cet email vous est envoyé suite à votre candidature. Vos données sont traitées conformément au RGPD. Pour vous désinscrire, répondez STOP.",
       }),
     },
-    // Provider email actif (les SECRETS restent en .env : EMAIL_RESEND_API_KEY, EMAIL_BREVO_API_KEY, EMAIL_SMTP_*)
-    { key: "email.provider_active", value: "resend" },
+    // Email cadence
     { key: "email.cadence.daily_cap", value: "200" },
     { key: "email.cadence.ip_type", value: "shared" }, // shared | dedicated | vps
     // Modèle d'IA (configurable depuis l'admin, y compris la clé API)
