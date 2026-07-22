@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "title": "{brandName} — Verpackung von zu Hause, mit Vertrauen",
-    "description": "{brandName} sucht sorgfältige Personen für die Vorbereitung und Verpackung von Paketen — ganz entspannt vom eigenen Küchentisch."
+    "title": "{brandName}. Verpackung von zu Hause, mit Vertrauen",
+    "description": "{brandName} sucht sorgfältige Personen für die Vorbereitung und Verpackung von Paketen. Ganz entspannt vom eigenen Küchentisch."
   },
   "nav": {
     "avantages": "Vorteile",
@@ -16,7 +16,7 @@
     "badge": "Rekrutierung · Verpackung von zu Hause",
     "titleLine1": "Verpacken Sie zu Hause,",
     "titleEm": "in Ihrem Tempo",
-    "lead": "{brandName} sucht sorgfältige Personen, die Pakete zu Hause vorbereiten und verpacken — ganz entspannt am eigenen Küchentisch.",
+    "lead": "{brandName} sucht sorgfältige Personen, die Pakete zu Hause vorbereiten und verpacken. Ganz entspannt am eigenen Küchentisch.",
     "ctaPrimary": "Bewerbung senden",
     "ctaSecondary": "So funktioniert's",
     "note": "Keine Anmeldegebühren. Nie. Echter Vertrag, gemeldetes Gehalt."
@@ -39,8 +39,8 @@
   "steps": {
     "eyebrow": "Der Weg eines Pakets",
     "title": "Vier Schritte, und alles ist erledigt.",
-    "intro": "Vom Material, das zu Ihnen nach Hause geliefert wird, bis zur Gehaltsüberweisung — so läuft eine Mission ab.",
-    "step1": { "title": "Sie erhalten das Kit", "body": "Ein Spediteur liefert Kartons, Polstermaterial und Etiketten an Ihre Adresse — inklusive Anweisungsblatt." },
+    "intro": "Vom Material, das zu Ihnen nach Hause geliefert wird, bis zur Gehaltsüberweisung. So läuft eine Mission ab.",
+    "step1": { "title": "Sie erhalten das Kit", "body": "Ein Spediteur liefert Kartons, Polstermaterial und Etiketten an Ihre Adresse. Inklusive Anweisungsblatt." },
     "step2": { "title": "Sie verpacken", "body": "Sie bereiten die Pakete nach dem bereitgestellten Modell vor, an Ihrem Tisch, zu der Zeit, die Ihnen passt." },
     "step3": { "title": "Wir holen ab", "body": "Der Spediteur kommt zurück, um die fertigen Pakete abzuholen. Kein Wegstrecke Ihrerseits nötig." },
     "step4": { "title": "Sie werden bezahlt", "body": "Nach Kontrolle wird Ihre Vergütung auf die Lohnabrechnung des Monats gebucht. Einfach und nachvollziehbar." }
@@ -63,7 +63,7 @@
     "bullet3": "Material und Transport vollständig übernommen",
     "bullet4": "Lohnabrechnung und Sozialabgaben wie jeder Arbeitnehmer",
     "finePrefix": "*Richtwert",
-    "fineLive": " — Tarif live aus dem Admin-CRM",
+    "fineLive": ". Tarif live aus dem Admin-CRM",
     "fineMock": " für diese Demo",
     "fineSuffix": "Der tatsächliche Tarif steht im Vertrag, der vor jeder Mission unterzeichnet wird."
   },
@@ -78,8 +78,7 @@
     "role2": "Neuorientierung · Lyon*",
     "quote3": "„Im Ruhestand ist das eine schöne Ergänzung und beschäftigt meine Hände. Die Handgriffe sind einfach, die Abholung erfolgt bei mir zu Hause. Nichts zu beanstanden.“",
     "name3": "Danielle F.",
-    "role3": "Rentnerin · Toulouse*",
-    "disclaimer": "*Fiktive Testimonials — Demonstrationsinhalte für die Vorlage."
+    "role3": "Rentnerin · Toulouse*"
   },
   "faq": {
     "eyebrow": "Häufige Fragen",
@@ -176,7 +175,7 @@
   },
   "privacy": {
     "meta": {
-      "title": "Datenschutzerklärung — {brandName}",
+      "title": "Datenschutzerklärung. {brandName}",
       "description": "Datenschutzerklärung und Schutz personenbezogener Daten von {brandName} (DSGVO)."
     },
     "eyebrow": "Datenschutz",

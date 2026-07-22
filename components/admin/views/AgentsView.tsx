@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import Modal from '../Modal';
+import { Icon } from '@/components/ui/Icon';
 
 type AgentKey = string;
 
@@ -368,8 +369,8 @@ export function AgentsView() {
                     {saving ? 'Enregistrement…' : 'Enregistrer le prompt'}
                   </button>
                   {saveState?.key === agent.key && saveState.state === 'ok' && (
-                    <span style={{ color: '#3F8F5B', fontSize: 12 }}>
-                      ✓ Prompt mis à jour. L&apos;agent utilise désormais cette version.
+                    <span style={{ color: '#3F8F5B', fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                      <Icon name="check" size={13} color="#3F8F5B" /> Prompt mis à jour. L&apos;agent utilise désormais cette version.
                     </span>
                   )}
                   {saveState?.key === agent.key && saveState.state === 'error' && (
@@ -412,14 +413,14 @@ export function AgentsView() {
                         />
                         <div className="mem-edit-actions">
                           <button className="mem-btn ok" onClick={saveEditMem} title="Enregistrer">
-                            ✓
+                            <Icon name="check" size={14} color="#2E7D46" />
                           </button>
                           <button
                             className="mem-btn cancel"
                             onClick={() => setEditingMem(null)}
                             title="Annuler"
                           >
-                            ✕
+                            <Icon name="x" size={14} color="#B23A2E" />
                           </button>
                         </div>
                       </div>
@@ -433,14 +434,14 @@ export function AgentsView() {
                             onClick={() => startEditMem(idx)}
                             title="Modifier"
                           >
-                            ✎
+                            <Icon name="edit" size={14} color="#1E6FB8" />
                           </button>
                           <button
                             className="mem-btn del"
                             onClick={() => deleteMem(idx)}
                             title="Supprimer"
                           >
-                            ✕
+                            <Icon name="x" size={14} color="#B23A2E" />
                           </button>
                         </div>
                       </div>
@@ -465,7 +466,7 @@ export function AgentsView() {
                     />
                     <div className="mem-edit-actions">
                       <button className="mem-btn ok" onClick={addMem} title="Ajouter">
-                        ✓
+                        <Icon name="check" size={14} color="#2E7D46" />
                       </button>
                       <button
                         className="mem-btn cancel"
@@ -476,7 +477,7 @@ export function AgentsView() {
                         }}
                         title="Annuler"
                       >
-                        ✕
+                        <Icon name="x" size={14} color="#B23A2E" />
                       </button>
                     </div>
                   </div>
@@ -550,7 +551,7 @@ export function AgentsView() {
               onClick={handleCreateAgent}
               disabled={createDone || creating || !nName.trim()}
             >
-              {createDone ? 'Agent créé ✓' : creating ? 'Création…' : 'Créer l’agent'}
+              {createDone ? <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>Agent créé <Icon name="check" size={14} color="#1E3A2F" /></span> : creating ? 'Création…' : 'Créer l\u2019agent'}
             </button>
           </>
         }

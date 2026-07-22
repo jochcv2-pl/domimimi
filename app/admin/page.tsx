@@ -14,6 +14,7 @@ import {
   ConfigurationView,
   ProfilView,
   ParametresView,
+  TestimonialsView,
 } from '@/components/admin/views';
 
 const VIEWS: Record<AdminView, React.ComponentType> = {
@@ -29,6 +30,7 @@ const VIEWS: Record<AdminView, React.ComponentType> = {
   configuration: ConfigurationView,
   profil: ProfilView,
   parametres: ParametresView,
+  testimonials: TestimonialsView,
 };
 
 export default function AdminPage() {

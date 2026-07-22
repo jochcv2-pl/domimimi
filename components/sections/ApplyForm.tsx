@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
 import Reveal from "@/components/ui/Reveal";
+import { Icon } from "@/components/ui/Icon";
 
 type FormState = {
   firstName: string;
@@ -91,8 +92,9 @@ export default function ApplyForm() {
         {isSuccess ? (
           <div className="form reveal in">
             <div style={{ gridColumn: "1/-1", padding: "24px 0" }}>
-              <p style={{ fontSize: "1.1rem", color: "var(--honey)" }}>
-                ✅ {t("success.thanksPrefix")} {form.firstName || t("success.fallbackName")} ! {t("success.message")}
+              <p style={{ fontSize: "1.1rem", color: "var(--honey)", display: "flex", alignItems: "center", gap: 10 }}>
+                <Icon name="checkCircle" size={24} color="var(--honey)" />
+                {t("success.thanksPrefix")} {form.firstName || t("success.fallbackName")} ! {t("success.message")}
               </p>
             </div>
           </div>

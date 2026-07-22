@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
+import { Icon } from '@/components/ui/Icon';
 
 export default function LoginClient({ brandName = 'Domipack', logoUrl }: { brandName?: string; logoUrl?: string | null }) {
   const router = useRouter();
@@ -65,7 +66,7 @@ export default function LoginClient({ brandName = 'Domipack', logoUrl }: { brand
             </p>
           </div>
           <div className="login-brand-foot">
-            <span>Accès réservé — Authentification requise</span>
+            <span>Accès réservé. Authentification requise</span>
           </div>
         </div>
       </div>
@@ -109,8 +110,8 @@ export default function LoginClient({ brandName = 'Domipack', logoUrl }: { brand
             </button>
           </form>
 
-          <Link href="/" className="login-back">
-            ← Retour au site
+          <Link href="/" className="login-back" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+            <Icon name="arrowLeft" size={16} /> Retour au site
           </Link>
         </div>
       </div>

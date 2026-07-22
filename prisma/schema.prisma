@@ -231,6 +231,31 @@ model Setting {
 }
 
 // ============================================================
+// TESTIMONIALS — Témoignages clients affichés sur la landing page.
+// Gérables depuis le CRM admin (ajout, édition, suppression, upload photo).
+// Si aucun témoignage actif n'existe, la landing retombe sur les
+// témoignages par défaut définis dans les fichiers de traduction.
+// ============================================================
+
+model Testimonial {
+  id       String  @id @default(cuid())
+  name     String
+  role     String
+  quote    String  @db.Text
+  rating   Int     @default(5)
+  photoUrl String?
+  locale   String  @default("fr")  // "fr" ou "de" — vide = toutes les langues
+  sort     Int     @default(0)
+  active   Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([active, sort])
+  @@index([locale])
+}
+
+// ============================================================
 // SEO AUDITS — Historique des audits générés par l'Agent SEO.
 // Chaque audit stocke un snapshot immuable : score global, items
 // (lignes de vérification label/detail/ok) et suggestions consolidées.

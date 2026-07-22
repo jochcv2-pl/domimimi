@@ -23,21 +23,13 @@ export default async function Home() {
       <div className="tape">
         <div className="tape-track">
           <span>{t("tape1a")}</span>
-          <span>·</span>
           <span>{t("tape1b")}</span>
-          <span>·</span>
           <span>{t("tape1c")}</span>
-          <span>·</span>
           <span>{t("tape1d")}</span>
-          <span>·</span>
           <span>{t("tape1a")}</span>
-          <span>·</span>
           <span>{t("tape1b")}</span>
-          <span>·</span>
           <span>{t("tape1c")}</span>
-          <span>·</span>
           <span>{t("tape1d")}</span>
-          <span>·</span>
         </div>
       </div>
       <Benefits />
@@ -45,21 +37,13 @@ export default async function Home() {
       <div className="tape">
         <div className="tape-track">
           <span>{t("tape2a")}</span>
-          <span>·</span>
           <span>{t("tape2b")}</span>
-          <span>·</span>
           <span>{t("tape2c")}</span>
-          <span>·</span>
           <span>{t("tape2d", { brandName })}</span>
-          <span>·</span>
           <span>{t("tape2a")}</span>
-          <span>·</span>
           <span>{t("tape2b")}</span>
-          <span>·</span>
           <span>{t("tape2c")}</span>
-          <span>·</span>
           <span>{t("tape2d", { brandName })}</span>
-          <span>·</span>
         </div>
       </div>
       <ProfilePay />

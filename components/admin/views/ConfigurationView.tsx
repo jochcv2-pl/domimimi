@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { Icon } from '@/components/ui/Icon';
 
 type Settings = Record<string, string>;
 type Secrets = Record<string, boolean>;
@@ -48,7 +49,7 @@ function SaveButton({
         {savingKey === label ? 'Enregistrement…' : 'Enregistrer'}
       </button>
       {savedKeys[label] === 'ok' && (
-        <span style={{ color: '#3F8F5B', fontSize: 12 }}>✓ Enregistré</span>
+        <span style={{ color: '#3F8F5B', fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 4 }}><Icon name="check" size={13} color="#3F8F5B" /> Enregistré</span>
       )}
       {savedKeys[label] === 'error' && (
         <span style={{ color: '#B33A3A', fontSize: 12 }}>Erreur : {loadError}</span>
@@ -506,7 +507,7 @@ export function ConfigurationView() {
                   {/* .env fallback indicator */}
                   <div style={{ marginTop: 8, fontSize: 11, color: '#95A198' }}>
                     {isConfigured ? (
-                      <>Fallback <code>.env</code> : <span className="pill-on" style={{ fontSize: 10 }}>✓ {p.secretKey}</span></>
+                      <>Fallback <code>.env</code> : <span className="pill-on" style={{ fontSize: 10 }}>{p.secretKey}</span></>
                     ) : (
                       <>Pas de fallback <code>.env</code> pour <code>{p.secretKey}</code></>
                     )}

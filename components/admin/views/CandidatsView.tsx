@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Modal from '../Modal';
+import { Icon } from '@/components/ui/Icon';
 import {
   Pipeline,
   PIPELINE_BADGE_CLS,
@@ -206,7 +207,7 @@ export function CandidatsView() {
               </svg>
               <div className="dz-title">Déposez un fichier .csv ou .xlsx</div>
               <div className="dz-sub">Colonnes attendues : nom, email, téléphone, ville, zone, disponibilité…</div>
-              {importName && <div className="dz-file">✓ {importName}</div>}
+              {importName && <div className="dz-file" style={{ display: 'flex', alignItems: 'center', gap: 5 }}><Icon name="check" size={13} color="#2E7D46" /> {importName}</div>}
             </div>
             <input
               ref={fileRef}
@@ -294,7 +295,7 @@ export function CandidatsView() {
                         </div>
                       </td>
                       <td>{c.city ?? c.postalCode}</td>
-                      <td>{c.zone ?? '—'}</td>
+                      <td>{c.zone ?? ''}</td>
                       <td>{c.source}</td>
                       <td>{c.recu}</td>
                       <td>
@@ -425,7 +426,7 @@ function Relances({ data }: { data: Contact['relances'] }) {
   if (data === 'valide') {
     return (
       <span className="rlz">
-        <span className="na">— validé</span>
+        <span className="na">validé</span>
       </span>
     );
   }
@@ -475,7 +476,9 @@ function ContactsError({ message, onRetry }: { message: string; onRetry: () => v
   return (
     <div style={{ padding: '32px 0', textAlign: 'center' }}>
       <p style={{ color: '#9B2C2C', marginBottom: 12, fontSize: '0.95rem' }}>
-        ⚠ Impossible de charger les candidatures.
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+          <Icon name="warning" size={16} color="#9B2C2C" /> Impossible de charger les candidatures.
+        </span>
       </p>
       <p style={{ color: '#95A198', fontSize: '0.85rem', marginBottom: 16 }}>
         {message}

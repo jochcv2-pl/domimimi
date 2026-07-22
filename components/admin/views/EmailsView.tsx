@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Modal from '../Modal';
+import { Icon } from '@/components/ui/Icon';
 import { sanitizeHtml } from '@/lib/sanitize';
 
 // CodeMirror est chargé dynamiquement (client-only, pas de SSR)
@@ -358,7 +359,7 @@ Nous avons bien reçu votre candidature pour l'emballage à domicile dans la zon
 
   function handleFile(file: File | undefined) {
     if (!file) return;
-    setFileName('✓ ' + file.name);
+    setFileName(file.name);
     const base = file.name.replace(/\.(html?|htm)$/i, '').replace(/[-_]/g, ' ');
     if (!importName) {
       setImportName(base.charAt(0).toUpperCase() + base.slice(1));
@@ -485,8 +486,8 @@ Nous avons bien reçu votre candidature pour l'emballage à domicile dans la zon
                   {savingTpl ? 'Enregistrement…' : (editingId ? 'Mettre à jour le modèle' : 'Enregistrer le modèle')}
                 </button>
                 {saveTplState === 'ok' && (
-                  <span style={{ color: '#3F8F5B', fontSize: 12, marginLeft: 10 }}>
-                    ✓ Modèle enregistré. Les agents utilisent désormais cette version.
+                  <span style={{ color: '#3F8F5B', fontSize: 12, marginLeft: 10, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                    <Icon name="check" size={13} color="#3F8F5B" /> Modèle enregistré. Les agents utilisent désormais cette version.
                   </span>
                 )}
                 {saveTplState === 'error' && (
@@ -537,7 +538,7 @@ Nous avons bien reçu votre candidature pour l'emballage à domicile dans la zon
                     onClick={() => setFooterOpen(true)}
                     title="Modifier le pied de page"
                   >
-                    ✎ Pied de page
+                    <Icon name="edit" size={14} /> Pied de page
                   </button>
                 </div>
               </div>
@@ -822,7 +823,7 @@ Nous avons bien reçu votre candidature pour l'emballage à domicile dans la zon
           <div className="pv-fs-bar">
             <b>Aperçu plein écran · Éditeur visuel</b>
             <button className="pv-fs-close" onClick={() => setFullVisuel(false)} title="Fermer (Échap)">
-              ✕
+              <Icon name="x" size={16} />
             </button>
           </div>
           <div className="pv-fs-scroll">
@@ -845,7 +846,7 @@ Nous avons bien reçu votre candidature pour l'emballage à domicile dans la zon
           <div className="pv-fs-bar">
             <b>Aperçu plein écran · Import HTML</b>
             <button className="pv-fs-close" onClick={() => setFullIframe(false)} title="Fermer (Échap)">
-              ✕
+              <Icon name="x" size={16} />
             </button>
           </div>
           <div className="pv-fs-iframe">

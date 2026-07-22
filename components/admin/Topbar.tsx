@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { useAdminStore, VIEW_CONFIG } from '@/lib/store';
 import Modal from './Modal';
+import { Icon } from '@/components/ui/Icon';
 
 type ExportFormat = 'csv' | 'xlsx' | 'pdf';
 
@@ -235,7 +236,11 @@ export function Topbar() {
               Annuler
             </button>
             <button className="btn btn-primary" onClick={handleExport} disabled={exportDone}>
-              {exportDone ? 'Export généré ✓' : 'Exporter'}
+              {exportDone ? (
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                  Export généré <Icon name="check" size={14} color="#2E7D46" />
+                </span>
+              ) : 'Exporter'}
             </button>
           </>
         }
@@ -279,7 +284,11 @@ export function Topbar() {
               Annuler
             </button>
             <button className="btn btn-primary" onClick={handleCreateMission} disabled={missionDone}>
-              {missionDone ? 'Mission créée ✓' : 'Créer la mission'}
+              {missionDone ? (
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                  Mission créée <Icon name="check" size={14} color="#2E7D46" />
+                </span>
+              ) : 'Créer la mission'}
             </button>
           </>
         }

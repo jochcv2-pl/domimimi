@@ -588,11 +588,7 @@ section.domipack-pad {
   left: 22px;
   right: 22px;
   height: 2px;
-  background: repeating-linear-gradient(
-    90deg,
-    var(--kraft) 0 10px,
-    transparent 10px 20px
-  );
+  background: var(--kraft);
   z-index: 1;
 }
 
@@ -679,9 +675,13 @@ section.domipack-pad {
 }
 
 .panel li::before {
-  content: "✓";
-  color: var(--honey);
-  font-weight: 700;
+  content: "";
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--honey);
+  margin-top: 7px;
 }
 
 .panel .fine {
@@ -1248,7 +1248,8 @@ footer a:hover {
   gap: 12px;
 }
 
-.btn {
+/* CRM btn scoped sous .admin-layout pour ne pas écraser le .btn de la landing */
+.admin-layout .btn {
   font-family: inherit;
   font-weight: 600;
   border-radius: 9px;
@@ -1261,34 +1262,35 @@ footer a:hover {
   transition: all 0.15s;
 }
 
-.btn-primary {
+.admin-layout .btn-primary {
   background: #E8A93C;
   color: #1E3A2F;
   padding: 10px 16px;
 }
 
-.btn-primary:hover {
+.admin-layout .btn-primary:hover {
   background: #CE8F22;
 }
 
-.btn-ghost {
+.admin-layout .btn-ghost {
   background: #fff;
   color: #23282A;
   border: 1px solid #DDE1D6;
   padding: 10px 16px;
 }
 
-.btn-ghost:hover {
+.admin-layout .btn-ghost:hover {
   border-color: #95A198;
 }
 
-.btn-sm {
+.admin-layout .btn-sm {
   padding: 7px 12px;
   font-size: 12px;
   border-radius: 8px;
 }
 
-.avatar {
+/* CRM avatar scoped pour ne pas écraser le .avatar de la landing */
+.admin-layout .avatar {
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -1352,7 +1354,8 @@ footer a:hover {
   color: #5E6B62;
 }
 
-.panel {
+/* CRM panel scoped sous .admin-layout pour ne pas écraser le .panel de la landing */
+.admin-layout .panel {
   background: #fff;
   color: #23282A;
   border: 1px solid #DDE1D6;
@@ -1375,12 +1378,12 @@ footer a:hover {
 }
 
 /* Override landing .panel h3 leak (specificity 0,2,1 beats 0,1,1) */
-.panel .panel-head h3,
-.panel .ae-head h2,
-.panel .tpl-name,
-.panel .dz-title,
-.panel .sub-panel h4,
-.panel .agent-list-head h3 {
+.admin-layout .panel .panel-head h3,
+.admin-layout .panel .ae-head h2,
+.admin-layout .panel .tpl-name,
+.admin-layout .panel .dz-title,
+.admin-layout .panel .sub-panel h4,
+.admin-layout .panel .agent-list-head h3 {
   color: #23282A;
 }
 
@@ -3045,11 +3048,14 @@ tr:last-child td {
   line-height: 1.6;
 }
 .legal-list li::before {
-  content: '✓';
+  content: '';
   position: absolute;
   left: 0;
-  color: var(--honey-deep);
-  font-weight: 700;
+  top: 7px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--honey-deep);
 }
 .legal-link {
   color: var(--honey-deep);

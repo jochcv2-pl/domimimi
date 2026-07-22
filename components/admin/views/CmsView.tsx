@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { Icon } from '@/components/ui/Icon';
 
 const LANGS = ['Français', 'English', 'Deutsch', 'Español', 'Português', 'Italiano'];
 
@@ -51,7 +52,7 @@ function SaveButton({
         {savingGroup === group ? 'Enregistrement…' : 'Enregistrer'}
       </button>
       {savedGroups[group] === 'ok' && (
-        <span style={{ color: '#3F8F5B', fontSize: 12 }}>✓ Enregistré</span>
+        <span style={{ color: '#3F8F5B', fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 4 }}><Icon name="check" size={13} color="#3F8F5B" /> Enregistré</span>
       )}
       {savedGroups[group] === 'error' && (
         <span style={{ color: '#B33A3A', fontSize: 12 }}>Erreur : {loadError}</span>

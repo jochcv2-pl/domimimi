@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { Icon } from '@/components/ui/Icon';
 
 // ============================================================
 // Types
@@ -243,7 +244,9 @@ export function RemunerationView() {
         </button>
         {saveState === 'ok' && (
           <span style={{ color: '#3F8F5B', fontSize: 12 }}>
-            ✓ Grille enregistrée. La landing + les emails utilisent désormais ces taux.
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+              <Icon name="check" size={14} color="#2E7D46" /> Grille enregistrée. La landing + les emails utilisent désormais ces taux.
+            </span>
           </span>
         )}
         {saveState === 'error' && (

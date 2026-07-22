@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "title": "{brandName} — L'emballage à domicile, en confiance",
+    "title": "{brandName}. L'emballage à domicile, en confiance",
     "description": "{brandName} recrute des personnes soigneuses pour préparer et conditionner des colis, tranquillement, depuis leur table de cuisine."
   },
   "nav": {
@@ -63,7 +63,7 @@
     "bullet3": "Matériel et transport intégralement pris en charge",
     "bullet4": "Bulletin de paie et cotisations comme tout salarié",
     "finePrefix": "*Montant indicatif",
-    "fineLive": " — taux live depuis le CRM admin",
+    "fineLive": ". Taux live depuis le CRM admin",
     "fineMock": " pour cette maquette",
     "fineSuffix": "Le taux réel figure au contrat signé avant toute mission."
   },
@@ -78,8 +78,7 @@
     "role2": "En reconversion · Lyon*",
     "quote3": "« À la retraite, ça me fait un complément et ça m'occupe les mains. Le geste est simple, la collecte se fait chez moi. Rien à redire. »",
     "name3": "Danielle F.",
-    "role3": "Retraitée · Toulouse*",
-    "disclaimer": "*Témoignages fictifs — contenu de démonstration pour la maquette."
+    "role3": "Retraitée · Toulouse*"
   },
   "faq": {
     "eyebrow": "Questions fréquentes",
@@ -176,7 +175,7 @@
   },
   "privacy": {
     "meta": {
-      "title": "Politique de confidentialité — {brandName}",
+      "title": "Politique de confidentialité. {brandName}",
       "description": "Politique de confidentialité et de protection des données personnelles {brandName} (RGPD)."
     },
     "eyebrow": "Protection des données",

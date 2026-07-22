@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { useParams } from "next/navigation";
+import { Icon } from "@/components/ui/Icon";
 
 export default function Navbar({ brandName = "Domipack", logoUrl }: { brandName?: string; logoUrl?: string | null }) {
   const t = useTranslations("nav");
@@ -76,7 +77,7 @@ export default function Navbar({ brandName = "Domipack", logoUrl }: { brandName?
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
         >
-          {open ? "✕" : "☰"}
+          {open ? <Icon name="x" size={22} /> : <Icon name="menu" size={22} />}
         </button>
       </div>
     </header>

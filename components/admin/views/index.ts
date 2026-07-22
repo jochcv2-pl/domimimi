@@ -10,3 +10,4 @@ export { PipelineView } from './PipelineView';
 export { ConfigurationView } from './ConfigurationView';
 export { ProfilView } from './ProfilView';
 export { ParametresView } from './ParametresView';
+export { TestimonialsView } from './TestimonialsView';

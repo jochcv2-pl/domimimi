@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { PIPELINE_STATUSES } from '../Pipeline';
+import { Icon } from '@/components/ui/Icon';
 
 // ============================================================
 // Types
@@ -106,7 +107,9 @@ export function DashboardView() {
     return (
       <div className="dashboard-view" style={{ padding: 24 }}>
         <div style={{ textAlign: 'center' }}>
-          <p style={{ color: '#9B2C2C', marginBottom: 8 }}>⚠ Impossible de charger les statistiques.</p>
+          <p style={{ color: '#9B2C2C', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 6 }}>
+            <Icon name="warning" size={16} color="#9B2C2C" /> Impossible de charger les statistiques.
+          </p>
           <p style={{ color: '#95A198', fontSize: '0.85rem', marginBottom: 16 }}>{error}</p>
           <button className="btn btn-ghost" onClick={loadStats}>Réessayer</button>
         </div>

@@ -17,6 +17,7 @@
     "db:push": "prisma db push",
     "db:seed": "node prisma/seed.mjs",
     "db:seed-admin": "node prisma/seed-admin.mjs",
+    "db:purge": "node prisma/purge-mock-data.mjs",
     "db:studio": "prisma studio",
     "db:migrate": "prisma migrate dev",
     "prepare": "husky"

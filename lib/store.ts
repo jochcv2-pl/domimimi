@@ -12,7 +12,8 @@ export type AdminView =
   | 'pipeline'
   | 'configuration'
   | 'profil'
-  | 'parametres';
+  | 'parametres'
+  | 'testimonials';
 
 export const VIEW_CONFIG: Record<AdminView, { title: string; sub: string; icon: string }> = {
   dashboard: { title: 'Vue d\'ensemble', sub: 'Activité de votre recrutement en temps réel', icon: 'dashboard' },
@@ -27,6 +28,7 @@ export const VIEW_CONFIG: Record<AdminView, { title: string; sub: string; icon: 
   configuration: { title: 'Configuration', sub: 'Modèle d\'IA, passerelles, cadence et sécurité', icon: 'settings' },
   profil: { title: 'Mon profil', sub: 'Vos informations personnelles', icon: 'user' },
   parametres: { title: 'Paramètres du compte', sub: 'Comptes admin, notifications et préférences', icon: 'settings' },
+  testimonials: { title: 'Témoignages', sub: 'Gérez les avis affichés sur le site', icon: 'star' },
 };
 
 export type NotificationItem = {
