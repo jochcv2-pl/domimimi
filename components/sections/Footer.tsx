@@ -17,15 +17,13 @@ export default async function Footer({ brandName = "domipackung", logoUrl }: { b
               {logoUrl ? (
                 <img src={logoUrl} alt={brandName} style={{ height: 28, width: "auto" }} />
               ) : (
-                <>
-                  <svg className="mark" viewBox="0 0 30 24" fill="none">
-                    <path d="M2 7 15 1l13 6-13 6z" fill="#C08A5A" />
-                    <path d="M2 7v10l13 6V13z" fill="#0F2019" />
-                    <path d="M28 7v10l-13 6V13z" fill="#2C5344" />
-                  </svg>
-                  {brandName}
-                </>
+                <svg className="mark" viewBox="0 0 30 24" fill="none">
+                  <path d="M2 7 15 1l13 6-13 6z" fill="#C08A5A" />
+                  <path d="M2 7v10l13 6V13z" fill="#0F2019" />
+                  <path d="M28 7v10l-13 6V13z" fill="#2C5344" />
+                </svg>
               )}
+              {brandName}
             </div>
             <p>{t("tagline")}</p>
           </div>

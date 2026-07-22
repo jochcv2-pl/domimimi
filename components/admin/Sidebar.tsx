@@ -104,11 +104,10 @@ export function Sidebar({ brandName = 'domipackung', logoUrl }: { brandName?: st
   return (
     <aside className="sidebar">
       <div className="sb-logo">
-        {logoUrl ? (
-          <img src={logoUrl} alt={brandName} style={{ height: 28, width: 'auto' }} />
-        ) : (
-          brandName
+        {logoUrl && (
+          <img src={logoUrl} alt={brandName} style={{ height: 22, width: 'auto', flexShrink: 0 }} />
         )}
+        {brandName}
       </div>
       
       {menuItems.map((group) => (

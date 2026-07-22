@@ -47,16 +47,14 @@ export default function LoginClient({ brandName = 'domipackung', logoUrl }: { br
             {logoUrl ? (
               <img src={logoUrl} alt={brandName} style={{ height: 28, width: 'auto' }} />
             ) : (
-              <>
-                <svg viewBox="0 0 30 24" fill="none" width="34" height="28">
-                  <path d="M2 7 15 1l13 6-13 6z" fill="#C08A5A" />
-                  <path d="M2 7v10l13 6V13z" fill="#0F2942" />
-                  <path d="M28 7v10l-13 6V13z" fill="#1E6FB8" />
-                  <path d="M9 4l13 6" stroke="#E8A93C" strokeWidth="1.6" />
-                </svg>
-                <span>{brandName}</span>
-              </>
+              <svg viewBox="0 0 30 24" fill="none" width="34" height="28">
+                <path d="M2 7 15 1l13 6-13 6z" fill="#C08A5A" />
+                <path d="M2 7v10l13 6V13z" fill="#0F2942" />
+                <path d="M28 7v10l-13 6V13z" fill="#1E6FB8" />
+                <path d="M9 4l13 6" stroke="#E8A93C" strokeWidth="1.6" />
+              </svg>
             )}
+            <span>{brandName}</span>
           </div>
           <div className="login-brand-copy">
             <h1>Espace administrateur</h1>

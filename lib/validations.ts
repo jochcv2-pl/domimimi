@@ -188,7 +188,7 @@ export type CreateAgentInput = z.infer<typeof createAgentSchema>;
 
 export const updateSettingSchema = z.object({
   key: z.string().min(1).max(100),
-  value: z.string().min(1).max(5000),
+  value: z.string().max(5000),
 });
 
 export const bulkUpdateSettingsSchema = z.object({
