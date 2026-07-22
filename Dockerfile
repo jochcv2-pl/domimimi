@@ -66,9 +66,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/messages ./messages
 
 # Copier le client Prisma généré
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modules/.prisma
+# (.prisma n'existe pas avec pnpm — le client généré est dans @prisma/client)
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/prisma ./node_modules/prisma
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.pnpm/@prisma+adapter-pg*/node_modules/@prisma/adapter-pg ./node_modules/@prisma/adapter-pg
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 
 # nodemailer est un serverExternalPackage — il doit être présent
