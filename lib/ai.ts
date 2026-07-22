@@ -229,7 +229,14 @@ export async function chatCompletion(
     };
   };
 
-  const content = data.choices?.[0]?.message?.content;
+  const rawContent = data.choices?.[0]?.message?.content;
+  if (!rawContent) {
+    throw new AiError("Réponse vide du modèle", "PARSE_ERROR");
+  }
+
+  // Qwen3 (et autres modèles "thinking") peuvent inclure un bloc
+  // <think>...</think> avant la réponse réelle. On le retire.
+  const content = stripThinking(rawContent).trim();
   if (!content) {
     throw new AiError("Réponse vide du modèle", "PARSE_ERROR");
   }
@@ -270,10 +277,10 @@ export async function testConnection(): Promise<{
       [
         {
           role: "user",
-          content: "Réponds uniquement: OK",
+          content: "Réponds uniquement: OK /no_think",
         },
       ],
-      { maxTokens: 5, temperature: 0 },
+      { maxTokens: 200, temperature: 0 },
     );
 
     return {
@@ -368,6 +375,17 @@ function parseIntOr(s: string | undefined, fallback: number): number {
   if (!s) return fallback;
   const n = Number.parseInt(s, 10);
   return Number.isFinite(n) ? n : fallback;
+}
+
+/**
+ * Retire les blocs <think>...</think> générés par les modèles
+ * de type Qwen3 (mode réflexion interne).
+ */
+function stripThinking(text: string): string {
+  return text
+    .replace(/<think>[\s\S]*?<\/think>/gi, "")
+    .replace(/<\/?think>/gi, "")
+    .trim();
 }
 
 function formatMemory(memory: unknown): string {
