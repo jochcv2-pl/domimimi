@@ -38,6 +38,8 @@ COPY . .
 # Pas de secrets ici — seulement des vars publiques
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
+# URL placeholder pour que Prisma ne crash pas au build (pas de connexion réelle)
+ENV DATABASE_URL="postgresql://build:build@localhost:5432/build?schema=public"
 
 # Générer le client Prisma AVANT le build (types requis par TypeScript)
 RUN npx prisma generate
