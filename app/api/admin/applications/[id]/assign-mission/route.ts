@@ -59,6 +59,8 @@ async function sendMissionEmail(
     payMode: PayMode | null;
     weeklyPackages: number | null;
     startDate: Date | null;
+    language: string | null;
+    country: string | null;
   },
   settings: PipelineSettings,
 ): Promise<{ ok: boolean; error?: string }> {
@@ -66,6 +68,7 @@ async function sendMissionEmail(
     triggerKey: "mission_assigned",
     application: app,
     settings: settings.raw,
+    locale: app.language ?? "de",
   });
 
   let subject: string;
@@ -238,6 +241,8 @@ export async function POST(
         payMode: updated.payMode,
         weeklyPackages: updated.weeklyPackages,
         startDate: updated.startDate,
+        language: updated.language,
+        country: updated.country,
       },
       settings,
     );

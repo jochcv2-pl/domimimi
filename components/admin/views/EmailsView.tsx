@@ -49,17 +49,15 @@ type Template = {
   body: string;
   status: 'actif' | 'brouillon' | 'archive';
   sort: number;
+  locale?: string;
   // champs UI dérivés (non stockés)
   badge?: string;
   label?: string;
-  langs?: number;
   excerpt?: string;
   vars?: string[];
 };
 
 const EMPTY_TEMPLATES: Template[] = [];
-
-const LANG_TAGS = ['FR', 'EN', 'DE', 'ES', 'PT', 'IT'];
 
 /** Pied de page email par défaut — utilisé tant que la DB n'a pas chargé. */
 const DEFAULT_FOOTER = {
@@ -72,6 +70,15 @@ const DEFAULT_FOOTER = {
     'Cet email vous est envoyé suite à votre candidature. Vos données sont traitées conformément au RGPD. Pour vous désinscrire, répondez STOP.',
 };
 
+const LOCALE_LABELS: Record<string, string> = {
+  de: 'DE',
+  fr: 'FR',
+  en: 'EN',
+  es: 'ES',
+  pt: 'PT',
+  it: 'IT',
+};
+
 // Dérive les champs UI (badge/label/excerpt/vars) depuis les champs DB.
 function decorate(t: Template): Template {
   const isBrouillon = t.status === 'brouillon';
@@ -80,8 +87,7 @@ function decorate(t: Template): Template {
     ...t,
     badge: isBrouillon ? 'b-wait' : isArchive ? 'b-wait' : 'b-offer',
     label: isBrouillon ? 'Brouillon' : isArchive ? 'Archive' : 'Actif',
-    langs: 6,
-    excerpt: t.body?.slice(0, 120).replace(/\s+/g, ' ').trim() + '…',
+    excerpt: t.body?.slice(0, 140).replace(/\s+/g, ' ').trim() + '…',
     vars: VARS.filter((v) => (t.body ?? '').includes(v) || (t.subject ?? '').includes(v)),
   };
 }
@@ -677,11 +683,9 @@ Nous avons bien reçu votre candidature pour l'emballage à domicile dans la zon
                   <span className={`badge ${t.badge}`}>{t.label}</span>
                 </div>
                 <div className="tpl-lang-row">
-                  {LANG_TAGS.slice(0, t.langs).map((lg) => (
-                    <span key={lg} className="lang-tag">
-                      {lg}
-                    </span>
-                  ))}
+                  <span className="lang-tag">
+                    {LOCALE_LABELS[t.locale ?? 'de'] ?? t.locale ?? 'DE'}
+                  </span>
                 </div>
                 <div className="tpl-excerpt">{t.excerpt}</div>
                 <div className="tpl-meta">

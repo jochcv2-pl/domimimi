@@ -101,6 +101,8 @@ export async function POST(
       payMode: (emballeur.payMode ?? mission.payMode ?? null) as PayMode | null,
       weeklyPackages: mission.weeklyPackages,
       startDate: mission.startDate,
+      language: emballeur.language,
+      country: emballeur.country,
     },
     settings,
   );
@@ -125,6 +127,8 @@ async function sendMissionAssignedEmail(
     payMode: PayMode | null;
     weeklyPackages: number | null;
     startDate: Date | null;
+    language: string | null;
+    country: string | null;
   },
   settings: PipelineSettings,
 ): Promise<{ ok: boolean; error?: string }> {
@@ -132,6 +136,7 @@ async function sendMissionAssignedEmail(
     triggerKey: "mission_assigned",
     application: app,
     settings: settings.raw,
+    locale: app.language ?? "de",
   });
 
   let subject: string;
