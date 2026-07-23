@@ -44,6 +44,16 @@ enum PayMode {
   package
 }
 
+// Statut d'une mission (cycle de vie standalone).
+// disponible = créée par l'admin, en attente d'assignation
+// assignee   = assignée à un emballeur (email envoyé)
+// terminee   = terminée (archivable, supprimable)
+enum MissionStatus {
+  disponible
+  assignee
+  terminee
+}
+
 // Type de ligne dans la grille de rémunération.
 // base = taux de base par mode de paie (4 lignes : heure std, heure soir/WE,
 //        colis std, colis fragile).
@@ -114,12 +124,40 @@ model Application {
 
   notes ApplicationNote[]
   emails EmailLog[]
+  missions Mission[]
 
   @@index([pipe])
   @@index([createdAt])
   @@index([email])
   @@index([source])
   @@index([validatedById])
+}
+
+// ============================================================
+// MISSIONS — Entités standalone créées par l'admin.
+// L'admin crée une mission (zone, produit, mode de paie…),
+// puis l'assigne à un emballeur validé (Application pipe=client).
+// Quand la mission est terminée, l'admin peut la supprimer.
+// ============================================================
+
+model Mission {
+  id             String        @id @default(cuid())
+  zone           String                          // texte libre écrit par l'admin
+  product        String?                         // type de colis (ex : "Kosmetik")
+  payMode        PayMode?                        // hourly | package
+  weeklyPackages Int?                            // cadence colis/semaine
+  startDate      DateTime?                       // date de début
+  status         MissionStatus @default(disponible)
+
+  // Assignation à un emballeur (null si disponible)
+  applicationId  String?
+  application    Application? @relation(fields: [applicationId], references: [id])
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([status])
+  @@index([applicationId])
 }
 
 model ApplicationNote {
