@@ -3,6 +3,9 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { apiSuccess, apiError, apiZodError } from "@/lib/api";
 import { updateApplicationSchema } from "@/lib/validations";
+import { loadPipelineSettings } from "@/lib/email/engine";
+import { getProvider } from "@/lib/email/providers";
+import { renderEmail } from "@/lib/email/render";
 
 /**
  * PATCH /api/admin/applications/[id]
@@ -58,7 +61,8 @@ export async function PATCH(
 
   // Si on passe à "client" (emballeur validé), tracer la validation
   // (décision crm.relance.stop_conditions — validé emballeur arrête les relances).
-  if (update.pipe === "client" && existing.pipe !== "client") {
+  const wasValidated = update.pipe === "client" && existing.pipe !== "client";
+  if (wasValidated) {
     update.validatedAt = new Date();
     update.validatedById = session.user.id;
     if (update.relanceStop === undefined || update.relanceStop === null) {
@@ -89,11 +93,87 @@ export async function PATCH(
         },
       },
     });
+
+    // Si validation emballeur (pipe → client), envoyer l'email d'acceptation
+    if (wasValidated) {
+      sendValidationEmail(updated).catch((err) => {
+        console.error("[validation-email] Échec:", err);
+      });
+    }
+
     return apiSuccess({ data: updated });
   } catch (err) {
     console.error("[api/admin/applications/[id]] PATCH error:", err);
     return apiError("Erreur serveur", "INTERNAL_ERROR", 500);
   }
+}
+
+/**
+ * Envoie l'email "validation" au candidat dont la candidature vient
+ * d'être acceptée (pipe → client). Non bloquant — erreurs loggées.
+ */
+async function sendValidationEmail(app: {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  postalCode: string;
+  city: string | null;
+  zone: string | null;
+  language: string | null;
+  country: string | null;
+}) {
+  const settings = await loadPipelineSettings();
+
+  const rendered = await renderEmail({
+    triggerKey: "validation",
+    application: app,
+    settings: settings.raw,
+    locale: app.language ?? "de",
+  });
+
+  if (!rendered.ok) {
+    console.warn("[validation-email] Pas de template 'validation' (triggerKey)");
+    return;
+  }
+
+  const provider = getProvider(settings.providerName);
+  if (!provider.isConfigured()) {
+    console.warn("[validation-email] Provider non configuré");
+    return;
+  }
+
+  const sendResult = await provider.send({
+    to: app.email,
+    from: settings.fromAddress,
+    subject: rendered.content.subject,
+    html: rendered.content.html,
+    text: rendered.content.text,
+  });
+
+  await prisma.emailLog.upsert({
+    where: {
+      applicationId_trigger: { applicationId: app.id, trigger: "validation" },
+    },
+    create: {
+      applicationId: app.id,
+      trigger: "validation",
+      templateName: rendered.template.name,
+      toEmail: app.email,
+      provider: settings.providerName,
+      status: sendResult.ok ? "sent" : "failed",
+      providerMessageId: sendResult.ok ? (sendResult.messageId ?? null) : null,
+      error: sendResult.ok ? null : sendResult.error,
+      sentAt: sendResult.ok ? new Date() : null,
+    },
+    update: {
+      templateName: rendered.template.name,
+      status: sendResult.ok ? "sent" : "failed",
+      providerMessageId: sendResult.ok ? (sendResult.messageId ?? null) : null,
+      error: sendResult.ok ? null : sendResult.error,
+      sentAt: sendResult.ok ? new Date() : null,
+    },
+  });
 }
 
 /**

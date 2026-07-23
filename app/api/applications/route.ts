@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
     return apiZodError(parsed.error);
   }
 
-  const { firstName, lastName, email, phone, postalCode, message, city } = parsed.data;
+  const { firstName, lastName, email, phone, postalCode, message, city, country, language, address } = parsed.data;
 
   try {
     const application = await prisma.application.create({
@@ -109,6 +109,9 @@ export async function POST(request: NextRequest) {
         postalCode,
         message: message || null,
         city: city || null,
+        country: country || null,
+        language,
+        address: address || null,
         // pipe, source, relanceCount/Max prennent leurs valeurs par défaut du schéma
       },
     });

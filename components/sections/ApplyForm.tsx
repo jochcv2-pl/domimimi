@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import Reveal from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui/Icon";
 
@@ -11,22 +11,30 @@ type FormState = {
   email: string;
   phone: string;
   postalCode: string;
+  country: string;
+  language: string;
+  address: string;
   message: string;
 };
 
 type Status = "idle" | "submitting" | "success" | "error";
 
-const INITIAL_STATE: FormState = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  phone: "",
-  postalCode: "",
-  message: "",
-};
-
 export default function ApplyForm() {
   const t = useTranslations("apply");
+  const locale = useLocale();
+
+  const INITIAL_STATE: FormState = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    postalCode: "",
+    country: "",
+    language: locale === "fr" ? "fr" : "de",
+    address: "",
+    message: "",
+  };
+
   const [form, setForm] = useState<FormState>(INITIAL_STATE);
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -50,7 +58,6 @@ export default function ApplyForm() {
       const data = await res.json();
 
       if (!res.ok) {
-        // Erreur de validation Zod (422) ou autre
         if (data.details && Array.isArray(data.details)) {
           const messages = data.details
             .map((d: { message?: string }) => d.message)
@@ -143,6 +150,64 @@ export default function ApplyForm() {
                 value={form.postalCode}
                 onChange={(e) => handleChange("postalCode", e.target.value)}
                 required
+                disabled={isSubmitting}
+              />
+              <select
+                aria-label={t("placeholder.country")}
+                value={form.country}
+                onChange={(e) => handleChange("country", e.target.value)}
+                disabled={isSubmitting}
+                style={{
+                  padding: "12px 14px",
+                  borderRadius: 8,
+                  border: "1px solid rgba(255,255,255,0.15)",
+                  background: "rgba(255,255,255,0.05)",
+                  color: "#fff",
+                  fontSize: "1rem",
+                  fontFamily: "inherit",
+                  appearance: "none",
+                  cursor: "pointer",
+                }}
+              >
+                <option value="" style={{ color: "#333" }}>{t("placeholder.country")}</option>
+                <option value="Deutschland" style={{ color: "#333" }}>Deutschland</option>
+                <option value="Österreich" style={{ color: "#333" }}>Österreich</option>
+                <option value="Schweiz" style={{ color: "#333" }}>Schweiz</option>
+                <option value="Frankreich" style={{ color: "#333" }}>Frankreich</option>
+                <option value="Belgien" style={{ color: "#333" }}>Belgien</option>
+                <option value="Niederlande" style={{ color: "#333" }}>Niederlande</option>
+                <option value="Luxemburg" style={{ color: "#333" }}>Luxemburg</option>
+                <option value="Italien" style={{ color: "#333" }}>Italien</option>
+                <option value="Spanien" style={{ color: "#333" }}>Spanien</option>
+                <option value="Andere" style={{ color: "#333" }}>{t("placeholder.otherCountry")}</option>
+              </select>
+              <select
+                aria-label={t("placeholder.language")}
+                value={form.language}
+                onChange={(e) => handleChange("language", e.target.value)}
+                disabled={isSubmitting}
+                style={{
+                  padding: "12px 14px",
+                  borderRadius: 8,
+                  border: "1px solid rgba(255,255,255,0.15)",
+                  background: "rgba(255,255,255,0.05)",
+                  color: "#fff",
+                  fontSize: "1rem",
+                  fontFamily: "inherit",
+                  appearance: "none",
+                  cursor: "pointer",
+                }}
+              >
+                <option value="de" style={{ color: "#333" }}>Deutsch</option>
+                <option value="fr" style={{ color: "#333" }}>Français</option>
+              </select>
+              <input
+                type="text"
+                className="full"
+                placeholder={t("placeholder.address")}
+                aria-label={t("placeholder.address")}
+                value={form.address}
+                onChange={(e) => handleChange("address", e.target.value)}
                 disabled={isSubmitting}
               />
               <textarea

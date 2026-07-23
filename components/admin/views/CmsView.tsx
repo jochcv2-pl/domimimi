@@ -83,6 +83,20 @@ export function CmsView() {
   const [siret, setSiret] = useState('');
   // Langues
   const [langsActive, setLangsActive] = useState<string[]>([...LANGS]);
+  // Footer
+  const [footTagline, setFootTagline] = useState('');
+  const [footCol1Title, setFootCol1Title] = useState('');
+  const [footCol1L1, setFootCol1L1] = useState('');
+  const [footCol1L2, setFootCol1L2] = useState('');
+  const [footCol1L3, setFootCol1L3] = useState('');
+  const [footCol2Title, setFootCol2Title] = useState('');
+  const [footCol2L1, setFootCol2L1] = useState('');
+  const [footCol2L2, setFootCol2L2] = useState('');
+  const [footCol2L3, setFootCol2L3] = useState('');
+  const [footCol3Title, setFootCol3Title] = useState('');
+  const [footCol3L1, setFootCol3L1] = useState('');
+  const [footCol3L2, setFootCol3L2] = useState('');
+  const [footCol3L3, setFootCol3L3] = useState('');
 
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
@@ -125,6 +139,20 @@ export function CmsView() {
         const l = JSON.parse(map['cms.langs_active'] ?? '[]');
         if (Array.isArray(l) && l.length > 0) setLangsActive(l);
       } catch { /* garde default */ }
+      // Footer
+      setFootTagline(map['footer.tagline'] ?? '');
+      setFootCol1Title(map['footer.col1.title'] ?? '');
+      setFootCol1L1(map['footer.col1.link1'] ?? '');
+      setFootCol1L2(map['footer.col1.link2'] ?? '');
+      setFootCol1L3(map['footer.col1.link3'] ?? '');
+      setFootCol2Title(map['footer.col2.title'] ?? '');
+      setFootCol2L1(map['footer.col2.link1'] ?? '');
+      setFootCol2L2(map['footer.col2.link2'] ?? '');
+      setFootCol2L3(map['footer.col2.link3'] ?? '');
+      setFootCol3Title(map['footer.col3.title'] ?? '');
+      setFootCol3L1(map['footer.col3.link1'] ?? '');
+      setFootCol3L2(map['footer.col3.link2'] ?? '');
+      setFootCol3L3(map['footer.col3.link3'] ?? '');
     } catch (err) {
       setLoadError(err instanceof Error ? err.message : 'Erreur');
     } finally {
@@ -441,6 +469,73 @@ export function CmsView() {
                   { key: 'cms.contact.whatsapp_display', value: whatsappDisplay },
                   { key: 'cms.contact.email', value: email },
                   { key: 'cms.company.siret', value: siret },
+                ])}
+              />
+            </div>
+          </div>
+
+          {/* PIED DE PAGE (FOOTER) */}
+          <div className="panel">
+            <div className="panel-head">
+              <h3>Pied de page (Footer)</h3>
+            </div>
+            <div className="panel-body" style={{ paddingTop: 16 }}>
+              <div className="fg" style={{ marginBottom: 10 }}>
+                <label>Slogan</label>
+                <input value={footTagline} onChange={(e) => setFootTagline(e.target.value)} />
+              </div>
+              <div className="fg" style={{ marginBottom: 10 }}>
+                <label>Colonne 1 — Titre</label>
+                <input value={footCol1Title} onChange={(e) => setFootCol1Title(e.target.value)} placeholder="Ex : {{brandName}}" />
+              </div>
+              <div className="fg" style={{ marginBottom: 6 }}>
+                <label>Colonne 1 — Liens (3 max)</label>
+                <input value={footCol1L1} onChange={(e) => setFootCol1L1(e.target.value)} placeholder="Lien 1" />
+                <input value={footCol1L2} onChange={(e) => setFootCol1L2(e.target.value)} placeholder="Lien 2" style={{ marginTop: 6 }} />
+                <input value={footCol1L3} onChange={(e) => setFootCol1L3(e.target.value)} placeholder="Lien 3" style={{ marginTop: 6 }} />
+              </div>
+              <div className="fg" style={{ marginBottom: 10 }}>
+                <label>Colonne 2 — Titre</label>
+                <input value={footCol2Title} onChange={(e) => setFootCol2Title(e.target.value)} />
+              </div>
+              <div className="fg" style={{ marginBottom: 6 }}>
+                <label>Colonne 2 — Liens (3 max)</label>
+                <input value={footCol2L1} onChange={(e) => setFootCol2L1(e.target.value)} placeholder="Lien 1" />
+                <input value={footCol2L2} onChange={(e) => setFootCol2L2(e.target.value)} placeholder="Lien 2" style={{ marginTop: 6 }} />
+                <input value={footCol2L3} onChange={(e) => setFootCol2L3(e.target.value)} placeholder="Lien 3" style={{ marginTop: 6 }} />
+              </div>
+              <div className="fg" style={{ marginBottom: 10 }}>
+                <label>Colonne 3 — Titre</label>
+                <input value={footCol3Title} onChange={(e) => setFootCol3Title(e.target.value)} />
+              </div>
+              <div className="fg" style={{ marginBottom: 0 }}>
+                <label>Colonne 3 — Liens (3 max)</label>
+                <input value={footCol3L1} onChange={(e) => setFootCol3L1(e.target.value)} placeholder="Lien 1" />
+                <input value={footCol3L2} onChange={(e) => setFootCol3L2(e.target.value)} placeholder="Lien 2" style={{ marginTop: 6 }} />
+                <input value={footCol3L3} onChange={(e) => setFootCol3L3(e.target.value)} placeholder="Lien 3" style={{ marginTop: 6 }} />
+              </div>
+              <p className="field-hint" style={{ marginTop: 8 }}>
+                Laissez vide pour utiliser les traductions par défaut.
+              </p>
+              <SaveButton
+                savingGroup={savingGroup}
+                savedGroups={savedGroups}
+                loadError={loadError}
+                group="footer"
+                onSave={() => saveGroup('footer', [
+                  { key: 'footer.tagline', value: footTagline },
+                  { key: 'footer.col1.title', value: footCol1Title },
+                  { key: 'footer.col1.link1', value: footCol1L1 },
+                  { key: 'footer.col1.link2', value: footCol1L2 },
+                  { key: 'footer.col1.link3', value: footCol1L3 },
+                  { key: 'footer.col2.title', value: footCol2Title },
+                  { key: 'footer.col2.link1', value: footCol2L1 },
+                  { key: 'footer.col2.link2', value: footCol2L2 },
+                  { key: 'footer.col2.link3', value: footCol2L3 },
+                  { key: 'footer.col3.title', value: footCol3Title },
+                  { key: 'footer.col3.link1', value: footCol3L1 },
+                  { key: 'footer.col3.link2', value: footCol3L2 },
+                  { key: 'footer.col3.link3', value: footCol3L3 },
                 ])}
               />
             </div>

@@ -1,13 +1,26 @@
 /**
- * Footer · pied de page Domipack.
- * Composant serveur (pas de 'use client').
- * Reproduit fidèlement le HTML de référence de la landing page.
+ * Footer · pied de page.
+ * Composant serveur. Lit les settings CMS (footer.*) avec fallback i18n.
  */
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import { getFooterSettings } from "@/lib/brand";
 
 export default async function Footer({ brandName = "domipackung", logoUrl }: { brandName?: string; logoUrl?: string | null }) {
   const t = await getTranslations("footer");
+  const fs = await getFooterSettings();
+
+  const tagline = fs.tagline ?? t("tagline");
+
+  const col1Title = fs.col1Title ?? t("col1.title", { brandName });
+  const col1Links = fs.col1Links ?? [t("col1.link1"), t("col1.link2"), t("col1.link3")];
+
+  const col2Title = fs.col2Title ?? t("col2.title");
+  const col2Links = fs.col2Links ?? [t("col2.link1"), t("col2.link2"), t("col2.link3")];
+
+  const col3Title = fs.col3Title ?? t("col3.title");
+  const col3Links = fs.col3Links ?? [t("col3.link1"), t("col3.link2"), t("col3.link3")];
+
   return (
     <footer>
       <div className="domipack-wrap">
@@ -25,25 +38,25 @@ export default async function Footer({ brandName = "domipackung", logoUrl }: { b
               )}
               {brandName}
             </div>
-            <p>{t("tagline")}</p>
+            <p>{tagline}</p>
           </div>
           <div>
-            <h4>{t("col1.title", { brandName })}</h4>
-            <a href="#avantages">{t("col1.link1")}</a>
-            <a href="#etapes">{t("col1.link2")}</a>
-            <a href="#profil">{t("col1.link3")}</a>
+            <h4>{col1Title}</h4>
+            {col1Links[0] && <a href="#avantages">{col1Links[0]}</a>}
+            {col1Links[1] && <a href="#etapes">{col1Links[1]}</a>}
+            {col1Links[2] && <a href="#profil">{col1Links[2]}</a>}
           </div>
           <div>
-            <h4>{t("col2.title")}</h4>
-            <a href="#postuler">{t("col2.link1")}</a>
-            <a href="#faq">{t("col2.link2")}</a>
-            <a href="#">{t("col2.link3")}</a>
+            <h4>{col2Title}</h4>
+            {col2Links[0] && <a href="#postuler">{col2Links[0]}</a>}
+            {col2Links[1] && <a href="#faq">{col2Links[1]}</a>}
+            {col2Links[2] && <a href="#">{col2Links[2]}</a>}
           </div>
           <div>
-            <h4>{t("col3.title")}</h4>
-            <Link href="/mentions-legales">{t("col3.link1")}</Link>
-            <Link href="/confidentialite">{t("col3.link2")}</Link>
-            <Link href="/contact">{t("col3.link3")}</Link>
+            <h4>{col3Title}</h4>
+            {col3Links[0] && <Link href="/mentions-legales">{col3Links[0]}</Link>}
+            {col3Links[1] && <Link href="/confidentialite">{col3Links[1]}</Link>}
+            {col3Links[2] && <Link href="/contact">{col3Links[2]}</Link>}
           </div>
         </div>
         <div className="foot-bottom">

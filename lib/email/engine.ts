@@ -169,6 +169,8 @@ export interface EligibleApplication {
   postalCode: string;
   city: string | null;
   zone: string | null;
+  language: string | null;
+  country: string | null;
   pipe: PipeStatus;
   relanceStop: RelanceStop | null;
   relanceCount: number;
@@ -318,11 +320,12 @@ export async function runEmailCycle(opts: CycleOptions = {}): Promise<CycleResul
       if (remainingQuota <= 0) break;
       result.processed++;
 
-      // Rendre le template
+      // Rendre le template dans la langue du candidat
       const rendered = await renderEmail({
         triggerKey: step.triggerKey,
         application: app,
         settings: settings.raw,
+        locale: app.language ?? "de",
       });
 
       if (!rendered.ok) {

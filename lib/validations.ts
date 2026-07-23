@@ -40,6 +40,19 @@ export const createApplicationSchema = z.object({
     .max(100, "La ville est trop longue")
     .optional()
     .or(z.literal("")),
+  country: z
+    .string()
+    .max(100, "Le pays est trop long")
+    .optional()
+    .or(z.literal("")),
+  language: z
+    .enum(["de", "fr"])
+    .default("de"),
+  address: z
+    .string()
+    .max(300, "L'adresse est trop longue")
+    .optional()
+    .or(z.literal("")),
 });
 
 export type CreateApplicationInput = z.infer<typeof createApplicationSchema>;

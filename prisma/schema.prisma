@@ -100,6 +100,12 @@ model Application {
   zone       String?
   source     String    @default("Formulaire site")
 
+  // Langue et pays du prospect — déterminent la langue des emails envoyés.
+  // `language` par défaut "de" (allemand = langue principale du site).
+  country    String?
+  language   String    @default("de")
+  address    String?
+
   // Relances automatiques (décisions `crm.relance.workflow` + `crm.relance.stop_conditions`).
   // max 3 relances à J+3 / J+6 / J+9, puis statut "sans réponse / clos".
   relanceCount Int       @default(0)
@@ -208,21 +214,24 @@ model PayRate {
 
 model EmailTemplate {
   id        String              @id @default(cuid())
-  name      String              @unique  // "Confirmation de candidature"
-  trigger   String                       // "Candidature reçue · Agent Accueil" (label affiché)
-  triggerKey String?                     // "accueil" | "mission" | "relance_1/2/3" (clé machine)
-  agentKey  String?                     // clé agent ("accueil", "mission", "relance"…)
-  subject   String                       // Objet avec {{vars}}
-  body      String              @db.Text // Corps avec {{vars}}
+  name      String                        // "Confirmation de candidature"
+  locale    String              @default("de")  // "de" | "fr" — langue du template
+  trigger   String                        // "Candidature reçue · Agent Accueil" (label affiché)
+  triggerKey String?                      // "accueil" | "mission" | "relance_1/2/3" (clé machine)
+  agentKey  String?                      // clé agent ("accueil", "mission", "relance"…)
+  subject   String                        // Objet avec {{vars}}
+  body      String              @db.Text  // Corps avec {{vars}}
   status    EmailTemplateStatus @default(actif)
   sort      Int                 @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@unique([name, locale])
   @@index([agentKey])
   @@index([status])
   @@index([triggerKey])
+  @@index([locale])
 }
 
 // ============================================================

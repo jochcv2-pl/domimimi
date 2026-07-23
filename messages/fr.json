@@ -101,6 +101,10 @@
       "email": "Adresse e-mail",
       "phone": "Téléphone",
       "postalCode": "Code postal",
+      "country": "Pays",
+      "otherCountry": "Autre pays",
+      "language": "Langue",
+      "address": "Rue et numéro",
       "message": "Un mot sur vous (optionnel)"
     },
     "ariaLabel": {
