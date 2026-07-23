@@ -4,6 +4,7 @@ import { useAdminStore, AdminView } from '@/lib/store';
 import {
   DashboardView,
   CandidatsView,
+  EmballeursView,
   MissionsView,
   RemunerationView,
   EmailsView,
@@ -20,6 +21,7 @@ import {
 const VIEWS: Record<AdminView, React.ComponentType> = {
   dashboard: DashboardView,
   candidats: CandidatsView,
+  emballeurs: EmballeursView,
   missions: MissionsView,
   remuneration: RemunerationView,
   emails: EmailsView,

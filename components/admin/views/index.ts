@@ -1,5 +1,6 @@
 export { DashboardView } from './DashboardView';
 export { CandidatsView } from './CandidatsView';
+export { EmballeursView } from './EmballeursView';
 export { MissionsView } from './MissionsView';
 export { RemunerationView } from './RemunerationView';
 export { EmailsView } from './EmailsView';

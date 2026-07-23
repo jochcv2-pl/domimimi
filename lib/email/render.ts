@@ -21,7 +21,15 @@ export interface EmailContent {
 }
 
 export interface RenderContext {
-  application: Pick<Application, "firstName" | "lastName" | "email" | "postalCode" | "city" | "zone">;
+  application: Pick<
+    Application,
+    "firstName" | "lastName" | "email" | "postalCode" | "city" | "zone"
+  > & {
+    product?: string | null;
+    payMode?: string | null;
+    weeklyPackages?: number | null;
+    startDate?: Date | null;
+  };
   settings: Record<string, string>;
 }
 
@@ -41,6 +49,8 @@ export interface KnownVars {
   "Taux horaire": string;
   "Date de collecte": string;
   Cadence: string;
+  Produit: string;
+  "Mode de paie": string;
   "Prénom du référent": string;
   "WhatsApp URL": string;
   "Messenger URL": string;
@@ -62,8 +72,16 @@ export function buildVars(ctx: RenderContext): Record<string, string> {
     "Code postal": app.postalCode ?? "",
     Ville: app.city ?? "",
     "Taux horaire": s["remuneration.taux_horaire_min"] ?? "",
-    "Date de collecte": "",
-    Cadence: "",
+    "Date de collecte": app.startDate
+      ? new Date(app.startDate).toLocaleDateString("de-DE", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+        })
+      : "",
+    Cadence: app.weeklyPackages != null ? `${app.weeklyPackages} Pakete/Woche` : "",
+    Produit: app.product ?? "",
+    "Mode de paie": app.payMode === "hourly" ? "Stundenlohn" : app.payMode === "package" ? "Pro Paket" : "",
     "Prénom du référent": s["cms.referent_prenom"] ?? "Camille",
     "WhatsApp URL": s["contact.whatsapp"] ?? "",
     "Messenger URL": s["contact.messenger"] ?? "",

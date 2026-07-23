@@ -7,7 +7,7 @@ export function Sidebar({ brandName = 'domipackung', logoUrl }: { brandName?: st
   const { currentView, setCurrentView, sidebarCollapsed } = useAdminStore();
 
   const menuItems = [
-    { group: 'Pilotage', items: ['dashboard', 'candidats', 'missions', 'remuneration', 'emails'] as AdminView[] },
+    { group: 'Pilotage', items: ['dashboard', 'candidats', 'emballeurs', 'missions', 'remuneration', 'emails'] as AdminView[] },
     { group: 'Site web', items: ['cms', 'testimonials', 'seo'] as AdminView[] },
     { group: 'Intelligence', items: ['agents', 'pipeline', 'configuration'] as AdminView[] },
   ];
@@ -26,6 +26,13 @@ export function Sidebar({ brandName = 'domipackung', logoUrl }: { brandName?: st
         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
         <circle cx="9" cy="7" r="4" />
         <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+    ),
+    emballeurs: (
+      <svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M22 11l-3 3-2-2" />
       </svg>
     ),
     missions: (

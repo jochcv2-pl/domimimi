@@ -3,6 +3,7 @@ import { create } from 'zustand';
 export type AdminView =
   | 'dashboard'
   | 'candidats'
+  | 'emballeurs'
   | 'missions'
   | 'remuneration'
   | 'emails'
@@ -18,6 +19,7 @@ export type AdminView =
 export const VIEW_CONFIG: Record<AdminView, { title: string; sub: string; icon: string }> = {
   dashboard: { title: 'Vue d\'ensemble', sub: 'Activité de votre recrutement en temps réel', icon: 'dashboard' },
   candidats: { title: 'Candidats & emballeurs', sub: 'Gérez et validez vos candidats', icon: 'contacts' },
+  emballeurs: { title: 'Emballeurs', sub: 'Validez et attribuez des missions', icon: 'contacts' },
   missions: { title: 'Missions', sub: 'Toutes les missions d\'emballage', icon: 'dossiers' },
   remuneration: { title: 'Rémunération', sub: 'Pilotez les taux affichés sur le simulateur de salaire', icon: 'taux' },
   emails: { title: 'Modèles d\'emails', sub: 'Les emails utilisés par vos agents', icon: 'emails' },
