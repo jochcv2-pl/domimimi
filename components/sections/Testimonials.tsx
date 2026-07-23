@@ -17,8 +17,7 @@ export default async function Testimonials() {
   const t = await getTranslations("testimonials");
 
   // Récupère les témoignages depuis la DB (ajoutés via l'admin CRM).
-  // Si aucun témoignage n'existe, on retombe sur les 3 témoignages par défaut
-  // définis dans les fichiers de traduction (compatibilité arrière).
+  // Si aucun témoignage n'existe, la section ne s'affiche pas.
   let rows: TestimonialRow[] = [];
   try {
     rows = await prisma.testimonial.findMany({
@@ -26,25 +25,19 @@ export default async function Testimonials() {
       orderBy: { sort: "asc" },
     });
   } catch {
-    // Si la table n'existe pas encore (migration pas appliquée), fallback silencieux
     rows = [];
   }
 
-  const useDb = rows.length > 0;
+  // Pas de témoignages → on ne rend pas la section
+  if (rows.length === 0) return null;
 
-  const items = useDb
-    ? rows.map((r) => ({
-        name: r.name,
-        role: r.role,
-        quote: r.quote,
-        rating: r.rating,
-        photoUrl: r.photoUrl,
-      }))
-    : [
-        { name: t("name1"), role: t("role1"), quote: t("quote1"), rating: 5, photoUrl: null },
-        { name: t("name2"), role: t("role2"), quote: t("quote2"), rating: 5, photoUrl: null },
-        { name: t("name3"), role: t("role3"), quote: t("quote3"), rating: 5, photoUrl: null },
-      ];
+  const items = rows.map((r) => ({
+    name: r.name,
+    role: r.role,
+    quote: r.quote,
+    rating: r.rating,
+    photoUrl: r.photoUrl,
+  }));
 
   return (
     <section className="domipack-pad bg-sage">

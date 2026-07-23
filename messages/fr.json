@@ -69,16 +69,7 @@
   },
   "testimonials": {
     "eyebrow": "Ils emballent avec nous",
-    "title": "Des profils très différents, une même liberté.",
-    "quote1": "« Je m'organise autour de mes enfants. Le matin, ils sont à l'école, je prépare mes colis, et le reste de la journée m'appartient. »",
-    "name1": "Sophie L.",
-    "role1": "Parent au foyer · Nantes*",
-    "quote2": "« Ce qui m'a rassuré, c'est qu'on ne m'a jamais demandé un centime. J'ai signé un vrai contrat, reçu le matériel, et j'ai été payé le mois suivant. »",
-    "name2": "Karim M.",
-    "role2": "En reconversion · Lyon*",
-    "quote3": "« À la retraite, ça me fait un complément et ça m'occupe les mains. Le geste est simple, la collecte se fait chez moi. Rien à redire. »",
-    "name3": "Danielle F.",
-    "role3": "Retraitée · Toulouse*"
+    "title": "Des profils très différents, une même liberté."
   },
   "faq": {
     "eyebrow": "Questions fréquentes",
