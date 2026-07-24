@@ -59,15 +59,14 @@ type Template = {
 
 const EMPTY_TEMPLATES: Template[] = [];
 
-/** Pied de page email par défaut — utilisé tant que la DB n'a pas chargé. */
+/** Pied de page email par défaut — valeurs vides tant que la DB n'a pas chargé. */
 const DEFAULT_FOOTER = {
   companyName: 'domipackung',
-  tagline: 'Recrutement d\'emballeurs à domicile',
-  addressLine: '12 rue des Ateliers, 69007 Lyon, France',
-  email: 'recrutement@domipack.fr',
-  phone: '+33 4 78 00 00 00',
-  legal:
-    'Cet email vous est envoyé suite à votre candidature. Vos données sont traitées conformément au RGPD. Pour vous désinscrire, répondez STOP.',
+  tagline: '',
+  addressLine: '',
+  email: '',
+  phone: '',
+  legal: 'Diese E-Mail wurde automatisch versendet. Bitte antworten Sie nicht auf diese Nachricht.',
 };
 
 const LOCALE_LABELS: Record<string, string> = {

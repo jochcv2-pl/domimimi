@@ -3,10 +3,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { useAdminStore, VIEW_CONFIG, type AdminView, type NotificationItem } from '@/lib/store';
-import Modal from './Modal';
-import { Icon } from '@/components/ui/Icon';
-
-type ExportFormat = 'csv' | 'xlsx' | 'pdf';
 
 /**
  * Formate un timestamp ISO en texte relatif ("Il y a 5 min", "Il y a 2 h", "Il y a 3 j").
@@ -24,12 +20,6 @@ function timeAgo(iso: string): string {
   if (days < 7) return `Il y a ${days} j`;
   return new Date(iso).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' });
 }
-
-const EXPORT_FORMATS: { id: ExportFormat; label: string; desc: string }[] = [
-  { id: 'csv', label: 'CSV', desc: 'Fichier texte universel, ouvert dans Excel/Sheets' },
-  { id: 'xlsx', label: 'Excel (.xlsx)', desc: 'Tableur Microsoft Excel avec mise en forme' },
-  { id: 'pdf', label: 'PDF', desc: 'Rapport figé pour impression ou archivage' },
-];
 
 /**
  * Joue un son de notification via la Web Audio API (aucun fichier externe).
@@ -74,13 +64,6 @@ export function Topbar() {
 
   const { notifications, unreadCount, setNotifications, markAllRead, markRead, soundEnabled } = useAdminStore();
 
-  const [exportOpen, setExportOpen] = useState(false);
-  const [exportFmt, setExportFmt] = useState<ExportFormat>('csv');
-  const [exportDone, setExportDone] = useState(false);
-
-  const [missionOpen, setMissionOpen] = useState(false);
-  const [missionDone, setMissionDone] = useState(false);
-
   const [notifOpen, setNotifOpen] = useState(false);
   const [avatarOpen, setAvatarOpen] = useState(false);
   const notifRef = useRef<HTMLDivElement>(null);
@@ -116,8 +99,8 @@ export function Topbar() {
     return () => clearInterval(interval);
   }, [fetchNotifications]);
 
-  const name = session?.user?.name || 'Thomas Bernard';
-  const email = session?.user?.email || 'admin@domipack.fr';
+  const name = session?.user?.name || 'Administrateur';
+  const email = session?.user?.email || '—';
   const initials = name
     .split(' ')
     .map((p) => p[0])
@@ -150,22 +133,6 @@ export function Topbar() {
     return () => document.removeEventListener('mousedown', onClick);
   }, []);
 
-  function handleExport() {
-    setExportDone(true);
-    setTimeout(() => {
-      setExportOpen(false);
-      setExportDone(false);
-    }, 1200);
-  }
-
-  function handleCreateMission() {
-    setMissionDone(true);
-    setTimeout(() => {
-      setMissionOpen(false);
-      setMissionDone(false);
-    }, 1400);
-  }
-
   function goTo(view: 'profil' | 'parametres') {
     setCurrentView(view);
     setAvatarOpen(false);
@@ -179,10 +146,7 @@ export function Topbar() {
           <div className="sub">{config.sub}</div>
         </div>
         <div className="top-actions">
-          <button className="btn btn-ghost" onClick={() => setExportOpen(true)}>
-            Exporter
-          </button>
-          <button className="btn btn-primary" onClick={() => setMissionOpen(true)}>
+          <button className="btn btn-primary" onClick={() => setCurrentView('missions')}>
             + Nouvelle mission
           </button>
 
@@ -285,121 +249,6 @@ export function Topbar() {
           </div>
         </div>
       </header>
-
-      {/* Modal Exporter */}
-      <Modal
-        open={exportOpen}
-        onClose={() => setExportOpen(false)}
-        title="Exporter les données"
-        subtitle={`Format d'export pour la vue « ${config.title} »`}
-        footer={
-          <>
-            <button className="btn btn-ghost" onClick={() => setExportOpen(false)}>
-              Annuler
-            </button>
-            <button className="btn btn-primary" onClick={handleExport} disabled={exportDone}>
-              {exportDone ? (
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-                  Export généré <Icon name="check" size={14} color="#2E7D46" />
-                </span>
-              ) : 'Exporter'}
-            </button>
-          </>
-        }
-      >
-        <div className="export-opts">
-          {EXPORT_FORMATS.map((f) => (
-            <div
-              key={f.id}
-              className={`export-opt ${exportFmt === f.id ? 'selected' : ''}`}
-              onClick={() => setExportFmt(f.id)}
-            >
-              <span className="eo-radio" />
-              <div>
-                <div className="eo-label">{f.label}</div>
-                <div className="eo-desc">{f.desc}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="modal-field" style={{ marginTop: 18 }}>
-          <label htmlFor="export-range">Période</label>
-          <select id="export-range" defaultValue="all">
-            <option value="all">Toutes les données</option>
-            <option value="30">30 derniers jours</option>
-            <option value="90">90 derniers jours</option>
-            <option value="year">Cette année</option>
-          </select>
-        </div>
-      </Modal>
-
-      {/* Modal Nouvelle mission */}
-      <Modal
-        open={missionOpen}
-        onClose={() => setMissionOpen(false)}
-        title="Nouvelle mission"
-        subtitle="Créez une mission d'emballage à attribuer aux emballeurs"
-        width={580}
-        footer={
-          <>
-            <button className="btn btn-ghost" onClick={() => setMissionOpen(false)}>
-              Annuler
-            </button>
-            <button className="btn btn-primary" onClick={handleCreateMission} disabled={missionDone}>
-              {missionDone ? (
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-                  Mission créée <Icon name="check" size={14} color="#2E7D46" />
-                </span>
-              ) : 'Créer la mission'}
-            </button>
-          </>
-        }
-      >
-        <div className="modal-row-2">
-          <div className="modal-field">
-            <label htmlFor="m-title">Intitulé de la mission</label>
-            <input id="m-title" type="text" placeholder="ex. Emballage colis textiles" />
-          </div>
-          <div className="modal-field">
-            <label htmlFor="m-zone">Zone</label>
-            <select id="m-zone">
-              <option>Lyon Nord</option>
-              <option>Paris Est</option>
-              <option>Marseille Sud</option>
-              <option>Nantes Ouest</option>
-              <option>Toulouse Centre</option>
-              <option>Lille Métropole</option>
-            </select>
-          </div>
-        </div>
-        <div className="modal-row-2">
-          <div className="modal-field">
-            <label htmlFor="m-mode">Mode de rémunération</label>
-            <select id="m-mode">
-              <option>à l&apos;heure</option>
-              <option>Au colis</option>
-            </select>
-          </div>
-          <div className="modal-field">
-            <label htmlFor="m-rate">Taux (€)</label>
-            <input id="m-rate" type="number" step="0.01" placeholder="12,50" />
-          </div>
-        </div>
-        <div className="modal-row-2">
-          <div className="modal-field">
-            <label htmlFor="m-vol">Volume estimé</label>
-            <input id="m-vol" type="number" placeholder="ex. 500 colis" />
-          </div>
-          <div className="modal-field">
-            <label htmlFor="m-deadline">Date de collecte</label>
-            <input id="m-deadline" type="date" />
-          </div>
-        </div>
-        <div className="modal-field">
-          <label htmlFor="m-notes">Consignes particulières</label>
-          <textarea id="m-notes" placeholder="Type de carton, calage, étiquetage, fragilité" />
-        </div>
-      </Modal>
     </>
   );
 }
