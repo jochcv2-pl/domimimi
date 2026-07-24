@@ -69,6 +69,15 @@ const FOOTER_KEYS = [
 ];
 
 /**
+ * Retourne le tableau filtré s'il contient au moins un élément, sinon null.
+ * (un tableau vide [] est truthy en JS, donc `[] || null` retourne [])
+ */
+function nonEmpty(arr: (string | null)[]): string[] | null {
+  const filtered = arr.filter((x): x is string => !!x);
+  return filtered.length > 0 ? filtered : null;
+}
+
+/**
  * Récupère les settings du footer depuis la DB.
  * Retourne null pour chaque valeur absente (le Footer retombe sur i18n).
  */
@@ -87,11 +96,11 @@ export async function getFooterSettings(): Promise<FooterSettings> {
     return {
       tagline: get("footer.tagline"),
       col1Title: get("footer.col1.title"),
-      col1Links: [get("footer.col1.link1"), get("footer.col1.link2"), get("footer.col1.link3")].filter(Boolean) as string[] || null,
+      col1Links: nonEmpty([get("footer.col1.link1"), get("footer.col1.link2"), get("footer.col1.link3")]),
       col2Title: get("footer.col2.title"),
-      col2Links: [get("footer.col2.link1"), get("footer.col2.link2"), get("footer.col2.link3")].filter(Boolean) as string[] || null,
+      col2Links: nonEmpty([get("footer.col2.link1"), get("footer.col2.link2"), get("footer.col2.link3")]),
       col3Title: get("footer.col3.title"),
-      col3Links: [get("footer.col3.link1"), get("footer.col3.link2"), get("footer.col3.link3")].filter(Boolean) as string[] || null,
+      col3Links: nonEmpty([get("footer.col3.link1"), get("footer.col3.link2"), get("footer.col3.link3")]),
     };
   } catch {
     return {
