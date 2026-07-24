@@ -2,10 +2,11 @@
  * Template HTML email — wrapper responsive et professionnel.
  *
  * Produit un document HTML complet (DOCTYPE, head, body) avec :
- *   - Header modifiable (logo/marque, couleur, slogan)
+ *   - Header modifiable (brand text, logo, couleur de fond, tagline)
+ *   - Barre d'accent (couleur secondaire)
  *   - Zone de contenu (body rendu par render.ts)
  *   - Boutons WhatsApp/Messenger (si URLs configurés)
- *   - Footer modifiable (société, adresse, contact, mentions légales)
+ *   - Footer modifiable (société, slogan, adresse, email, téléphone, mentions légales, site web)
  *
  * Tout est inline CSS (compatibilité email clients).
  * Responsive : 600px max-width, media queries pour mobile.
@@ -55,28 +56,35 @@ function escapeHtml(s: string): string {
 }
 
 /**
- * Construit le HTML complet d'un email.
- *
- * @param bodyHtml - HTML du corps (paragraphes <p> déjà formés)
- * @param vars - dictionnaire des variables (pour brand, WhatsApp, etc.)
- * @param header - configuration du header (DB ou défaut)
- * @param footer - configuration du footer (DB ou défaut)
+ * Construit le HTML complet d'un email à partir du body et des configs.
  */
 export function buildEmailHtml(
-  bodyHtml: string,
+  bodyText: string,
   header: EmailHeaderConfig,
   footer: EmailFooterConfig,
   whatsappUrl?: string,
   messengerUrl?: string,
 ): string {
-  const h = escapeHtml(header.brand);
+  const brandLabel = escapeHtml(header.brand);
+
+  // Logo ou texte
+  const logoHtml = header.logoUrl
+    ? `<img src="${escapeHtml(header.logoUrl)}" alt="${brandLabel}" style="height:34px;width:auto;display:block;" />`
+    : `<span style="font-size:22px;font-weight:800;color:#C8A87E;letter-spacing:0.5px;">${brandLabel}</span>`;
+
+  // Tagline sous le logo
   const taglineHtml = header.tagline
-    ? `<p style="margin:4px 0 0 0;font-size:12px;color:rgba(255,255,255,0.65);font-weight:400;">${escapeHtml(header.tagline)}</p>`
+    ? `<p style="margin:6px 0 0 0;font-size:12px;color:rgba(255,255,255,0.6);font-weight:400;letter-spacing:0.3px;">${escapeHtml(header.tagline)}</p>`
     : "";
 
-  const logoHtml = header.logoUrl
-    ? `<img src="${escapeHtml(header.logoUrl)}" alt="${h}" style="height:32px;width:auto;display:block;" />`
-    : `<span style="font-size:22px;font-weight:800;color:#C8A87E;letter-spacing:0.5px;">${h}</span>`;
+  // Convertir le texte du body en paragraphes HTML
+  const paragraphs = bodyText
+    .split(/\n{2,}/)
+    .map(
+      (p) =>
+        `<p style="margin:0 0 14px 0;">${escapeHtml(p).replace(/\n/g, "<br />")}</p>`,
+    )
+    .join("");
 
   // Boutons de contact
   let buttonsHtml = "";
@@ -103,11 +111,15 @@ export function buildEmailHtml(
   // Footer — coordonnées
   const contactParts: string[] = [];
   if (footer.address) contactParts.push(escapeHtml(footer.address));
-  if (footer.email) contactParts.push(`<a href="mailto:${escapeHtml(footer.email)}" style="color:#6B7A72;text-decoration:none;">${escapeHtml(footer.email)}</a>`);
+  if (footer.email)
+    contactParts.push(
+      `<a href="mailto:${escapeHtml(footer.email)}" style="color:#6B7A72;text-decoration:none;">${escapeHtml(footer.email)}</a>`,
+    );
   if (footer.phone) contactParts.push(escapeHtml(footer.phone));
-  const contactHtml = contactParts.length > 0
-    ? `<p style="margin:0 0 8px 0;font-size:12px;color:#6B7A72;line-height:1.6;">${contactParts.join(" &nbsp;·&nbsp; ")}</p>`
-    : "";
+  const contactHtml =
+    contactParts.length > 0
+      ? `<p style="margin:0 0 8px 0;font-size:12px;color:#6B7A72;line-height:1.6;">${contactParts.join(" &nbsp;·&nbsp; ")}</p>`
+      : "";
 
   const websiteHtml = footer.website
     ? `<p style="margin:0 0 8px 0;font-size:12px;"><a href="${escapeHtml(footer.website)}" style="color:#2C5344;text-decoration:none;font-weight:600;">${escapeHtml(footer.website)}</a></p>`
@@ -119,7 +131,7 @@ export function buildEmailHtml(
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>${h}</title>
+  <title>${brandLabel}</title>
   <style>
     @media only screen and (max-width:600px){
       .email-card{border-radius:0 !important;}
@@ -154,11 +166,10 @@ export function buildEmailHtml(
           <!-- BODY -->
           <tr>
             <td class="email-body" style="padding:34px 30px 10px 30px;font-size:15px;line-height:1.7;color:#1f2933;">
-              ${bodyHtml}
+              ${paragraphs}
             </td>
           </tr>
 ${buttonsHtml}
-
           <!-- FOOTER -->
           <tr>
             <td class="email-footer" style="padding:26px 30px 32px 30px;background:#F7F8F4;">
@@ -180,12 +191,12 @@ ${buttonsHtml}
 
         </table>
 
-        <!-- Spacer note -->
+        <!-- Copyright -->
         <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
           <tr>
             <td style="padding:16px 0;text-align:center;">
               <p style="margin:0;font-size:10px;color:#B0B8AE;">
-                &copy; ${new Date().getFullYear()} ${h}
+                &copy; ${new Date().getFullYear()} ${brandLabel}
               </p>
             </td>
           </tr>

@@ -11,6 +11,8 @@
 
 import { prisma } from "@/lib/prisma";
 import type { Application, EmailTemplate, Setting } from "@prisma/client";
+import { buildEmailHtml } from "@/lib/email/template";
+import { getEmailHeaderSettings, getEmailFooterSettings } from "@/lib/brand";
 
 export interface EmailContent {
   subject: string;
@@ -72,13 +74,6 @@ export function buildVars(ctx: RenderContext): Record<string, string> {
 
 const PLACEHOLDER = /\{\{\s*([^{}]+?)\s*\}\}/g;
 
-function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
 
 export function substitute(
   input: string,
@@ -95,95 +90,24 @@ export function substitute(
 }
 
 // ============================================================
-// Wrapper HTML responsive — design du site
+// Wrapper HTML — délégué à lib/email/template.ts
 // ============================================================
 
-function wrapEmailHtml(
+async function wrapEmailHtml(
   bodyText: string,
   vars: Record<string, string>,
-): string {
-  const brand = vars["Nom de la marque"] || "domipackung";
-  const whatsapp = vars["WhatsApp URL"];
-  const messenger = vars["Messenger URL"];
-
-  // Convertir le texte du body en paragraphes HTML
-  const paragraphs = bodyText
-    .split(/\n{2,}/)
-    .map((p) => `<p style="margin:0 0 14px 0;">${escapeHtml(p).replace(/\n/g, "<br />")}</p>`)
-    .join("");
-
-  // Boutons WhatsApp / Messenger (si URLs présentes)
-  let buttonsHtml = "";
-  if (whatsapp || messenger) {
-    const btns: string[] = [];
-    if (whatsapp) {
-      btns.push(
-        `<a href="${escapeHtml(whatsapp)}" style="display:inline-block;padding:12px 24px;background:#25D366;color:#fff !important;text-decoration:none;border-radius:8px;font-weight:600;font-size:14px;margin:0 6px 6px 0;">WhatsApp</a>`,
-      );
-    }
-    if (messenger) {
-      btns.push(
-        `<a href="${escapeHtml(messenger)}" style="display:inline-block;padding:12px 24px;background:#0084FF;color:#fff !important;text-decoration:none;border-radius:8px;font-weight:600;font-size:14px;margin:0 6px 6px 0;">Messenger</a>`,
-      );
-    }
-    buttonsHtml = `
-      <tr><td style="padding:20px 0 8px 0;text-align:center;">${btns.join("")}</td></tr>`;
-  }
-
-  return `<!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>${escapeHtml(brand)}</title>
-</head>
-<body style="margin:0;padding:0;background:#f0f2f1;font-family:Arial,Helvetica,sans-serif;">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f0f2f1;min-height:100vh;">
-    <tr>
-      <td align="center" style="padding:24px 12px;">
-        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
-
-          <!-- Header -->
-          <tr>
-            <td style="background:#0F2019;padding:24px 32px;text-align:center;">
-              <span style="font-size:22px;font-weight:800;color:#C8A87E;letter-spacing:0.5px;">${escapeHtml(brand)}</span>
-            </td>
-          </tr>
-
-          <!-- Accent bar -->
-          <tr>
-            <td style="height:4px;background:#2C5344;font-size:0;line-height:0;">&nbsp;</td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td style="padding:32px 28px 8px 28px;font-size:15px;line-height:1.6;color:#1f2933;">
-              ${paragraphs}
-            </td>
-          </tr>${buttonsHtml}
-
-          <!-- Footer -->
-          <tr>
-            <td style="padding:24px 28px 32px 28px;">
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td style="border-top:1px solid #e9eceb;padding-top:20px;">
-                    <p style="margin:0 0 6px 0;font-size:13px;font-weight:700;color:#2C5344;">${escapeHtml(brand)}</p>
-                    <p style="margin:0;font-size:12px;color:#95A198;line-height:1.5;">
-                      Diese E-Mail wurde automatisch versendet. Bitte antworten Sie nicht auf diese Nachricht.
-                    </p>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-
-        </table>
-      </td>
-    </tr>
-  </table>
-</body>
-</html>`;
+): Promise<string> {
+  const [header, footer] = await Promise.all([
+    getEmailHeaderSettings(),
+    getEmailFooterSettings(),
+  ]);
+  return buildEmailHtml(
+    bodyText,
+    header,
+    footer,
+    vars["WhatsApp URL"] || undefined,
+    vars["Messenger URL"] || undefined,
+  );
 }
 
 // ============================================================
@@ -253,13 +177,15 @@ export async function renderEmail(
 
   const unknownVars = [...new Set([...subj.unknownVars, ...body.unknownVars])];
 
+  const html = await wrapEmailHtml(body.output, vars);
+
   return {
     ok: true,
     template: { id: tpl.id, name: tpl.name, subject: tpl.subject, body: tpl.body },
     content: {
       subject: subj.output,
       text: body.output,
-      html: wrapEmailHtml(body.output, vars),
+      html,
     },
     unknownVars,
   };

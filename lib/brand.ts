@@ -3,6 +3,7 @@
 // Fallback "Domipack" si DB indisponible ou setting absent.
 
 import { prisma } from "@/lib/prisma";
+import type { EmailHeaderConfig, EmailFooterConfig } from "@/lib/email/template";
 
 export interface BrandSettings {
   brandName: string;
@@ -98,6 +99,98 @@ export async function getFooterSettings(): Promise<FooterSettings> {
       col1Title: null, col1Links: null,
       col2Title: null, col2Links: null,
       col3Title: null, col3Links: null,
+    };
+  }
+}
+
+// ============================================================
+// Settings EMAIL (header + footer des emails)
+// ============================================================
+
+const EMAIL_HEADER_KEYS = [
+  "email.header.brand",
+  "email.header.logo_url",
+  "email.header.bg_color",
+  "email.header.tagline",
+];
+
+/**
+ * Récupère les settings du header d'email depuis la DB.
+ * Fallback sur les defaults si absents.
+ */
+export async function getEmailHeaderSettings(): Promise<EmailHeaderConfig> {
+  try {
+    const brand = await getBrandSettings();
+    const rows = await prisma.setting.findMany({
+      where: { key: { in: EMAIL_HEADER_KEYS } },
+      select: { key: true, value: true },
+    });
+    const map: Record<string, string> = {};
+    for (const r of rows) map[r.key] = r.value;
+
+    return {
+      brand: map["email.header.brand"] || brand.brandName,
+      logoUrl: map["email.header.logo_url"] || brand.logoUrl,
+      bgColor: map["email.header.bg_color"] || "#0F2019",
+      tagline: map["email.header.tagline"] || "",
+    };
+  } catch {
+    const brand = await getBrandSettings();
+    return {
+      brand: brand.brandName,
+      logoUrl: brand.logoUrl,
+      bgColor: "#0F2019",
+      tagline: "",
+    };
+  }
+}
+
+const EMAIL_FOOTER_KEYS = [
+  "email.footer.company_name",
+  "email.footer.tagline",
+  "email.footer.address",
+  "email.footer.email",
+  "email.footer.phone",
+  "email.footer.legal",
+  "email.footer.website",
+];
+
+/**
+ * Récupère les settings du footer d'email depuis la DB.
+ * Fallback sur les defaults si absents.
+ */
+export async function getEmailFooterSettings(): Promise<EmailFooterConfig> {
+  try {
+    const brand = await getBrandSettings();
+    const rows = await prisma.setting.findMany({
+      where: { key: { in: EMAIL_FOOTER_KEYS } },
+      select: { key: true, value: true },
+    });
+    const map: Record<string, string> = {};
+    for (const r of rows) map[r.key] = r.value;
+
+    return {
+      companyName: map["email.footer.company_name"] || brand.brandName,
+      tagline: map["email.footer.tagline"] || "",
+      address: map["email.footer.address"] || "",
+      email: map["email.footer.email"] || "",
+      phone: map["email.footer.phone"] || "",
+      legal:
+        map["email.footer.legal"] ||
+        "Diese E-Mail wurde automatisch versendet. Bitte antworten Sie nicht auf diese Nachricht.",
+      website: map["email.footer.website"] || "",
+    };
+  } catch {
+    const brand = await getBrandSettings();
+    return {
+      companyName: brand.brandName,
+      tagline: "",
+      address: "",
+      email: "",
+      phone: "",
+      legal:
+        "Diese E-Mail wurde automatisch versendet. Bitte antworten Sie nicht auf diese Nachricht.",
+      website: "",
     };
   }
 }

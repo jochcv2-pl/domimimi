@@ -97,6 +97,18 @@ export function CmsView() {
   const [footCol3L1, setFootCol3L1] = useState('');
   const [footCol3L2, setFootCol3L2] = useState('');
   const [footCol3L3, setFootCol3L3] = useState('');
+  // Email header
+  const [ehBrand, setEhBrand] = useState('');
+  const [ehColor, setEhColor] = useState('#0F2019');
+  const [ehTagline, setEhTagline] = useState('');
+  // Email footer
+  const [efCompany, setEfCompany] = useState('');
+  const [efTagline, setEfTagline] = useState('');
+  const [efAddress, setEfAddress] = useState('');
+  const [efEmail, setEfEmail] = useState('');
+  const [efPhone, setEfPhone] = useState('');
+  const [efWebsite, setEfWebsite] = useState('');
+  const [efLegal, setEfLegal] = useState('');
 
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
@@ -153,6 +165,18 @@ export function CmsView() {
       setFootCol3L1(map['footer.col3.link1'] ?? '');
       setFootCol3L2(map['footer.col3.link2'] ?? '');
       setFootCol3L3(map['footer.col3.link3'] ?? '');
+      // Email header
+      setEhBrand(map['email.header.brand'] ?? '');
+      setEhColor(map['email.header.bg_color'] ?? '#0F2019');
+      setEhTagline(map['email.header.tagline'] ?? '');
+      // Email footer
+      setEfCompany(map['email.footer.company_name'] ?? '');
+      setEfTagline(map['email.footer.tagline'] ?? '');
+      setEfAddress(map['email.footer.address'] ?? '');
+      setEfEmail(map['email.footer.email'] ?? '');
+      setEfPhone(map['email.footer.phone'] ?? '');
+      setEfWebsite(map['email.footer.website'] ?? '');
+      setEfLegal(map['email.footer.legal'] ?? '');
     } catch (err) {
       setLoadError(err instanceof Error ? err.message : 'Erreur');
     } finally {
@@ -362,6 +386,160 @@ export function CmsView() {
             onSave={() => saveGroup('contact', [
               { key: 'contact.whatsapp', value: whatsapp.trim() },
               { key: 'contact.messenger', value: messenger.trim() },
+            ])}
+          />
+        </div>
+      </div>
+
+      {/* ============================================================ */}
+      {/* DESIGN DES EMAILS (header + footer)                           */}
+      {/* ============================================================ */}
+      <div className="panel" style={{ marginBottom: 16 }}>
+        <div className="panel-head">
+          <h3>Design des emails — En-tête &amp; Pied de page</h3>
+        </div>
+        <div className="panel-body" style={{ paddingTop: 16 }}>
+          <div className="info-band" style={{ marginBottom: 14 }}>
+            <div className="imark">!</div>
+            <div>
+              Ces réglages contrôlent l&apos;<b>en-tête</b> et le <b>pied de page</b> de <b>tous les emails</b> envoyés
+              par le système (accueil, missions, relances, validation…). Si un champ est vide, la valeur par défaut est utilisée.
+            </div>
+          </div>
+
+          {/* Sous-section HEADER */}
+          <h4 style={{ fontSize: 13, color: '#0F2019', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.5px' }}>En-tête</h4>
+          <div className="frow" style={{ marginBottom: 0 }}>
+            <div className="fg">
+              <label>Texte / nom de marque</label>
+              <input
+                value={ehBrand}
+                onChange={(e) => setEhBrand(e.target.value)}
+                placeholder="(utilise le nom de la marque par défaut)"
+              />
+            </div>
+            <div className="fg">
+              <label>Couleur de fond</label>
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <input
+                  type="color"
+                  value={ehColor}
+                  onChange={(e) => setEhColor(e.target.value)}
+                  style={{ width: 44, height: 38, border: '1px solid #ddd', borderRadius: 6, cursor: 'pointer', padding: 2 }}
+                />
+                <input
+                  value={ehColor}
+                  onChange={(e) => setEhColor(e.target.value)}
+                  style={{ fontFamily: 'monospace', flex: 1 }}
+                  placeholder="#0F2019"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="fg" style={{ marginTop: 12 }}>
+            <label>Slogan / sous-titre (optionnel)</label>
+            <input
+              value={ehTagline}
+              onChange={(e) => setEhTagline(e.target.value)}
+              placeholder="Ex : Heimverpackung & Logistik"
+            />
+            <p className="field-hint">Petit texte sous le logo, en blanc semi-transparent.</p>
+          </div>
+          <SaveButton
+            savingGroup={savingGroup}
+            savedGroups={savedGroups}
+            loadError={loadError}
+            group="email_header"
+            onSave={() => saveGroup('email_header', [
+              { key: 'email.header.brand', value: ehBrand.trim() },
+              { key: 'email.header.bg_color', value: ehColor.trim() || '#0F2019' },
+              { key: 'email.header.tagline', value: ehTagline },
+            ])}
+          />
+
+          {/* Séparateur */}
+          <div style={{ height: 1, background: '#E0E4DC', margin: '24px 0' }} />
+
+          {/* Sous-section FOOTER */}
+          <h4 style={{ fontSize: 13, color: '#0F2019', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Pied de page</h4>
+          <div className="frow" style={{ marginBottom: 12 }}>
+            <div className="fg">
+              <label>Nom société</label>
+              <input
+                value={efCompany}
+                onChange={(e) => setEfCompany(e.target.value)}
+                placeholder="(nom de la marque par défaut)"
+              />
+            </div>
+            <div className="fg">
+              <label>Slogan</label>
+              <input
+                value={efTagline}
+                onChange={(e) => setEfTagline(e.target.value)}
+                placeholder="Heimverpackung & Logistik"
+              />
+            </div>
+          </div>
+          <div className="frow" style={{ marginBottom: 12 }}>
+            <div className="fg">
+              <label>Adresse</label>
+              <input
+                value={efAddress}
+                onChange={(e) => setEfAddress(e.target.value)}
+                placeholder="Musterstraße 1, 10115 Berlin"
+              />
+            </div>
+            <div className="fg">
+              <label>Téléphone</label>
+              <input
+                value={efPhone}
+                onChange={(e) => setEfPhone(e.target.value)}
+                placeholder="+49 30 0000 0000"
+              />
+            </div>
+          </div>
+          <div className="frow" style={{ marginBottom: 12 }}>
+            <div className="fg">
+              <label>Email contact</label>
+              <input
+                value={efEmail}
+                onChange={(e) => setEfEmail(e.target.value)}
+                placeholder="kontakt@domipackung.de"
+              />
+            </div>
+            <div className="fg">
+              <label>Site web</label>
+              <input
+                value={efWebsite}
+                onChange={(e) => setEfWebsite(e.target.value)}
+                placeholder="https://domipackung.de"
+              />
+            </div>
+          </div>
+          <div className="fg" style={{ marginBottom: 0 }}>
+            <label>Mentions légales / disclaimer</label>
+            <textarea
+              value={efLegal}
+              onChange={(e) => setEfLegal(e.target.value)}
+              rows={3}
+              style={{ resize: 'vertical', fontFamily: 'inherit', fontSize: 13 }}
+              placeholder="Diese E-Mail wurde automatisch versendet…"
+            />
+            <p className="field-hint">Petit texte gris en bas du footer. DSGV/mentions par défaut si vide.</p>
+          </div>
+          <SaveButton
+            savingGroup={savingGroup}
+            savedGroups={savedGroups}
+            loadError={loadError}
+            group="email_footer"
+            onSave={() => saveGroup('email_footer', [
+              { key: 'email.footer.company_name', value: efCompany.trim() },
+              { key: 'email.footer.tagline', value: efTagline },
+              { key: 'email.footer.address', value: efAddress },
+              { key: 'email.footer.email', value: efEmail.trim() },
+              { key: 'email.footer.phone', value: efPhone.trim() },
+              { key: 'email.footer.website', value: efWebsite.trim() },
+              { key: 'email.footer.legal', value: efLegal },
             ])}
           />
         </div>
