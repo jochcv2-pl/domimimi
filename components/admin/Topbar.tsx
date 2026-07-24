@@ -1,12 +1,29 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useSession, signOut } from 'next-auth/react';
-import { useAdminStore, VIEW_CONFIG } from '@/lib/store';
+import { useAdminStore, VIEW_CONFIG, type AdminView, type NotificationItem } from '@/lib/store';
 import Modal from './Modal';
 import { Icon } from '@/components/ui/Icon';
 
 type ExportFormat = 'csv' | 'xlsx' | 'pdf';
+
+/**
+ * Formate un timestamp ISO en texte relatif ("Il y a 5 min", "Il y a 2 h", "Il y a 3 j").
+ */
+function timeAgo(iso: string): string {
+  const diff = Date.now() - new Date(iso).getTime();
+  const sec = Math.floor(diff / 1000);
+  if (sec < 60) return 'À l\'instant';
+  const min = Math.floor(sec / 60);
+  if (min < 60) return `Il y a ${min} min`;
+  const h = Math.floor(min / 60);
+  if (h < 24) return `Il y a ${h} h`;
+  const days = Math.floor(h / 24);
+  if (days === 1) return 'Hier';
+  if (days < 7) return `Il y a ${days} j`;
+  return new Date(iso).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' });
+}
 
 const EXPORT_FORMATS: { id: ExportFormat; label: string; desc: string }[] = [
   { id: 'csv', label: 'CSV', desc: 'Fichier texte universel, ouvert dans Excel/Sheets' },
@@ -55,7 +72,7 @@ export function Topbar() {
   const { data: session } = useSession();
   const config = VIEW_CONFIG[currentView];
 
-  const { notifications, unreadCount, markAllRead, markRead, soundEnabled } = useAdminStore();
+  const { notifications, unreadCount, setNotifications, markAllRead, markRead, soundEnabled } = useAdminStore();
 
   const [exportOpen, setExportOpen] = useState(false);
   const [exportFmt, setExportFmt] = useState<ExportFormat>('csv');
@@ -69,6 +86,36 @@ export function Topbar() {
   const notifRef = useRef<HTMLDivElement>(null);
   const avatarRef = useRef<HTMLDivElement>(null);
 
+  // ============================================================
+  // Fetch notifications depuis l'API + polling toutes les 30s
+  // ============================================================
+  const fetchNotifications = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/notifications', { cache: 'no-store' });
+      if (!res.ok) return;
+      const json = await res.json();
+      const items: NotificationItem[] = (json?.data?.notifications ?? []).map((n: Record<string, unknown>) => ({
+        id: n.id as string,
+        title: n.title as string,
+        body: n.body as string,
+        kind: (n.kind as 'info' | 'success' | 'alert') ?? 'info',
+        read: n.read as boolean,
+        createdAt: n.createdAt as string,
+        link: (n.link as string | null) ?? null,
+      }));
+      const unread: number = json?.data?.unreadCount ?? 0;
+      setNotifications(items, unread);
+    } catch {
+      /* silencieux */
+    }
+  }, [setNotifications]);
+
+  useEffect(() => {
+    fetchNotifications();
+    const interval = setInterval(fetchNotifications, 30_000);
+    return () => clearInterval(interval);
+  }, [fetchNotifications]);
+
   const name = session?.user?.name || 'Thomas Bernard';
   const email = session?.user?.email || 'admin@domipack.fr';
   const initials = name
@@ -78,10 +125,16 @@ export function Topbar() {
     .slice(0, 2)
     .toUpperCase();
 
-  // Son à l'ouverture des notifications non lues
+  // Son + marquer comme lu à l'ouverture de la cloche
   useEffect(() => {
-    if (notifOpen && unreadCount > 0 && soundEnabled) {
-      playNotificationSound();
+    if (notifOpen && unreadCount > 0) {
+      if (soundEnabled) playNotificationSound();
+      // Marquer comme lu côté API + store
+      fetch('/api/admin/notifications', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'read-all' }),
+      }).catch(() => {});
       markAllRead();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -173,13 +226,22 @@ export function Topbar() {
                       <div
                         key={n.id}
                         className={`notif-item ${n.read ? '' : 'unread'}`}
-                        onClick={() => markRead(n.id)}
+                        onClick={() => {
+                          if (!n.read) {
+                            fetch(`/api/admin/notifications/${n.id}`, { method: 'PATCH' }).catch(() => {});
+                            markRead(n.id);
+                          }
+                          if (n.link) {
+                            setCurrentView(n.link as AdminView);
+                            setNotifOpen(false);
+                          }
+                        }}
                       >
                         <span className={`notif-dot notif-${n.kind}`} />
                         <div>
                           <b>{n.title}</b>
                           <p>{n.body}</p>
-                          <small>{n.time}</small>
+                          <small>{timeAgo(n.createdAt)}</small>
                         </div>
                       </div>
                     ))

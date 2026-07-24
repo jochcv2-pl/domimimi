@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { createApplicationSchema } from "@/lib/validations";
 import { apiSuccess, apiError, apiZodError } from "@/lib/api";
 import { sendApplicationNotification } from "@/lib/email";
+import { createNotification } from "@/lib/notifications";
 import { NextRequest } from "next/server";
 
 // ============================================================
@@ -120,6 +121,14 @@ export async function POST(request: NextRequest) {
     sendApplicationNotification(application).catch((err) => {
       console.error("[email] Échec notification candidature:", err);
     });
+
+    // Notification in-app (cloche admin)
+    createNotification({
+      kind: "info",
+      title: "Nouvelle candidature",
+      body: `${firstName} ${lastName} — ${city || postalCode || "zone inconnue"}`,
+      link: "candidats",
+    }).catch(() => {});
 
     return apiSuccess(
       {

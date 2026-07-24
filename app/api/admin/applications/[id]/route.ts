@@ -6,6 +6,7 @@ import { updateApplicationSchema } from "@/lib/validations";
 import { loadPipelineSettings } from "@/lib/email/engine";
 import { getProvider } from "@/lib/email/providers";
 import { renderEmail } from "@/lib/email/render";
+import { createNotification } from "@/lib/notifications";
 
 /**
  * PATCH /api/admin/applications/[id]
@@ -99,6 +100,22 @@ export async function PATCH(
       sendValidationEmail(updated).catch((err) => {
         console.error("[validation-email] Échec:", err);
       });
+      createNotification({
+        kind: "success",
+        title: "Emballeur validé",
+        body: `${updated.firstName} ${updated.lastName} a été validé comme emballeur.`,
+        link: "emballeurs",
+      }).catch(() => {});
+    }
+
+    // Si rejet (pipe → perdu), notifier
+    if (update.pipe === "perdu" && existing.pipe !== "perdu") {
+      createNotification({
+        kind: "alert",
+        title: "Candidat rejeté",
+        body: `${existing.firstName} ${existing.lastName} a été marqué comme perdu.`,
+        link: "candidats",
+      }).catch(() => {});
     }
 
     return apiSuccess({ data: updated });

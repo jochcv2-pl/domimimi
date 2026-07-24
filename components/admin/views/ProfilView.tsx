@@ -141,7 +141,7 @@ export function ProfilView() {
                   <div>
                     <b>{n.title}</b>
                     <p>{n.body}</p>
-                    <small>{n.time}</small>
+                    <small>{n.createdAt ? new Date(n.createdAt).toLocaleString('fr-FR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : ''}</small>
                   </div>
                 </div>
               ))}

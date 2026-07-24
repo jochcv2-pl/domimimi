@@ -6,6 +6,7 @@ import { apiSuccess, apiError, apiZodError } from "@/lib/api";
 import { loadPipelineSettings, type PipelineSettings } from "@/lib/email/engine";
 import { getProvider } from "@/lib/email/providers";
 import { renderEmail } from "@/lib/email/render";
+import { createNotification } from "@/lib/notifications";
 import type { PayMode } from "@prisma/client";
 
 /**
@@ -85,6 +86,14 @@ export async function POST(
       },
     },
   });
+
+  // Notification in-app
+  createNotification({
+    kind: "success",
+    title: "Mission assignée",
+    body: `Mission « ${mission.zone} » → ${emballeur.firstName} ${emballeur.lastName}`,
+    link: "missions",
+  }).catch(() => {});
 
   // Envoyer l'email
   const settings = await loadPipelineSettings();

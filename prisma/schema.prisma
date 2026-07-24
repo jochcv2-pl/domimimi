@@ -365,6 +365,29 @@ model EmailLog {
 }
 
 // ============================================================
+// NOTIFICATIONS — alimente la cloche du Topbar admin
+// ============================================================
+
+enum NotificationKind {
+  info     // bleu — nouvelle candidature, événement neutre
+  success  // vert — validation, mission assignée
+  alert    // rouge — relance sans réponse, erreur pipeline
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  kind      NotificationKind @default(info)
+  title     String                            // ex: "Nouvelle candidature"
+  body      String                            // ex: "Marie L. a soumis sa candidature (Lyon)."
+  link      String?                           // ex: "candidats" (vue cible au clic)
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  @@index([read])
+  @@index([createdAt])
+}
+
+// ============================================================
 // AUTH — Auth.js v5 (NextAuth) + Prisma Adapter
 // Modèles standards requis par @auth/prisma-adapter
 // ============================================================

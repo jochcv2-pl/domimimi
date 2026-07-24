@@ -37,16 +37,11 @@ export type NotificationItem = {
   id: string;
   title: string;
   body: string;
-  time: string;
-  read: boolean;
   kind: 'info' | 'success' | 'alert';
+  read: boolean;
+  createdAt: string;
+  link?: string | null;
 };
-
-const INITIAL_NOTIFICATIONS: NotificationItem[] = [
-  { id: 'n1', title: 'Nouvelle candidature', body: 'Marie Lefèvre a soumis sa candidature (Lyon).', time: 'Il y a 5 min', read: false, kind: 'info' },
-  { id: 'n2', title: 'Mission prête', body: 'La mission « Emballage textile » est prête à collecter.', time: 'Il y a 1 h', read: false, kind: 'success' },
-  { id: 'n3', title: 'Relance requise', body: 'Lucas Roy — 3 relances sans réponse.', time: 'Il y a 3 h', read: false, kind: 'alert' },
-];
 
 interface AdminState {
   currentView: AdminView;
@@ -55,6 +50,7 @@ interface AdminState {
   setSidebarCollapsed: (collapsed: boolean) => void;
   notifications: NotificationItem[];
   unreadCount: number;
+  setNotifications: (items: NotificationItem[], unread: number) => void;
   markAllRead: () => void;
   markRead: (id: string) => void;
   soundEnabled: boolean;
@@ -66,8 +62,9 @@ export const useAdminStore = create<AdminState>((set) => ({
   setCurrentView: (view) => set({ currentView: view }),
   sidebarCollapsed: false,
   setSidebarCollapsed: (collapsed) => set({ sidebarCollapsed: collapsed }),
-  notifications: INITIAL_NOTIFICATIONS,
-  unreadCount: INITIAL_NOTIFICATIONS.filter((n) => !n.read).length,
+  notifications: [],
+  unreadCount: 0,
+  setNotifications: (items, unread) => set({ notifications: items, unreadCount: unread }),
   markAllRead: () =>
     set((s) => ({
       notifications: s.notifications.map((n) => ({ ...n, read: true })),
@@ -76,7 +73,7 @@ export const useAdminStore = create<AdminState>((set) => ({
   markRead: (id) =>
     set((s) => ({
       notifications: s.notifications.map((n) => (n.id === id ? { ...n, read: true } : n)),
-      unreadCount: s.notifications.filter((n) => !n.read && n.id !== id).length,
+      unreadCount: Math.max(0, s.unreadCount - 1),
     })),
   soundEnabled: true,
   setSoundEnabled: (enabled) => set({ soundEnabled: enabled }),
