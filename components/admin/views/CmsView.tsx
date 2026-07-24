@@ -109,6 +109,10 @@ export function CmsView() {
   const [efPhone, setEfPhone] = useState('');
   const [efWebsite, setEfWebsite] = useState('');
   const [efLegal, setEfLegal] = useState('');
+  // Tracking
+  const [fbPixelId, setFbPixelId] = useState('');
+  const [gaId, setGaId] = useState('');
+  const [tiktokPixelId, setTiktokPixelId] = useState('');
 
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
@@ -177,6 +181,10 @@ export function CmsView() {
       setEfPhone(map['email.footer.phone'] ?? '');
       setEfWebsite(map['email.footer.website'] ?? '');
       setEfLegal(map['email.footer.legal'] ?? '');
+      // Tracking
+      setFbPixelId(map['tracking.facebook_pixel_id'] ?? '');
+      setGaId(map['tracking.google_analytics_id'] ?? '');
+      setTiktokPixelId(map['tracking.tiktok_pixel_id'] ?? '');
     } catch (err) {
       setLoadError(err instanceof Error ? err.message : 'Erreur');
     } finally {
@@ -540,6 +548,69 @@ export function CmsView() {
               { key: 'email.footer.phone', value: efPhone.trim() },
               { key: 'email.footer.website', value: efWebsite.trim() },
               { key: 'email.footer.legal', value: efLegal },
+            ])}
+          />
+        </div>
+      </div>
+
+      {/* ============================================================ */}
+      {/* TRACKING & ANALYTICS                                          */}
+      {/* ============================================================ */}
+      <div className="panel" style={{ marginBottom: 16 }}>
+        <div className="panel-head">
+          <h3>Tracking &amp; Analytics</h3>
+        </div>
+        <div className="panel-body" style={{ paddingTop: 16 }}>
+          <div className="info-band" style={{ marginBottom: 14 }}>
+            <div className="imark">!</div>
+            <div>
+              Connectez vos outils de tracking. Les pixels se chargent automatiquement sur toutes les
+              pages publiques du site. Laissez vide pour désactiver.
+            </div>
+          </div>
+          <div className="fg" style={{ marginBottom: 12 }}>
+            <label>Facebook Pixel ID (Meta Pixel)</label>
+            <input
+              value={fbPixelId}
+              onChange={(e) => setFbPixelId(e.target.value)}
+              placeholder="ex : 1234567890123456"
+              style={{ fontFamily: 'monospace' }}
+            />
+            <p className="field-hint">
+              Trouvez l&apos;ID dans Meta Events Manager &rarr; Sources &rarr; Pixel. Format : 15-16 chiffres.
+            </p>
+          </div>
+          <div className="frow" style={{ marginBottom: 0 }}>
+            <div className="fg">
+              <label>Google Analytics ID</label>
+              <input
+                value={gaId}
+                onChange={(e) => setGaId(e.target.value)}
+                placeholder="G-XXXXXXXXXX"
+                style={{ fontFamily: 'monospace' }}
+              />
+              <p className="field-hint">Bientôt disponible</p>
+            </div>
+            <div className="fg">
+              <label>TikTok Pixel ID</label>
+              <input
+                value={tiktokPixelId}
+                onChange={(e) => setTiktokPixelId(e.target.value)}
+                placeholder="CXXXXXXXXXXXXXXXX"
+                style={{ fontFamily: 'monospace' }}
+              />
+              <p className="field-hint">Bientôt disponible</p>
+            </div>
+          </div>
+          <SaveButton
+            savingGroup={savingGroup}
+            savedGroups={savedGroups}
+            loadError={loadError}
+            group="tracking"
+            onSave={() => saveGroup('tracking', [
+              { key: 'tracking.facebook_pixel_id', value: fbPixelId.trim() },
+              { key: 'tracking.google_analytics_id', value: gaId.trim() },
+              { key: 'tracking.tiktok_pixel_id', value: tiktokPixelId.trim() },
             ])}
           />
         </div>

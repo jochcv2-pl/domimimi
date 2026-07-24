@@ -104,6 +104,45 @@ export async function getFooterSettings(): Promise<FooterSettings> {
 }
 
 // ============================================================
+// Settings TRACKING (Facebook Pixel, Google Analytics, etc.)
+// ============================================================
+
+export interface TrackingSettings {
+  facebookPixelId: string | null;
+  googleAnalyticsId: string | null;
+  tiktokPixelId: string | null;
+}
+
+const TRACKING_KEYS = [
+  "tracking.facebook_pixel_id",
+  "tracking.google_analytics_id",
+  "tracking.tiktok_pixel_id",
+];
+
+export async function getTrackingSettings(): Promise<TrackingSettings> {
+  try {
+    const rows = await prisma.setting.findMany({
+      where: { key: { in: TRACKING_KEYS } },
+      select: { key: true, value: true },
+    });
+    const map: Record<string, string> = {};
+    for (const r of rows) map[r.key] = r.value;
+
+    return {
+      facebookPixelId: map["tracking.facebook_pixel_id"] || null,
+      googleAnalyticsId: map["tracking.google_analytics_id"] || null,
+      tiktokPixelId: map["tracking.tiktok_pixel_id"] || null,
+    };
+  } catch {
+    return {
+      facebookPixelId: null,
+      googleAnalyticsId: null,
+      tiktokPixelId: null,
+    };
+  }
+}
+
+// ============================================================
 // Settings EMAIL (header + footer des emails)
 // ============================================================
 

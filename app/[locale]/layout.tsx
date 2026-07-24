@@ -3,7 +3,8 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import RevealObserver from "@/components/ui/RevealObserver";
-import { getBrandSettings } from "@/lib/brand";
+import { getBrandSettings, getTrackingSettings } from "@/lib/brand";
+import { FacebookPixel } from "@/components/analytics/FacebookPixel";
 import { routing } from "@/i18n/routing";
 import LangSetter from "@/components/ui/LangSetter";
 
@@ -35,11 +36,13 @@ export default async function LocaleLayout({
   }
 
   const messages = await getMessages();
+  const { facebookPixelId } = await getTrackingSettings();
 
   return (
     <NextIntlClientProvider messages={messages}>
       <LangSetter locale={locale} />
       <RevealObserver />
+      <FacebookPixel pixelId={facebookPixelId} />
       {children}
       {/* Umami analytics — self-hosted, privacy-first, pas de cookies */}
       {process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
