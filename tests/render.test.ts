@@ -84,9 +84,9 @@ describe("buildVars", () => {
       },
       settings: {},
     });
-    // Le référent a une valeur par défaut "Camille", la marque a "Domipack"
+    // Le référent a une valeur par défaut "Camille", la marque a "domipackung"
     expect(vars["Prénom du référent"]).toBe("Camille");
-    expect(vars["Nom de la marque"]).toBe("Domipack");
+    expect(vars["Nom de la marque"]).toBe("domipackung");
     // Toutes les autres doivent être ""
     const { "Prénom du référent": _omit, "Nom de la marque": _omit2, ...rest } = vars;
     for (const [key, v] of Object.entries(rest)) {
